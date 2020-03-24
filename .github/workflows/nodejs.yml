@@ -6,8 +6,6 @@ name: Node.js CI
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   build:
@@ -29,3 +27,12 @@ jobs:
     - run: npm test
       env:
         CI: true
+    - name: Auto Revert Last Merge on build/test failure
+      if: failure()
+      uses: RahulParmarRP/auto-revert-merge@master
+      with: 
+        BRANCH_NAME: master
+      env: 
+        GITHUB_TOKEN: ${{ secrets.AUTO_REVERT_MERGE_ACCESS_TOKEN }}
+    - name: Deploy on Dev or Stage Server for CI
+      run: echo "Here Step to Deploy on Development or Stage Server for CI"
