@@ -1,5 +1,7 @@
 # Portfolio Blog Starter
 
+[![Build App](https://img.shields.io/badge/Build-Manually%20Trigger-blue?style=for-the-badge&logo=github-actions)](https://github.com/rahul-parmar-rp/portfolio/actions/workflows/build.yml)
+
 This is a porfolio site template complete with a blog. Includes:
 
 - MDX and Markdown support
