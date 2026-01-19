@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Google Auth</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <h1>Google Sign-In Demo</h1>
+    <p><a href="simple-google-auth-guide.md" target="_blank">📖 Read Full Documentation</a></p>
+    
+    <div>
+        <label>Client ID:</label>
+        <input type="text" id="clientId" placeholder="Your-Client-ID.apps.googleusercontent.com" size="60">
+        <button onclick="saveAndInit()">Save & Init</button>
+    </div>
+    
+    <hr>
+    
+    <div id="buttonDiv"></div>
+    
+    <hr>
+    
+    <h2>Accounts (<span id="count">0</span>)</h2>
+    <div id="accounts"></div>
+
+    <script>
+        let accounts = [];
+        let clientId = '';
+
+        function saveAndInit() {
+            console.log('=== SAVE AND INIT ===');
+            clientId = document.getElementById('clientId').value.trim();
+            console.log('Client ID:', clientId);
+            if (!clientId) {
+                console.error('No Client ID entered');
+                alert('Enter Client ID');
+                return;
+            }
+            localStorage.setItem('client_id', clientId);
+            console.log('Client ID saved to localStorage');
+            init();
+            alert('Saved!');
+        }
+
+        function init() {
+            console.log('=== INIT START ===');
+            console.log('Current URL:', window.location.href);
+            
+            const saved = localStorage.getItem('client_id');
+            console.log('Saved client ID:', saved);
+            if (saved) {
+                clientId = saved;
+                document.getElementById('clientId').value = clientId;
+                console.log('Client ID loaded from localStorage');
+            }
+
+            const savedAccounts = localStorage.getItem('accounts');
+            console.log('Saved accounts:', savedAccounts);
+            if (savedAccounts) {
+                accounts = JSON.parse(savedAccounts);
+                console.log('Loaded', accounts.length, 'accounts');
+                render();
+            }
+
+            if (clientId) {
+                console.log('Initializing Google Identity Services...');
+                console.log('Client ID:', clientId);
+                google.accounts.id.initialize({
+                    client_id: clientId,
+                    callback: handleResponse
+                });
+                console.log('Google Identity Services initialized');
+
+                console.log('Rendering sign-in button...');
+                google.accounts.id.renderButton(
+                    document.getElementById("buttonDiv"),
+                    { theme: "outline", size: "large" }
+                );
+                console.log('Sign-in button rendered');
+
+                console.log('Prompting One Tap...');
+                google.accounts.id.prompt();
+            } else {
+                console.warn('No client ID configured');
+            }
+            console.log('=== INIT COMPLETE ===');
+        }
+
+        function handleResponse(response) {
+            console.log('=== HANDLE RESPONSE ===');
+            console.log('Response received:', response);
+            console.log('JWT Token:', response.credential);
+            
+            const payload = JSON.parse(atob(response.credential.split('.')[1]));
+            console.log('Decoded payload:', payload);
+            
+            const account = {
+                id: payload.sub,
+                name: payload.name,
+                email: payload.email,
+                picture: payload.picture,
+                token: response.credential
+            };
+            console.log('Account object:', account);
+
+            const index = accounts.findIndex(a => a.id === account.id);
+            if (index >= 0) {
+                console.log('Updating existing account at index:', index);
+                accounts[index] = account;
+            } else {
+                console.log('Adding new account');
+                accounts.push(account);
+            }
+            console.log('Total accounts:', accounts.length);
+
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+            console.log('Accounts saved to localStorage');
+            render();
+            console.log('UI rendered');
+            alert('Signed in: ' + account.email);
+        }
+
+        function render() {
+            document.getElementById('count').textContent = accounts.length;
+            
+            if (accounts.length === 0) {
+                document.getElementById('accounts').innerHTML = '<p>No accounts</p>';
+                return;
+            }
+
+            document.getElementById('accounts').innerHTML = accounts.map((a, i) => `
+                <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+                    ${a.picture ? `<img src="${a.picture}" width="50" height="50" style="border-radius: 50%;">` : ''}
+                    <p><strong>${a.name}</strong></p>
+                    <p>${a.email}</p>
+                    <button onclick="remove(${i})">Remove</button>
+                </div>
+            `).join('');
+        }
+
+        function remove(index) {
+            accounts.splice(index, 1);
+            localStorage.setItem('accounts', JSON.stringify(accounts));
+            render();
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
