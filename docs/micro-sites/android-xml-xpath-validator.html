@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android XML & XPath Validator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Simple scrollbar styling for a better look */
+        textarea::-webkit-scrollbar,
+        #result-output::-webkit-scrollbar,
+        #tree-output::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        textarea::-webkit-scrollbar-track,
+        #result-output::-webkit-scrollbar-track,
+        #tree-output::-webkit-scrollbar-track {
+            background: #2d3748;
+        }
+        textarea::-webkit-scrollbar-thumb,
+        #result-output::-webkit-scrollbar-thumb,
+        #tree-output::-webkit-scrollbar-thumb {
+            background-color: #4a5568;
+            border-radius: 20px;
+            border: 2px solid #2d3748;
+        }
+        /* Default pre for wrapping error messages */
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        /* Enable horizontal scroll for code areas */
+        #xml-input, pre.xml-viewer {
+            white-space: pre;
+            overflow-wrap: normal;
+        }
+        /* Tree view styles */
+        .tree ul {
+            padding-left: 1.5rem;
+            border-left: 1px solid #4a5568;
+        }
+        .tree li {
+            list-style-type: none;
+            position: relative;
+        }
+        .tree .node-content {
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s;
+        }
+        .tree .node-content:hover {
+            background-color: #4a5568;
+        }
+        .tree .toggler::before {
+            content: '▶';
+            margin-right: 0.5rem;
+            display: inline-block;
+            transition: transform 0.2s;
+            font-size: 0.65rem;
+            color: #90cdf4;
+        }
+        .tree .toggler.expanded::before {
+            transform: rotate(90deg);
+        }
+        .tree .tag-name { color: #63b3ed; }
+        .tree .attr-name { color: #90cdf4; }
+        .tree .attr-value { color: #a0aec0; }
+        .tree .text-node { color: #f7fafc; font-style: italic; }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 min-h-screen flex flex-col items-center p-4 sm:p-6 lg:p-8">
+
+    <div class="w-full max-w-7xl">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-white">Android XML & XPath Validator</h1>
+            <p class="text-gray-400 mt-2">A tool to test XPath expressions against Android's XML layout structure.</p>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex flex-col gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- XML Input Area -->
+                <div class="flex flex-col">
+                    <div class="flex justify-between items-center mb-2">
+                        <label for="xml-input" class="font-semibold text-lg">Android XML Content</label>
+                        <div class="flex items-center gap-2">
+                             <label for="file-upload" class="bg-gray-700 hover:bg-gray-600 text-white text-sm font-bold py-2 px-3 rounded-lg cursor-pointer transition-colors duration-200">
+                                Upload File
+                            </label>
+                            <input id="file-upload" type="file" class="hidden" accept=".xml,text/xml">
+                            <button id="clear-btn" class="bg-red-600 hover:bg-red-700 text-white text-sm font-bold py-2 px-3 rounded-lg transition-colors duration-200">Clear</button>
+                        </div>
+                    </div>
+                    <textarea id="xml-input"
+                        class="w-full h-96 p-4 bg-gray-800 border border-gray-700 rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-300 font-mono text-sm resize-y overflow-auto"
+                        placeholder="Paste your Android XML here or upload a file..."
+                        spellcheck="false"></textarea>
+                </div>
+
+                <!-- XPath and Action Area -->
+                <div class="flex flex-col gap-6">
+                    <div>
+                        <label for="xpath-input" class="mb-2 font-semibold text-lg">XPath Expression</label>
+                        <textarea id="xpath-input"
+                            class="w-full h-24 p-4 bg-gray-800 border border-gray-700 rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-300 font-mono text-sm resize-y"
+                            placeholder="//android.widget.TextView"
+                            spellcheck="false"></textarea>
+                    </div>
+                    <button id="validate-btn"
+                        class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-500 transition-colors duration-200">
+                        Validate
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Area -->
+            <div class="mt-4">
+                <div class="flex justify-between items-center mb-2">
+                    <h2 class="text-xl font-semibold">Results</h2>
+                    <div class="flex items-center gap-2 bg-gray-800 p-1 rounded-lg">
+                        <button id="raw-view-btn" class="px-3 py-1 text-sm rounded-md bg-blue-600 text-white">Raw</button>
+                        <button id="tree-view-btn" class="px-3 py-1 text-sm rounded-md text-gray-400">Tree</button>
+                    </div>
+                </div>
+                <div id="result-output" class="w-full min-h-[10rem] h-96 p-4 bg-gray-800 border border-gray-700 rounded-lg shadow-inner text-gray-300 font-mono text-sm overflow-auto">
+                    Validation results will appear here...
+                </div>
+                <div id="tree-output" class="w-full min-h-[10rem] h-96 p-4 bg-gray-800 border border-gray-700 rounded-lg shadow-inner text-gray-300 font-mono text-sm overflow-auto hidden tree">
+                    <!-- Tree view will be rendered here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const xmlInput = document.getElementById('xml-input');
+        const xpathInput = document.getElementById('xpath-input');
+        const validateBtn = document.getElementById('validate-btn');
+        const resultOutput = document.getElementById('result-output');
+        const treeOutput = document.getElementById('tree-output');
+        const fileUpload = document.getElementById('file-upload');
+        const clearBtn = document.getElementById('clear-btn');
+        const rawViewBtn = document.getElementById('raw-view-btn');
+        const treeViewBtn = document.getElementById('tree-view-btn');
+
+        // Pre-fill with example Android XML data
+        xmlInput.value = `<android.widget.FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.view.View
+        android:id="@android:id/some_id"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
+
+    <android.widget.LinearLayout
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <android.widget.TextView
+            android:text="My apps &amp; games"
+            android:content-description="Tab 1 of 2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <android.widget.FrameLayout
+            android:id="@android:id/content"
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+
+    </android.widget.LinearLayout>
+</android.widget.FrameLayout>`;
+
+        xpathInput.value = `//android.widget.TextView[@android:text='My apps & games']`;
+
+        // Handle File Upload
+        fileUpload.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                xmlInput.value = e.target.result;
+                validateBtn.click();
+            };
+            reader.onerror = () => {
+                resultOutput.innerHTML = `<span class="text-red-400">Error reading file: ${reader.error}</span>`;
+            };
+            reader.readAsText(file);
+            event.target.value = null;
+        });
+        
+        // Handle view toggle
+        rawViewBtn.addEventListener('click', () => {
+            resultOutput.classList.remove('hidden');
+            treeOutput.classList.add('hidden');
+            rawViewBtn.classList.add('bg-blue-600', 'text-white');
+            rawViewBtn.classList.remove('text-gray-400');
+            treeViewBtn.classList.remove('bg-blue-600', 'text-white');
+            treeViewBtn.classList.add('text-gray-400');
+        });
+
+        treeViewBtn.addEventListener('click', () => {
+            treeOutput.classList.remove('hidden');
+            resultOutput.classList.add('hidden');
+            treeViewBtn.classList.add('bg-blue-600', 'text-white');
+            treeViewBtn.classList.remove('text-gray-400');
+            rawViewBtn.classList.remove('bg-blue-600', 'text-white');
+            rawViewBtn.classList.add('text-gray-400');
+        });
+
+        // Handle Clear Button
+        clearBtn.addEventListener('click', () => {
+            xmlInput.value = '';
+            xpathInput.value = '';
+            const message = 'Validation results will appear here...';
+            resultOutput.innerHTML = message;
+            treeOutput.innerHTML = `<span class="text-gray-500">${message}</span>`;
+        });
+
+        // Main validation logic
+        validateBtn.addEventListener('click', () => {
+            const xmlString = xmlInput.value.trim();
+            const xpathString = xpathInput.value.trim();
+            resultOutput.innerHTML = '';
+            treeOutput.innerHTML = '';
+
+            if (!xmlString) {
+                const message = `<span class="text-yellow-400">XML content area is empty.</span>`;
+                resultOutput.innerHTML = message;
+                treeOutput.innerHTML = message;
+                return;
+            }
+
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlString, 'application/xml');
+            const errorNode = xmlDoc.querySelector('parsererror');
+
+            if (errorNode) {
+                const errorMessage = `<div class="text-red-400">
+    <h3 class="font-semibold mb-2">XML Parsing Error</h3>
+    <pre>${errorNode.innerText.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+</div>`;
+                resultOutput.innerHTML = errorMessage;
+                treeOutput.innerHTML = errorMessage;
+                return;
+            }
+
+            resultOutput.innerHTML = `<div class="text-green-400 mb-4"><h3 class="font-semibold">XML is well-formed.</h3></div>`;
+             treeOutput.innerHTML = `<div class="text-green-400 mb-4"><h3 class="font-semibold">XML is well-formed.</h3></div>`;
+
+            if (!xpathString) {
+                 const message = `<span class="text-yellow-400">No XPath expression provided to evaluate.</span>`;
+                 resultOutput.innerHTML += message;
+                 treeOutput.innerHTML += message;
+                 return;
+            }
+
+            function nsResolver(prefix) {
+                const ns = { 'android': 'http://schemas.android.com/apk/res/android' };
+                return ns[prefix] || null;
+            }
+
+            try {
+                const iterator = xmlDoc.evaluate(xpathString, xmlDoc, nsResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+                
+                let nodes = [];
+                let node = iterator.iterateNext();
+                while(node) {
+                    nodes.push(node);
+                    node = iterator.iterateNext();
+                }
+
+                let resultHeader = `<h3 class="font-semibold text-gray-200 mb-2">XPath Evaluation Result</h3>`;
+                resultOutput.innerHTML += resultHeader;
+                treeOutput.innerHTML += resultHeader;
+
+                if (nodes.length > 0) {
+                    // Populate Raw View
+                    let rawText = `<div class="text-cyan-400 mb-2">Found ${nodes.length} node(s):</div>`;
+                    let nodesText = '';
+                    nodes.forEach((n, i) => {
+                        nodesText += `<!-- Node ${i + 1} -->\n${formatXml(new XMLSerializer().serializeToString(n))}\n\n`;
+                    });
+                    rawText += `<pre class="bg-gray-900 p-2 rounded text-sm xml-viewer">${nodesText.trim().replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>`;
+                    resultOutput.innerHTML += rawText;
+
+                    // Populate Tree View
+                    let treeHTML = `<div class="text-cyan-400 mb-2">Found ${nodes.length} node(s):</div>`;
+                    const treeContainer = document.createElement('div');
+                    nodes.forEach(n => {
+                        treeContainer.appendChild(buildTreeView(n));
+                    });
+                    treeOutput.innerHTML += treeHTML + treeContainer.innerHTML;
+
+                } else {
+                    const noMatchMessage = `<span class="text-gray-400">XPath expression did not match any nodes.</span>`;
+                    resultOutput.innerHTML += noMatchMessage;
+                    treeOutput.innerHTML += noMatchMessage;
+                }
+
+            } catch (e) {
+                const errorMessage = `<div class="text-red-400">
+    <h3 class="font-semibold mb-2">XPath Error</h3>
+    <pre>${e.message.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+</div>`;
+                resultOutput.innerHTML += errorMessage;
+                treeOutput.innerHTML += errorMessage;
+            }
+        });
+
+        // Helper to format XML for raw view
+        function formatXml(xml) {
+            let formatted = '', indent = '';
+            const tab = '    '; // 4 spaces
+            xml.split(/>\s*</).forEach(node => {
+                if (node.match(/^\/\w/)) indent = indent.substring(tab.length);
+                formatted += indent + '<' + node + '>\r\n';
+                if (node.match(/^<?\w[^>]*[^\/]$/)) indent += tab;
+            });
+            return formatted.substring(1, formatted.length - 3);
+        }
+        
+        // Helper to build the interactive tree view
+        function buildTreeView(xmlNode) {
+            if (xmlNode.nodeType !== 1) return null; // Only process element nodes
+
+            const li = document.createElement('li');
+            const nodeContent = document.createElement('span');
+            nodeContent.className = 'node-content';
+
+            const hasChildren = xmlNode.children.length > 0;
+            if (hasChildren) {
+                nodeContent.innerHTML += '<span class="toggler"></span>';
+            }
+            
+            let attributesString = '';
+            if (xmlNode.attributes) {
+                 for(let i = 0; i < xmlNode.attributes.length; i++) {
+                    const attr = xmlNode.attributes[i];
+                    attributesString += ` <span class="attr-name">${attr.name}</span>="<span class="attr-value">${attr.value}</span>"`;
+                }
+            }
+            
+            nodeContent.innerHTML += `&lt;<span class="tag-name">${xmlNode.nodeName}</span>${attributesString}&gt;`;
+            li.appendChild(nodeContent);
+
+            if (hasChildren) {
+                const ul = document.createElement('ul');
+                for (const child of xmlNode.children) {
+                    const childLi = buildTreeView(child);
+                    if(childLi) ul.appendChild(childLi);
+                }
+                li.appendChild(ul);
+            }
+            return li;
+        }
+        
+        // Event delegation for tree toggling
+        treeOutput.addEventListener('click', function(e) {
+            const toggler = e.target.closest('.toggler');
+            if (toggler) {
+                toggler.classList.toggle('expanded');
+                const nestedList = toggler.closest('li').querySelector('ul');
+                if(nestedList) {
+                    nestedList.style.display = nestedList.style.display === 'none' ? 'block' : 'none';
+                }
+            }
+        });
+
+        // Trigger initial validation on load
+        validateBtn.click();
+    </script>
+</body>
+</html>
+
