@@ -1,11 +1,12 @@
 {
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "post-time": "node scripts/post-single.js",
-    "post-csv": "node scripts/post.js"
+    "twitter:post-time": "node tools/twitter-poster/scripts/post-single.js",
+    "twitter:post-csv": "node tools/twitter-poster/scripts/post.js"
   },
   "dependencies": {
     "@tailwindcss/postcss": "4.0.0-alpha.13",
