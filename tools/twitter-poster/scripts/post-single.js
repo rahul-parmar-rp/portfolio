@@ -19,23 +19,18 @@ const client = new TwitterApi({
 });
 
 // Post a simple tweet with current date and time
-async function postCurrentTime() {
-  try {
-    const now = new Date();
-    const dateTime = now.toLocaleString();
-    const text = `Current date and time: ${dateTime}`;
-    
-    console.log(`Posting: "${text}"`);
-    
-    const result = await client.v2.tweet({ text });
-    
-    console.log("Tweet posted successfully!");
-    console.log(`Tweet ID: ${result.data.id}`);
-    
-  } catch (error) {
-    console.error("Error posting tweet:", error.message);
-  }
+try {
+  const now = new Date();
+  const dateTime = now.toLocaleString();
+  const text = `Current date and time: ${dateTime}`;
+  
+  console.log(`Posting: "${text}"`);
+  
+  const result = await client.v2.tweet({ text });
+  
+  console.log("Tweet posted successfully!");
+  console.log(`Tweet ID: ${result.data.id}`);
+  
+} catch (error) {
+  console.error("Error posting tweet:", error.message);
 }
-
-// Run the function
-postCurrentTime();
