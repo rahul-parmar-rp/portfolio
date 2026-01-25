@@ -12,6 +12,15 @@ export default function TwitterPoster() {
   const [success, setSuccess] = useState('')
   const [csvFile, setCsvFile] = useState<File | null>(null)
   const [bulkResults, setBulkResults] = useState<any>(null)
+  
+  // Twitter credentials override
+  const [showCredentials, setShowCredentials] = useState(false)
+  const [credentials, setCredentials] = useState({
+    apiKey: '',
+    apiSecret: '',
+    accessToken: '',
+    accessSecret: ''
+  })
 
   const generateTweet = async () => {
     if (!prompt.trim()) {
@@ -57,12 +66,19 @@ export default function TwitterPoster() {
     setSuccess('')
 
     try {
+      const requestBody: any = { content: generatedTweet }
+      
+      // If credentials are provided in UI, override env variables
+      if (credentials.apiKey && credentials.apiSecret && credentials.accessToken && credentials.accessSecret) {
+        requestBody.credentials = credentials
+      }
+
       const response = await fetch('/api/twitter', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ content: generatedTweet }),
+        body: JSON.stringify(requestBody),
       })
 
       const data = await response.json()
@@ -105,6 +121,11 @@ export default function TwitterPoster() {
     try {
       const formData = new FormData()
       formData.append('file', csvFile)
+      
+      // If credentials are provided in UI, add them to form data
+      if (credentials.apiKey && credentials.apiSecret && credentials.accessToken && credentials.accessSecret) {
+        formData.append('credentials', JSON.stringify(credentials))
+      }
 
       const response = await fetch('/api/twitter/csv', {
         method: 'POST',
@@ -139,6 +160,81 @@ export default function TwitterPoster() {
         <h1 className="text-3xl font-bold text-center mb-8 text-gray-900">
           Twitter Poster with AI
         </h1>
+        
+        {/* Twitter Credentials Override Section */}
+        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-yellow-800">
+              🔑 Twitter API Credentials (Dev Testing)
+            </h2>
+            <button
+              onClick={() => setShowCredentials(!showCredentials)}
+              className="text-yellow-700 hover:text-yellow-900 font-medium"
+            >
+              {showCredentials ? 'Hide' : 'Show'} Credentials
+            </button>
+          </div>
+          
+          {showCredentials && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-yellow-700 mb-1">
+                  API Key
+                </label>
+                <input
+                  type="text"
+                  value={credentials.apiKey}
+                  onChange={(e) => setCredentials({...credentials, apiKey: e.target.value})}
+                  placeholder="your_api_key_here"
+                  className="w-full px-3 py-2 border border-yellow-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-yellow-700 mb-1">
+                  API Secret
+                </label>
+                <input
+                  type="password"
+                  value={credentials.apiSecret}
+                  onChange={(e) => setCredentials({...credentials, apiSecret: e.target.value})}
+                  placeholder="your_api_secret_here"
+                  className="w-full px-3 py-2 border border-yellow-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-yellow-700 mb-1">
+                  Access Token
+                </label>
+                <input
+                  type="text"
+                  value={credentials.accessToken}
+                  onChange={(e) => setCredentials({...credentials, accessToken: e.target.value})}
+                  placeholder="your_access_token_here"
+                  className="w-full px-3 py-2 border border-yellow-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-yellow-700 mb-1">
+                  Access Token Secret
+                </label>
+                <input
+                  type="password"
+                  value={credentials.accessSecret}
+                  onChange={(e) => setCredentials({...credentials, accessSecret: e.target.value})}
+                  placeholder="your_access_secret_here"
+                  className="w-full px-3 py-2 border border-yellow-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                />
+              </div>
+            </div>
+          )}
+          
+          <p className="text-sm text-yellow-700 mt-3">
+            💡 <strong>Dev Mode:</strong> Enter credentials here to override .env.local for testing. 
+            {credentials.apiKey && credentials.apiSecret && credentials.accessToken && credentials.accessSecret 
+              ? " ✅ All credentials provided - will override env variables" 
+              : " Using .env.local credentials if available"}
+          </p>
+        </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Single Tweet Section */}
