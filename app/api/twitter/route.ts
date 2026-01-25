@@ -3,7 +3,7 @@ import { postTweet } from '../../../lib/twitter';
 
 export async function POST(request: NextRequest) {
   try {
-    const { content } = await request.json();
+    const { content, credentials } = await request.json();
 
     if (!content || typeof content !== 'string') {
       return NextResponse.json(
@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await postTweet(content);
+    const result = await postTweet(content, credentials);
     
     if (result.success) {
       return NextResponse.json({ success: true, data: result.data });

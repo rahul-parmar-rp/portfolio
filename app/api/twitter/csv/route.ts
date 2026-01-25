@@ -5,6 +5,7 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
     const file = formData.get('file') as File;
+    const credentialsStr = formData.get('credentials') as string;
     
     if (!file) {
       return NextResponse.json(
@@ -14,7 +15,8 @@ export async function POST(request: NextRequest) {
     }
 
     const csvContent = await file.text();
-    const results = await postTweetsFromCSV(csvContent);
+    const credentials = credentialsStr ? JSON.parse(credentialsStr) : undefined;
+    const results = await postTweetsFromCSV(csvContent, credentials);
     
     const successful = results.filter(r => r.success).length;
     const failed = results.filter(r => !r.success).length;

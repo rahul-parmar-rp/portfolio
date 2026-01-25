@@ -17,28 +17,28 @@ export interface TwitterCredentials {
   accessSecret: string;
 }
 
-export function createTwitterClient(): TwitterApi {
-  const credentials: TwitterCredentials = {
+export function createTwitterClient(credentials?: TwitterCredentials): TwitterApi {
+  const creds: TwitterCredentials = credentials || {
     appKey: process.env.TWITTER_API_KEY || '',
     appSecret: process.env.TWITTER_API_SECRET || '',
     accessToken: process.env.TWITTER_ACCESS_TOKEN || '',
     accessSecret: process.env.TWITTER_ACCESS_SECRET || '',
   };
 
-  if (!credentials.appKey || !credentials.appSecret || !credentials.accessToken || !credentials.accessSecret) {
-    throw new Error('Missing Twitter API credentials in environment variables');
+  if (!creds.appKey || !creds.appSecret || !creds.accessToken || !creds.accessSecret) {
+    throw new Error('Missing Twitter API credentials');
   }
 
-  return new TwitterApi(credentials);
+  return new TwitterApi(creds);
 }
 
-export async function postTweet(content: string): Promise<TwitterResponse> {
+export async function postTweet(content: string, credentials?: TwitterCredentials): Promise<TwitterResponse> {
   if (content.length > 280) {
     return { success: false, error: 'Tweet exceeds 280 character limit' };
   }
 
   try {
-    const client = createTwitterClient();
+    const client = createTwitterClient(credentials);
     const result = await client.v2.tweet({ text: content });
     
     return { 
@@ -63,7 +63,7 @@ export interface CSVRow {
   hashtags?: string;
 }
 
-export async function postTweetsFromCSV(csvContent: string): Promise<TwitterResponse[]> {
+export async function postTweetsFromCSV(csvContent: string, credentials?: TwitterCredentials): Promise<TwitterResponse[]> {
   return new Promise((resolve, reject) => {
     const rows: CSVRow[] = [];
     const results: TwitterResponse[] = [];
@@ -79,7 +79,7 @@ export async function postTweetsFromCSV(csvContent: string): Promise<TwitterResp
           for (const row of rows) {
             const text = `${row.tweet} ${row.url || ''} ${row.hashtags || ''}`.trim();
             
-            const result = await postTweet(text);
+            const result = await postTweet(text, credentials);
             results.push(result);
             
             // Wait 2 seconds between posts to avoid rate limiting
