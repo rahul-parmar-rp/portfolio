@@ -1,0 +1,214 @@
+---
+title: 'Git Commands Reference'
+publishedAt: '2024-01-24'
+summary: 'A comprehensive collection of commonly used Git commands for daily development workflow, including commits, branches, rebasing, and configuration.'
+---
+
+## Commit Commands
+
+Standard commit messages with ticket references:
+
+```bash
+git commit -m "feat: [SHERPA-]"
+git commit -m "fix: [SHERPA-]"
+```
+
+## Branch Management
+
+### Creating Feature and Fix Branches
+
+```bash
+git checkout -b feat/SHERPA-
+git checkout -b fix/SHERPA-
+
+# Example with full ticket number
+git checkout -b feat/SHERPA-16559-fix-price-filter-max-value-error
+```
+
+### Pushing New Branches
+
+```bash
+git push -u origin feat/SHERPA-
+```
+
+### Checking Out Remote Branches
+
+```bash
+# For dependabot branches
+git checkout -b dependabot/npm_and_yarn/component-library-da0ba3382c origin/dependabot/npm_and_yarn/component-library-da0ba3382c
+
+# Check if remote branch exists
+git branch -r | grep "dependabot/npm_and_yarn/component-library-da0ba3382c"
+
+# For feature branches
+git checkout -b feat/SHERPA-15986-flickering-issue origin/feat/SHERPA-15986-flickering-issue
+```
+
+## Git Worktree
+
+### Creating Worktrees
+
+```bash
+# Create a new worktree with a new branch
+git worktree add ../feature-branch feat/SHERPA-
+
+# Create worktree from existing branch
+git worktree add ../hotfix fix/SHERPA-
+
+# Create worktree with detached HEAD at specific commit
+git worktree add ../temp-worktree abc123
+
+# Create worktree from remote branch
+git worktree add ../feature origin/feat/SHERPA-15986
+```
+
+### Listing Worktrees
+
+```bash
+# List all worktrees
+git worktree list
+
+# Verbose output with more details
+git worktree list --porcelain
+```
+
+### Removing Worktrees
+
+```bash
+# Remove a worktree (must be clean)
+git worktree remove ../feature-branch
+
+# Force remove even with uncommitted changes
+git worktree remove --force ../feature-branch
+
+# Prune stale worktree information
+git worktree prune
+```
+
+### Moving Worktrees
+
+```bash
+# Move a worktree to a new location
+git worktree move ../old-path ../new-path
+```
+
+### Locking/Unlocking Worktrees
+
+```bash
+# Lock a worktree to prevent accidental deletion
+git worktree lock ../feature-branch
+
+# Unlock a worktree
+git worktree unlock ../feature-branch
+```
+
+## Common Workflow Commands
+
+### Amend and Force Push
+
+```bash
+ga . && git commit --amend --no-edit && git push --force-with-lease
+```
+
+### Reset Commands
+
+```bash
+# Hard reset - discards all changes
+git reset --hard HEAD~1
+
+# Soft reset - keeps changes staged
+git reset --soft HEAD~1
+
+# Mixed reset - keeps changes unstaged
+git reset HEAD~1
+```
+
+### Rebase Workflow
+
+```bash
+git fetch origin main && git rebase origin/main
+
+# Combined pull and rebase
+git pull && git fetch origin main && git rebase origin/main
+```
+
+## Git Configuration
+
+### Check Current Configuration
+
+```bash
+git config --list --local
+git config user.name 
+git config user.email
+git config --get pull.rebase
+```
+
+### Set Pull Rebase
+
+```bash
+git config pull.rebase true
+```
+
+### Local Configuration (Personal)
+
+```bash
+git config user.name "rahulparmarrp"
+git config user.email "rahulparmar.n@gmail.com"
+```
+
+### Global Configuration
+
+```bash
+# Check global config
+git config --global user.name
+git config --global user.email
+
+# Set global config
+git config --global user.name "Rahul Parmar"
+git config --global user.email "rahulparmar.n@gmail.com"
+
+# Work email
+git config --global user.email "pmr8ban@bosch.com"
+```
+
+### Remote URL with Token
+
+```bash
+git remote set-url origin https://rahulparmarRP:TOKEN@github.com/rahulparmarRP/twitter-oauth.git
+git remote set-url origin https://rahulparmarRP:TOKEN@github.com/gestures-tech/everything.git
+```
+
+## Patch Management
+
+### Creating a Patch File
+
+Create a patch file of all current changes (both staged and unstaged):
+
+```bash
+git diff > changes.patch
+```
+
+### Applying a Patch
+
+```bash
+# Standard apply
+git apply changes.patch
+
+# With 3-way merge (useful if files have been edited)
+git apply --3way changes.patch
+
+# Verbose output
+git apply --verbose changes.patch
+
+# Check if patch can be applied without actually applying
+git apply --check changes.patch
+```
+
+**Note:** If you've edited files after the patch was created, the lines the patch tries to target may not match. Use the `--3way` option to handle this gracefully.
+
+## Tips
+
+- Always use `--force-with-lease` instead of `--force` when force-pushing to avoid overwriting others' work
+- Use `git reset --soft` when you want to redo a commit but keep your changes
+- Use `git reset --hard` only when you're sure you want to discard all changes
+- Configure `pull.rebase true` to avoid unnecessary merge commits
