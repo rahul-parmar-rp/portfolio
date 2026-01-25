@@ -1,9 +1,9 @@
 import { TwitterApi } from "twitter-api-v2";
-import fs from "fs";
+import fs from "node:fs";
 import csv from "csv-parser";
 import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 // Get current directory for ES modules
 const __filename = fileURLToPath(import.meta.url);
