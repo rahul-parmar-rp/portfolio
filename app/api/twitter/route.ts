@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { postTweet } from '@/lib/twitter';
+import { postTweet } from '../../../lib/twitter';
 
 export async function POST(request: NextRequest) {
   try {

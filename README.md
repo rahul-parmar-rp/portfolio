@@ -44,6 +44,48 @@ This project also includes a Twitter posting MVP that uses Ollama (local LLM) to
    # Copy environment template
    cp .env.example .env.local
 
+   # Edit .env.local and add your Twitter API credentials
+   # You need API Key, API Secret, Access Token, and Access Secret
+   ```
+
+4. **Run the application**
+
+   ```bash
+   pnpm dev
+   ```
+
+5. **Use the Twitter Poster**
+   - Open http://localhost:3000/twitter-poster
+   - **Single Tweet**: Enter topic → Generate → Edit → Post
+   - **Bulk CSV**: Upload CSV file → Post all tweets with rate limiting
+
+### Twitter API Setup
+
+1. Go to https://developer.twitter.com/
+2. Create a new app or use existing one
+3. Go to \"Keys and tokens\" tab
+4. Copy these credentials to your `.env.local`:
+   - API Key → `TWITTER_API_KEY`
+   - API Secret → `TWITTER_API_SECRET`
+   - Access Token → `TWITTER_ACCESS_TOKEN`
+   - Access Token Secret → `TWITTER_ACCESS_SECRET`
+
+### CSV Format
+
+For bulk posting, use CSV with these columns:
+
+```csv
+tweet,url,hashtags
+\"Your tweet content here\",\"https://example.com\",\"#hashtag1 #hashtag2\"
+\"Another tweet\",\"\",\"#coding\"
+```
+
+3. **Configure environment**
+
+   ```bash
+   # Copy environment template
+   cp .env.example .env.local
+
    # Edit .env.local and add your Twitter Bearer Token
    # Get it from https://developer.twitter.com/
    ```
