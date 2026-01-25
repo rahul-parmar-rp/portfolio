@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateTweet } from '@/lib/ollama';
+import { generateTweet } from '../../../lib/ollama';
 
 export async function POST(request: NextRequest) {
   try {

@@ -36,7 +36,6 @@ When executing `window.history.replaceState` on first render inside the `useProd
    implying router-level rewrites.
 
 4. **Infinite render–replace–rerender loop symptoms**
-
    - Next.js triggered rerenders
    - Our replaceState re-fired
    - Router replaced the URL again
@@ -83,7 +82,6 @@ Unlike plain React:
 
 - **Next.js App Router owns the URL**, not your component.
 - It runs a series of internal effects to reconcile:
-
   - locale
   - searchParams
   - parallel route state
@@ -178,7 +176,6 @@ export default function Test() {
 
 - `useEffect` runs **after hydration commit**, not during render.
 - By that point, Next.js has finished:
-
   - URL canonicalization
   - locale/segment validation
   - router state hydration
@@ -227,7 +224,6 @@ Returning to the PLP scenario:
 - We attempted to compute the new canonical URL and replace the existing one.
 - Doing this during render caused a conflict with Next's internal router reconciliation.
 - Moving the logic into `useEffect` guarantees:
-
   - React first renders the page
   - Next.js hydrates internal router state
   - Router finishes its initial replace cycle
