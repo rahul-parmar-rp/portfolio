@@ -1,4 +1,5 @@
 import { BlogPosts } from 'app/components/posts'
+import { AutoSiteOverview } from 'app/components/auto-site-overview'
 
 export default function Page() {
   return (
@@ -13,6 +14,9 @@ export default function Page() {
         early error detection ensures cleaner code, and my preference for dark
         mode, which eases long coding sessions by reducing eye strain.`}
       </p>
+      <div className="my-8">
+        <AutoSiteOverview />
+      </div>
       <div className="my-8">
         <BlogPosts />
       </div>
