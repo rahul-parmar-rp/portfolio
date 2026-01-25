@@ -172,7 +172,7 @@ export default function Test() {
 }
 ```
 
-### ✅ Why this works
+## ✅ Why this works
 
 - `useEffect` runs **after hydration commit**, not during render.
 - By that point, Next.js has finished:
@@ -241,7 +241,7 @@ Search Provider Override ✅
 
 # ✅ Final Summary
 
-### **The fix was not to avoid `window.history.replaceState`, but to run it at the correct time.**
+## **The fix was not to avoid `window.history.replaceState`, but to run it at the correct time.**
 
 That “correct time” in Next.js App Router is:
 
