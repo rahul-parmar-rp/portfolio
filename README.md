@@ -13,6 +13,78 @@ This is a porfolio site template complete with a blog. Includes:
 - Vercel Speed Insights / Web Analytics
 - Geist font
 
+## Twitter Poster MVP with AI
+
+This project also includes a Twitter posting MVP that uses Ollama (local LLM) to generate tweets and posts them to Twitter via API.
+
+### Quick Start
+
+1. **Install dependencies**
+
+   ```bash
+   pnpm install
+   ```
+
+2. **Set up Ollama**
+
+   ```bash
+   # Install Ollama (macOS)
+   curl -fsSL https://ollama.ai/install.sh | sh
+
+   # Pull llama3 model
+   ollama pull llama3
+
+   # Start Ollama server
+   ollama serve
+   ```
+
+3. **Configure environment**
+
+   ```bash
+   # Copy environment template
+   cp .env.example .env.local
+
+   # Edit .env.local and add your Twitter Bearer Token
+   # Get it from https://developer.twitter.com/
+   ```
+
+4. **Run the application**
+
+   ```bash
+   pnpm dev
+   ```
+
+5. **Use the Twitter Poster**
+   - Open http://localhost:3000/twitter-poster
+   - Enter a topic for your tweet
+   - Click "Generate Tweet"
+   - Edit the generated content if needed
+   - Click "Post to Twitter"
+
+### Twitter API Setup
+
+1. Go to https://developer.twitter.com/
+2. Create a new app or use existing one
+3. Go to "Keys and tokens" tab
+4. Generate Bearer Token
+5. Add it to your `.env.local` file as `TWITTER_BEARER_TOKEN`
+
+### Architecture
+
+- **Frontend**: Next.js 14 (App Router) + React
+- **AI**: Ollama with llama3 model (local)
+- **API**: Next.js API routes
+- **Social**: Twitter API v2
+
+The MVP includes:
+
+- ✅ AI-powered tweet generation
+- ✅ Single-page UI with real-time editing
+- ✅ Character count validation
+- ✅ Direct Twitter posting
+- ✅ Error handling and loading states
+- ✅ No database required
+
 ## Demo
 
 https://portfolio-blog-starter.vercel.app
