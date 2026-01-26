@@ -9,7 +9,7 @@
     "twitter:post-csv": "node tools/twitter-poster/scripts/post.js"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "4.0.0-alpha.13",
+    "@tailwindcss/postcss": "4.1.18",
     "@types/node": "20.11.17",
     "@types/react": "18.2.55",
     "@types/react-dom": "18.2.19",
