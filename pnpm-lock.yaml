@@ -12,8 +12,8 @@ importers:
         specifier: 4.0.0-alpha.13
         version: 4.0.0-alpha.13(postcss@8.4.35)
       '@types/node':
-        specifier: 20.11.17
-        version: 20.11.17
+        specifier: 25.2.0
+        version: 25.2.0
       '@types/react':
         specifier: 18.2.55
         version: 18.2.55
@@ -361,8 +361,8 @@ packages:
   '@types/ms@0.7.34':
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
 
-  '@types/node@20.11.17':
-    resolution: {integrity: sha512-QmgQZGWu1Yw9TDyAP9ZzpFJKynYNeOvwMJmaxABfieQoVoiVOS6MN1WSpqpRcbeA5+RW82kraAVxCCJg+780Qw==}
+  '@types/node@25.2.0':
+    resolution: {integrity: sha512-DZ8VwRFUNzuqJ5khrvwMXHmvPe+zGayJhr2CDNiKB1WBE1ST8Djl00D0IC4vvNmHMdj6DlbYRIaFE7WHjlDl5w==}
 
   '@types/prop-types@15.7.11':
     resolution: {integrity: sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng==}
@@ -925,8 +925,8 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  undici-types@5.26.5:
-    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+  undici-types@7.16.0:
+    resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
 
   unified@10.1.2:
     resolution: {integrity: sha512-pUSWAi/RAnVy1Pif2kAoeWNBa3JVrx0MId2LASj8G+7AiHWoKZNTomq6LG326T68U7/e263X6fTdcXIy7XnF7Q==}
@@ -1214,9 +1214,9 @@ snapshots:
 
   '@types/ms@0.7.34': {}
 
-  '@types/node@20.11.17':
+  '@types/node@25.2.0':
     dependencies:
-      undici-types: 5.26.5
+      undici-types: 7.16.0
 
   '@types/prop-types@15.7.11': {}
 
@@ -1945,7 +1945,7 @@ snapshots:
 
   typescript@5.3.3: {}
 
-  undici-types@5.26.5: {}
+  undici-types@7.16.0: {}
 
   unified@10.1.2:
     dependencies:
