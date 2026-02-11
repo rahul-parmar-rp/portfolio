@@ -31,7 +31,7 @@ export function AutoSiteOverview() {
           setError(data.error || 'Failed to load routes')
         }
       })
-      .catch(err => setError('Failed to fetch routes'))
+      .catch(() => setError('Failed to fetch routes'))
       .finally(() => setLoading(false))
   }, [])
 

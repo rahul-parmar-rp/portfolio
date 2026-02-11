@@ -1,4 +1,4 @@
-import { readdir, stat } from 'fs/promises';
+import { readdir } from 'fs/promises';
 import { join } from 'path';
 import { NextResponse } from 'next/server';
 

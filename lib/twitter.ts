@@ -1,5 +1,4 @@
 import { TwitterApi } from 'twitter-api-v2';
-import fs from 'fs';
 import csv from 'csv-parser';
 import { Readable } from 'stream';
 

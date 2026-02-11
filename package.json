@@ -3,8 +3,14 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "prebuild": "pnpm typecheck && pnpm lint",
+    "build": "pnpm prebuild && next build",
+    "build:analyze": "ANALYZE=true next build",
     "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "prettier-check": "prettier --check '**/*.{js,ts,jsx,tsx,css,json,md,yml,yaml}'",
+    "prettier-write": "prettier --write '**/*.{js,ts,jsx,tsx,css,json,md,yml,yaml}'",
     "twitter:post-time": "node tools/twitter-poster/scripts/post-single.js",
     "twitter:post-csv": "node tools/twitter-poster/scripts/post.js"
   },
@@ -27,6 +33,14 @@
     "tailwindcss": "4.0.0-alpha.13",
     "twitter-api-v2": "^1.29.0",
     "typescript": "^5"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.3",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
+    "eslint": "^9",
+    "eslint-config-next": "^16.0.10",
+    "prettier": "^3.2.5"
   },
   "packageManager": "pnpm@9.13.0+sha512.beb9e2a803db336c10c9af682b58ad7181ca0fbd0d4119f2b33d5f2582e96d6c0d93c85b23869295b765170fbdaa92890c0da6ada457415039769edf3c959efe"
 }
