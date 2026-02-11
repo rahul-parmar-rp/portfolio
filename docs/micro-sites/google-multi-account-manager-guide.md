@@ -184,12 +184,13 @@ Accounts loaded: 2 accounts
 
 ## 📊 API Scopes Used
 
-The app requests these Google API scopes:
+The app currently requests these Google API scopes:
 
 ```
 https://www.googleapis.com/auth/gmail.readonly
 https://www.googleapis.com/auth/userinfo.email
 https://www.googleapis.com/auth/userinfo.profile
+https://www.googleapis.com/auth/drive.metadata.readonly
 ```
 
 **Permissions granted:**
@@ -197,6 +198,56 @@ https://www.googleapis.com/auth/userinfo.profile
 - Read Gmail labels and drafts (read-only)
 - Access email address
 - Access profile information (name, picture)
+- View storage quota via Drive API
+
+---
+
+## 📚 Available Google API Scopes Reference
+
+Below is a reference of additional scopes you can request depending on what features you need. Add them to the `scope` string in the app config to request extra permissions.
+
+### Drive Labels API
+
+| Scope                                  | Permission                                                                        |
+| -------------------------------------- | --------------------------------------------------------------------------------- |
+| `.../auth/drive.admin.labels.readonly` | See all Google Drive labels and label-related admin policies in your organisation |
+
+### Google Drive API
+
+| Scope                              | Permission                                                                                   |
+| ---------------------------------- | -------------------------------------------------------------------------------------------- |
+| `.../auth/drive`                   | See, edit, create and delete all of your Google Drive files                                  |
+| `.../auth/drive.file`              | See, edit, create and delete only the specific Google Drive files that you use with this app |
+| `.../auth/drive.meet.readonly`     | See and download your Google Drive files that were created or edited by Google Meet          |
+| `.../auth/drive.readonly`          | See and download all your Google Drive files                                                 |
+| `.../auth/docs`                    | See, edit, create and delete all of your Google Drive files                                  |
+| `.../auth/drive.appdata`           | See, create and delete its own configuration data in your Google Drive                       |
+| `.../auth/drive.metadata`          | View and manage metadata of files in your Google Drive                                       |
+| `.../auth/drive.metadata.readonly` | View metadata for files in your Google Drive (used for storage quota)                        |
+| `.../auth/drive.photos.readonly`   | View the photos, videos and albums in your Google Photos                                     |
+| `.../auth/drive.apps.readonly`     | View your Google Drive apps                                                                  |
+| `.../auth/drive.scripts`           | Modify your Google Apps Script scripts' behaviour                                            |
+| `.../auth/drive.apps`              | View and manage your Google Drive apps                                                       |
+| `.../auth/activity`                | View the activity history of your Google apps                                                |
+| `.../auth/drive.activity`          | View and add to the activity record of files in your Google Drive                            |
+| `.../auth/drive.activity.readonly` | View the activity record of files in your Google Drive                                       |
+| `.../auth/drive.install`           | Connect itself to your Google Drive                                                          |
+
+### Gmail API
+
+| Scope                     | Permission                            |
+| ------------------------- | ------------------------------------- |
+| `.../auth/gmail.readonly` | View your email messages and settings |
+
+### Service Management API
+
+| Scope                                  | Permission                                            |
+| -------------------------------------- | ----------------------------------------------------- |
+| `.../auth/service.management`          | Manage your Google API service configuration          |
+| `.../auth/service.management.readonly` | View your Google API service configuration            |
+| `.../auth/iam.test`                    | Test Identity and Access Management (IAM) Permissions |
+
+> **Note:** All scopes are prefixed with `https://www.googleapis.com`. You must enable the corresponding API in Google Cloud Console before requesting its scopes. Users will need to re-authenticate after adding new scopes.
 
 ---
 
