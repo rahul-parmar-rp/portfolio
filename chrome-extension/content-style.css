@@ -1,0 +1,147 @@
+#full-url-overlay {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 2147483647;
+  background: rgba(20, 20, 20, 0.92);
+  color: #fff;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+  width: clamp(260px, 60vw, 520px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  user-select: text;
+  box-sizing: border-box;
+}
+
+#full-url-overlay.expanded {
+  width: clamp(320px, 80vw, 900px);
+}
+
+#full-url-overlay .overlay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  cursor: move;
+  background: rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+#full-url-overlay .overlay-title {
+  font-size: 11px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+#full-url-overlay .overlay-body {
+  padding: 8px 10px 10px;
+}
+
+#full-url-overlay textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #fff;
+  outline: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+  resize: none;
+  white-space: pre-wrap;
+  word-break: break-all;
+  min-height: 44px;
+  box-sizing: border-box;
+}
+
+#full-url-overlay .overlay-params {
+  display: none;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  max-height: 160px;
+  overflow: auto;
+}
+
+#full-url-overlay.show-params .overlay-params {
+  display: block;
+}
+
+#full-url-overlay .overlay-params-title {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+#full-url-overlay .overlay-param {
+  display: grid;
+  grid-template-columns: minmax(90px, 1fr) 2fr;
+  gap: 8px;
+  padding: 3px 0;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+#full-url-overlay .overlay-param:last-child {
+  border-bottom: none;
+}
+
+#full-url-overlay .param-key {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  color: #fff;
+  word-break: break-all;
+}
+
+#full-url-overlay .param-value {
+  color: rgba(255, 255, 255, 0.85);
+  word-break: break-all;
+}
+
+#full-url-overlay .overlay-actions {
+  display: flex;
+  gap: 6px;
+}
+
+#full-url-overlay button {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#full-url-overlay button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+#full-url-overlay.collapsed .overlay-body {
+  display: none;
+}
+
+#full-url-overlay.collapsed .overlay-title {
+  display: none;
+}
+
+#full-url-overlay.collapsed .overlay-header {
+  padding: 4px 6px;
+}
+
+#full-url-overlay.collapsed {
+  width: auto;
+  max-width: none;
+  right: 16px;
+  bottom: 16px;
+  left: auto;
+  top: auto;
+}
+
+#full-url-overlay.collapsed .overlay-actions button:not(:last-child) {
+  display: none;
+}

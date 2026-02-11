@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Full URL Bar Overlay",
+  "version": "1.0.0",
+  "description": "Shows the full current page URL in a movable, copyable overlay.",
+  "permissions": [],
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "css": ["content-style.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
