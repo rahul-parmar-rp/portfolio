@@ -35,7 +35,7 @@ export async function POST() {
 
     console.log(`Found ${rows.length} tweets to post`);
 
-    const results = [];
+    const results: Array<{ success: boolean; text: string; tweetId?: string; error?: string }> = [];
 
     for (const row of rows) {
       const text = `${row.tweet} ${row.url} ${row.hashtags}`.trim();

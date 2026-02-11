@@ -13,6 +13,12 @@ This is a porfolio site template complete with a blog. Includes:
 - Vercel Speed Insights / Web Analytics
 - Geist font
 
+## Chrome Extension: Full URL Bar Overlay
+
+A simple Chrome extension that shows the full current page URL in a movable, copyable overlay.
+
+See setup and usage docs in [chrome-extension/README.md](chrome-extension/README.md).
+
 ## Twitter Poster MVP with AI
 
 This project also includes a Twitter posting MVP that uses Ollama (local LLM) to generate tweets and posts them to Twitter via API.
