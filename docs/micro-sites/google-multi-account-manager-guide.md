@@ -13,6 +13,8 @@ Complete guide for setting up and using the Google OAuth Multi-Account Manager.
 - Manage multiple Google accounts in one app
 - OAuth 2.0 Implicit Flow (client-side only)
 - Access Gmail API (Labels, Drafts, Profile)
+- View Google Drive storage quota
+- Browse Google Photos albums and recent media
 - Store access tokens in browser localStorage
 - No backend server required
 
@@ -27,11 +29,13 @@ Complete guide for setting up and using the Google OAuth Multi-Account Manager.
 3. Enter project name (e.g., "My OAuth Manager")
 4. Click **"Create"**
 
-### Step 2: Enable Gmail API
+### Step 2: Enable APIs
 
 1. In your project, go to **"APIs & Services"** → **"Library"**
-2. Search for **"Gmail API"**
-3. Click on it and press **"Enable"**
+2. Search for and enable each of these:
+   - **Gmail API**
+   - **Google Drive API**
+   - **Photos Library API**
 
 ### Step 3: Create OAuth Credentials
 
@@ -93,6 +97,9 @@ For each account, you can:
 - **Labels**: Click to view all Gmail labels
 - **Drafts**: Click to see draft emails
 - **Profile**: Click to view Gmail profile info
+- **Storage Quota**: Click to view Drive storage usage
+- **📷 Albums**: Click to browse Google Photos albums, then click **View** on any album to see its photos
+- **📸 Recent Photos**: Click to see your 25 most recent photos/videos with thumbnails
 - **Remove**: Click to remove the account from the app
 
 ### Step 4: Add More Accounts
@@ -191,6 +198,7 @@ https://www.googleapis.com/auth/gmail.readonly
 https://www.googleapis.com/auth/userinfo.email
 https://www.googleapis.com/auth/userinfo.profile
 https://www.googleapis.com/auth/drive.metadata.readonly
+https://www.googleapis.com/auth/photoslibrary.readonly
 ```
 
 **Permissions granted:**
@@ -199,6 +207,7 @@ https://www.googleapis.com/auth/drive.metadata.readonly
 - Access email address
 - Access profile information (name, picture)
 - View storage quota via Drive API
+- View Google Photos albums and media items (read-only)
 
 ---
 
@@ -239,6 +248,36 @@ Below is a reference of additional scopes you can request depending on what feat
 | ------------------------- | ------------------------------------- |
 | `.../auth/gmail.readonly` | View your email messages and settings |
 
+### Google Photos Library API
+
+| Scope                                        | Permission                                                |
+| -------------------------------------------- | --------------------------------------------------------- |
+| `.../auth/photoslibrary.readonly`            | View your Google Photos library (read-only)               |
+| `.../auth/photoslibrary`                     | View and manage your Google Photos library                |
+| `.../auth/photoslibrary.appendonly`          | Add photos and videos to your library and albums          |
+| `.../auth/photoslibrary.sharing`             | Manage and add to shared albums on your behalf            |
+| `.../auth/photoslibrary.edit.appcreateddata` | Edit media items (descriptions, etc.) created by your app |
+
+**Photos Library API Endpoints:**
+
+| Method  | Endpoint                                     | Description                   |
+| ------- | -------------------------------------------- | ----------------------------- |
+| `GET`   | `/v1/albums`                                 | List all albums               |
+| `GET`   | `/v1/albums/{albumId}`                       | Get album details             |
+| `POST`  | `/v1/albums`                                 | Create a new album            |
+| `PATCH` | `/v1/albums/{album.id}`                      | Update album properties       |
+| `POST`  | `/v1/albums/{albumId}:batchAddMediaItems`    | Add media to album            |
+| `POST`  | `/v1/albums/{albumId}:batchRemoveMediaItems` | Remove media from album       |
+| `POST`  | `/v1/albums/{albumId}:addEnrichment`         | Add enrichment (maps, text)   |
+| `GET`   | `/v1/mediaItems`                             | List recent media items       |
+| `GET`   | `/v1/mediaItems/{mediaItemId}`               | Get a specific media item     |
+| `GET`   | `/v1/mediaItems:batchGet`                    | Batch get media items         |
+| `POST`  | `/v1/mediaItems:search`                      | Search media items            |
+| `POST`  | `/v1/mediaItems:batchCreate`                 | Upload and create media items |
+| `PATCH` | `/v1/mediaItems/{mediaItem.id}`              | Update media item metadata    |
+
+> **Base URL:** `https://photoslibrary.googleapis.com`
+
 ### Service Management API
 
 | Scope                                  | Permission                                            |
@@ -269,4 +308,4 @@ If you encounter issues:
 
 ---
 
-**Last Updated:** January 2026
+**Last Updated:** February 2026
