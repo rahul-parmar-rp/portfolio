@@ -31,7 +31,7 @@
             config: {
                 clientId: '',
                 redirectUri: window.location.origin + window.location.pathname,
-                scope: 'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive.metadata.readonly'
+                scope: 'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/photoslibrary.readonly'
             },
             accounts: [],
 
@@ -418,6 +418,110 @@
                 }
             },
 
+            async listPhotosAlbums(account) {
+                if (this.isTokenExpired(account)) {
+                    alert('Token expired. Re-authenticate.');
+                    return;
+                }
+                const resultDiv = document.getElementById(`results-${account.id}`);
+                resultDiv.innerHTML = 'Loading albums...';
+                try {
+                    const response = await fetch('https://photoslibrary.googleapis.com/v1/albums?pageSize=20', {
+                        headers: { 'Authorization': `Bearer ${account.accessToken}` }
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error?.message || response.statusText);
+                    }
+                    const data = await response.json();
+                    if (data.albums && data.albums.length > 0) {
+                        resultDiv.innerHTML = `<h4>Photo Albums (${data.albums.length})</h4><ul>` +
+                            data.albums.map(a => 
+                                `<li><strong>${a.title || 'Untitled'}</strong> — ${a.mediaItemsCount || 0} items` +
+                                ` <button onclick="app.viewAlbumMedia(app.accounts.find(ac => ac.id === '${account.id}'), '${a.id}')">View</button></li>`
+                            ).join('') + '</ul>';
+                    } else {
+                        resultDiv.innerHTML = '<h4>Photo Albums</h4><p>No albums found.</p>';
+                    }
+                } catch (error) {
+                    resultDiv.innerHTML = `Error: ${error.message}`;
+                }
+            },
+
+            async viewAlbumMedia(account, albumId) {
+                if (this.isTokenExpired(account)) {
+                    alert('Token expired. Re-authenticate.');
+                    return;
+                }
+                const resultDiv = document.getElementById(`results-${account.id}`);
+                resultDiv.innerHTML = 'Loading album media...';
+                try {
+                    const response = await fetch('https://photoslibrary.googleapis.com/v1/mediaItems:search', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${account.accessToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ albumId: albumId, pageSize: 25 })
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error?.message || response.statusText);
+                    }
+                    const data = await response.json();
+                    if (data.mediaItems && data.mediaItems.length > 0) {
+                        resultDiv.innerHTML = `<h4>Album Media (${data.mediaItems.length} items)</h4>` +
+                            `<button onclick="app.listPhotosAlbums(app.accounts.find(a => a.id === '${account.id}'))">← Back to Albums</button>` +
+                            '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">' +
+                            data.mediaItems.map(m => 
+                                `<div style="text-align:center;">` +
+                                `<a href="${m.productUrl}" target="_blank">` +
+                                `<img src="${m.baseUrl}=w150-h150-c" width="150" height="150" style="border-radius:4px;" title="${m.filename || ''}">` +
+                                `</a><br><small>${m.filename || 'untitled'}</small></div>`
+                            ).join('') + '</div>';
+                    } else {
+                        resultDiv.innerHTML = '<p>No media items in this album.</p>' +
+                            `<button onclick="app.listPhotosAlbums(app.accounts.find(a => a.id === '${account.id}'))">← Back to Albums</button>`;
+                    }
+                } catch (error) {
+                    resultDiv.innerHTML = `Error: ${error.message}`;
+                }
+            },
+
+            async listRecentPhotos(account) {
+                if (this.isTokenExpired(account)) {
+                    alert('Token expired. Re-authenticate.');
+                    return;
+                }
+                const resultDiv = document.getElementById(`results-${account.id}`);
+                resultDiv.innerHTML = 'Loading recent photos...';
+                try {
+                    const response = await fetch('https://photoslibrary.googleapis.com/v1/mediaItems?pageSize=25', {
+                        headers: { 'Authorization': `Bearer ${account.accessToken}` }
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error?.message || response.statusText);
+                    }
+                    const data = await response.json();
+                    if (data.mediaItems && data.mediaItems.length > 0) {
+                        resultDiv.innerHTML = `<h4>Recent Photos (${data.mediaItems.length})</h4>` +
+                            '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">' +
+                            data.mediaItems.map(m => {
+                                const isVideo = m.mimeType && m.mimeType.startsWith('video/');
+                                return `<div style="text-align:center;">` +
+                                    `<a href="${m.productUrl}" target="_blank">` +
+                                    `<img src="${m.baseUrl}=w150-h150-c" width="150" height="150" style="border-radius:4px;" title="${m.filename || ''}">` +
+                                    `</a><br><small>${isVideo ? '🎬 ' : ''}${m.filename || 'untitled'}</small></div>`;
+                            }).join('') + '</div>';
+                    } else {
+                        resultDiv.innerHTML = '<h4>Recent Photos</h4><p>No media items found.</p>';
+                    }
+                } catch (error) {
+                    resultDiv.innerHTML = `Error: ${error.message}`;
+                }
+            },
+
             renderAccounts() {
                 document.getElementById('count').textContent = this.accounts.length;
                 const grid = document.getElementById('accountsGrid');
@@ -439,6 +543,8 @@
                             <button onclick="app.listGmailDrafts(app.accounts.find(a => a.id === '${account.id}'))">Drafts</button>
                             <button onclick="app.getGmailProfile(app.accounts.find(a => a.id === '${account.id}'))">Profile</button>
                             <button onclick="app.getStorageQuota(app.accounts.find(a => a.id === '${account.id}'))">Storage Quota</button>
+                            <button onclick="app.listPhotosAlbums(app.accounts.find(a => a.id === '${account.id}'))">📷 Albums</button>
+                            <button onclick="app.listRecentPhotos(app.accounts.find(a => a.id === '${account.id}'))">📸 Recent Photos</button>
                             <button onclick="app.removeAccount('${account.id}')">Remove</button>
                             <div id="results-${account.id}"></div>
                         </div>
