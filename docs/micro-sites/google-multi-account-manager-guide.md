@@ -250,6 +250,8 @@ Below is a reference of additional scopes you can request depending on what feat
 
 ### Google Photos Library API
 
+> **⚠️ Important (April 2025 Change):** Google restricted the Photos Library API so that all endpoints — `albums.list`, `mediaItems.list`, `mediaItems:search`, etc. — now only return content **created by your app**. Existing user photos/albums are **not accessible**. See the [official notice](https://developers.google.com/photos/library/guides/overview).
+
 | Scope                                        | Permission                                                |
 | -------------------------------------------- | --------------------------------------------------------- |
 | `.../auth/photoslibrary.readonly`            | View your Google Photos library (read-only)               |
@@ -260,23 +262,53 @@ Below is a reference of additional scopes you can request depending on what feat
 
 **Photos Library API Endpoints:**
 
-| Method  | Endpoint                                     | Description                   |
-| ------- | -------------------------------------------- | ----------------------------- |
-| `GET`   | `/v1/albums`                                 | List all albums               |
-| `GET`   | `/v1/albums/{albumId}`                       | Get album details             |
-| `POST`  | `/v1/albums`                                 | Create a new album            |
-| `PATCH` | `/v1/albums/{album.id}`                      | Update album properties       |
-| `POST`  | `/v1/albums/{albumId}:batchAddMediaItems`    | Add media to album            |
-| `POST`  | `/v1/albums/{albumId}:batchRemoveMediaItems` | Remove media from album       |
-| `POST`  | `/v1/albums/{albumId}:addEnrichment`         | Add enrichment (maps, text)   |
-| `GET`   | `/v1/mediaItems`                             | List recent media items       |
-| `GET`   | `/v1/mediaItems/{mediaItemId}`               | Get a specific media item     |
-| `GET`   | `/v1/mediaItems:batchGet`                    | Batch get media items         |
-| `POST`  | `/v1/mediaItems:search`                      | Search media items            |
-| `POST`  | `/v1/mediaItems:batchCreate`                 | Upload and create media items |
-| `PATCH` | `/v1/mediaItems/{mediaItem.id}`              | Update media item metadata    |
+All endpoints are relative to `https://photoslibrary.googleapis.com`. After April 2025, all methods only return **app-created** content.
 
-> **Base URL:** `https://photoslibrary.googleapis.com`
+| Method  | Endpoint                                     | Description                            |
+| ------- | -------------------------------------------- | -------------------------------------- |
+| `GET`   | `/v1/albums`                                 | List app-created albums                |
+| `GET`   | `/v1/albums/{albumId}`                       | Get app-created album details          |
+| `POST`  | `/v1/albums`                                 | Create a new album                     |
+| `PATCH` | `/v1/albums/{album.id}`                      | Update app-created album properties    |
+| `POST`  | `/v1/albums/{albumId}:batchAddMediaItems`    | Add app-created media to album         |
+| `POST`  | `/v1/albums/{albumId}:batchRemoveMediaItems` | Remove app-created media from album    |
+| `POST`  | `/v1/albums/{albumId}:addEnrichment`         | Add enrichment (maps, text) to album   |
+| `GET`   | `/v1/mediaItems`                             | List app-created media items           |
+| `GET`   | `/v1/mediaItems/{mediaItemId}`               | Get a specific app-created media item  |
+| `GET`   | `/v1/mediaItems:batchGet`                    | Batch get app-created media items      |
+| `POST`  | `/v1/mediaItems:search`                      | Search app-created media items         |
+| `POST`  | `/v1/mediaItems:batchCreate`                 | Upload and create media items          |
+| `PATCH` | `/v1/mediaItems/{mediaItem.id}`              | Update app-created media item metadata |
+
+**Album Resource Fields:**
+
+| Field                   | Type    | Description                                                   |
+| ----------------------- | ------- | ------------------------------------------------------------- |
+| `id`                    | string  | Persistent album identifier                                   |
+| `title`                 | string  | Album name (max 500 chars)                                    |
+| `productUrl`            | string  | Google Photos URL (user must be signed in)                    |
+| `isWriteable`           | boolean | Whether app can add media to this album                       |
+| `mediaItemsCount`       | string  | Number of media items in the album                            |
+| `coverPhotoBaseUrl`     | string  | Cover photo URL (append `=w{W}-h{H}` params before use)       |
+| `coverPhotoMediaItemId` | string  | Media item ID for the cover photo                             |
+| `shareInfo`             | object  | Sharing details (only if app-created & sharing scope granted) |
+
+**MediaItem Resource Fields:**
+
+| Field             | Type   | Description                                                    |
+| ----------------- | ------ | -------------------------------------------------------------- |
+| `id`              | string | Persistent media item identifier                               |
+| `filename`        | string | Original filename                                              |
+| `mimeType`        | string | MIME type (e.g., `image/jpeg`, `video/mp4`)                    |
+| `description`     | string | User-set description (max 1000 chars)                          |
+| `productUrl`      | string | Google Photos URL (user must be signed in)                     |
+| `baseUrl`         | string | Media bytes URL (append `=w{W}-h{H}` params before use)        |
+| `mediaMetadata`   | object | Contains `creationTime`, `width`, `height`, `photo` or `video` |
+| `contributorInfo` | object | Contributor info (only in shared album searches)               |
+
+**Photo Metadata:** `cameraMake`, `cameraModel`, `focalLength`, `apertureFNumber`, `isoEquivalent`, `exposureTime`
+
+**Video Metadata:** `cameraMake`, `cameraModel`, `fps`, `status` (`PROCESSING`, `READY`, `FAILED`)
 
 ### Service Management API
 

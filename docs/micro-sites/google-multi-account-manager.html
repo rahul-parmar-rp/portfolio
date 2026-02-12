@@ -439,20 +439,26 @@
                     const data = await response.json();
                     if (data.albums && data.albums.length > 0) {
                         resultDiv.innerHTML = `<h4>Photo Albums (${data.albums.length})</h4>` +
+                            '<p style="font-size:0.8em;color:#888;">⚠️ Since April 2025, the Library API only returns albums created by this app.</p>' +
                             '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;">' +
                             data.albums.map(a => {
                                 const coverUrl = a.coverPhotoBaseUrl ? `${a.coverPhotoBaseUrl}=w200-h150-c` : '';
                                 const shared = a.shareInfo ? ' 🔗 Shared' : '';
+                                const writable = a.isWriteable ? ' ✏️' : '';
                                 return `<div style="border:1px solid #ddd;border-radius:8px;padding:8px;width:200px;text-align:center;">` +
                                     (coverUrl ? `<img src="${coverUrl}" width="200" height="150" style="border-radius:4px;object-fit:cover;">` : '<div style="width:200px;height:150px;background:#eee;border-radius:4px;display:flex;align-items:center;justify-content:center;">No Cover</div>') +
-                                    `<p style="margin:6px 0 2px;font-weight:bold;">${a.title || 'Untitled'}</p>` +
+                                    `<p style="margin:6px 0 2px;font-weight:bold;">${a.title || 'Untitled'}${writable}</p>` +
                                     `<p style="margin:0;font-size:0.85em;color:#666;">${a.mediaItemsCount || 0} items${shared}</p>` +
                                     `<button onclick="app.viewAlbumMedia(app.accounts.find(ac => ac.id === '${account.id}'), '${a.id}')" style="margin-top:6px;">View Photos</button>` +
                                     (a.productUrl ? ` <a href="${a.productUrl}" target="_blank" style="font-size:0.85em;">Open in Photos</a>` : '') +
                                     `</div>`;
                             }).join('') + '</div>';
                     } else {
-                        resultDiv.innerHTML = '<h4>Photo Albums</h4><p>No albums found.</p>';
+                        resultDiv.innerHTML = '<h4>Photo Albums</h4>' +
+                            '<p>No albums found.</p>' +
+                            '<p style="font-size:0.85em;color:#888;">ℹ️ Since April 2025, the Google Photos Library API only returns albums <strong>created by this app</strong>. ' +
+                            'Your existing Google Photos albums are not accessible via this API. ' +
+                            'See <a href="https://developers.google.com/photos/library/guides/overview" target="_blank">Google Photos API docs</a> for details.</p>';
                     }
                 } catch (error) {
                     resultDiv.innerHTML = `Error: ${error.message}`;
@@ -486,13 +492,8 @@
                     if (data.mediaItems && data.mediaItems.length > 0) {
                         resultDiv.innerHTML = `<h4>Album Media (${data.mediaItems.length} items)</h4>` +
                             `<button onclick="app.listPhotosAlbums(app.accounts.find(a => a.id === '${account.id}'))">← Back to Albums</button>` +
-                            '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">' +
-                            data.mediaItems.map(m => 
-                                `<div style="text-align:center;">` +
-                                `<a href="${m.productUrl}" target="_blank">` +
-                                `<img src="${m.baseUrl}=w150-h150-c" width="150" height="150" style="border-radius:4px;" title="${m.filename || ''}">` +
-                                `</a><br><small>${m.filename || 'untitled'}</small></div>`
-                            ).join('') + '</div>';
+                            '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;">' +
+                            data.mediaItems.map(m => app.renderMediaCard(m)).join('') + '</div>';
                     } else {
                         resultDiv.innerHTML = '<p>No media items in this album.</p>' +
                             `<button onclick="app.listPhotosAlbums(app.accounts.find(a => a.id === '${account.id}'))">← Back to Albums</button>`;
@@ -530,20 +531,50 @@
                     const data = await response.json();
                     if (data.mediaItems && data.mediaItems.length > 0) {
                         resultDiv.innerHTML = `<h4>Recent Photos (${data.mediaItems.length})</h4>` +
-                            '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">' +
-                            data.mediaItems.map(m => {
-                                const isVideo = m.mimeType && m.mimeType.startsWith('video/');
-                                return `<div style="text-align:center;">` +
-                                    `<a href="${m.productUrl}" target="_blank">` +
-                                    `<img src="${m.baseUrl}=w150-h150-c" width="150" height="150" style="border-radius:4px;" title="${m.filename || ''}">` +
-                                    `</a><br><small>${isVideo ? '🎬 ' : ''}${m.filename || 'untitled'}</small></div>`;
-                            }).join('') + '</div>';
+                            '<p style="font-size:0.8em;color:#888;">⚠️ Since April 2025, the Library API only returns media created by this app.</p>' +
+                            '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;">' +
+                            data.mediaItems.map(m => app.renderMediaCard(m)).join('') + '</div>';
                     } else {
-                        resultDiv.innerHTML = '<h4>Recent Photos</h4><p>No media items found.</p>';
+                        resultDiv.innerHTML = '<h4>Recent Photos</h4>' +
+                            '<p>No media items found.</p>' +
+                            '<p style="font-size:0.85em;color:#888;">ℹ️ Since April 2025, the Google Photos Library API only returns media items <strong>created by this app</strong>. ' +
+                            'Your existing photos/videos are not accessible via this API. ' +
+                            'See <a href="https://developers.google.com/photos/library/guides/overview" target="_blank">Google Photos API docs</a> for details.</p>';
                     }
                 } catch (error) {
                     resultDiv.innerHTML = `Error: ${error.message}`;
                 }
+            },
+
+            // Render a media item card with rich metadata
+            renderMediaCard(m) {
+                const isVideo = m.mimeType && m.mimeType.startsWith('video/');
+                const meta = m.mediaMetadata || {};
+                const created = meta.creationTime ? new Date(meta.creationTime).toLocaleDateString() : '';
+                const dims = (meta.width && meta.height) ? `${meta.width}×${meta.height}` : '';
+                let cameraInfo = '';
+                if (meta.photo) {
+                    const p = meta.photo;
+                    const parts = [p.cameraMake, p.cameraModel].filter(Boolean);
+                    if (parts.length) cameraInfo = parts.join(' ');
+                } else if (meta.video) {
+                    const v = meta.video;
+                    const parts = [v.cameraMake, v.cameraModel].filter(Boolean);
+                    if (parts.length) cameraInfo = parts.join(' ');
+                    if (v.fps) cameraInfo += ` ${v.fps}fps`;
+                    if (v.status && v.status !== 'READY') cameraInfo += ` (${v.status})`;
+                }
+                const details = [created, dims, cameraInfo].filter(Boolean).join(' · ');
+
+                return `<div style="border:1px solid #eee;border-radius:6px;padding:6px;width:170px;text-align:center;font-size:0.8em;">` +
+                    `<a href="${m.productUrl}" target="_blank">` +
+                    `<img src="${m.baseUrl}=w160-h160-c" width="160" height="160" style="border-radius:4px;" title="${m.filename || ''}">` +
+                    `</a>` +
+                    `<p style="margin:4px 0 2px;font-weight:bold;">${isVideo ? '🎬 ' : ''}${m.filename || 'untitled'}</p>` +
+                    (m.mimeType ? `<p style="margin:0;color:#999;">${m.mimeType}</p>` : '') +
+                    (details ? `<p style="margin:2px 0;color:#666;">${details}</p>` : '') +
+                    (m.description ? `<p style="margin:2px 0;color:#555;font-style:italic;">${m.description}</p>` : '') +
+                    `</div>`;
             },
 
             renderAccounts() {
