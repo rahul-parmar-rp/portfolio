@@ -31,7 +31,7 @@
             config: {
                 clientId: '',
                 redirectUri: window.location.origin + window.location.pathname,
-                scope: 'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/photoslibrary.readonly'
+                scope: 'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/photoslibrary'
             },
             accounts: [],
 
@@ -431,10 +431,11 @@
                     });
                     if (!response.ok) {
                         const errorData = await response.json();
+                        const apiMsg = errorData.error?.message || response.statusText;
                         if (response.status === 403) {
-                            throw new Error('Photos Library API not enabled. Go to Google Cloud Console → APIs & Services → Library → search "Photos Library API" → Enable it.');
+                            throw new Error(`403 Forbidden: ${apiMsg}. The photoslibrary.readonly scope was removed in April 2025. Please re-authenticate to get the updated 'photoslibrary' scope.`);
                         }
-                        throw new Error(errorData.error?.message || response.statusText);
+                        throw new Error(`${response.status}: ${apiMsg}`);
                     }
                     const data = await response.json();
                     if (data.albums && data.albums.length > 0) {
@@ -483,10 +484,11 @@
                     });
                     if (!response.ok) {
                         const errorData = await response.json();
+                        const apiMsg = errorData.error?.message || response.statusText;
                         if (response.status === 403) {
-                            throw new Error('Photos Library API not enabled. Go to Google Cloud Console → APIs & Services → Library → search "Photos Library API" → Enable it.');
+                            throw new Error(`403 Forbidden: ${apiMsg}. The photoslibrary.readonly scope was removed in April 2025. Please re-authenticate to get the updated 'photoslibrary' scope.`);
                         }
-                        throw new Error(errorData.error?.message || response.statusText);
+                        throw new Error(`${response.status}: ${apiMsg}`);
                     }
                     const data = await response.json();
                     if (data.mediaItems && data.mediaItems.length > 0) {
@@ -511,8 +513,7 @@
                 const resultDiv = document.getElementById(`results-${account.id}`);
                 resultDiv.innerHTML = 'Loading recent photos...';
                 try {
-                    // Use search endpoint (not list) — list only returns app-created items,
-                    // search with empty filters returns ALL photos from the user's library
+                    // Use search endpoint — only returns app-created media since April 2025
                     const response = await fetch('https://photoslibrary.googleapis.com/v1/mediaItems:search', {
                         method: 'POST',
                         headers: {
@@ -523,10 +524,11 @@
                     });
                     if (!response.ok) {
                         const errorData = await response.json();
+                        const apiMsg = errorData.error?.message || response.statusText;
                         if (response.status === 403) {
-                            throw new Error('Photos Library API not enabled. Go to Google Cloud Console → APIs & Services → Library → search "Photos Library API" → Enable it.');
+                            throw new Error(`403 Forbidden: ${apiMsg}. The photoslibrary.readonly scope was removed in April 2025. Please re-authenticate to get the updated 'photoslibrary' scope.`);
                         }
-                        throw new Error(errorData.error?.message || response.statusText);
+                        throw new Error(`${response.status}: ${apiMsg}`);
                     }
                     const data = await response.json();
                     if (data.mediaItems && data.mediaItems.length > 0) {
