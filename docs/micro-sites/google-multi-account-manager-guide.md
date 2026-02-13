@@ -400,3 +400,62 @@ If you encounter issues:
 ---
 
 **Last Updated:** February 2026
+
+---
+
+## 🔑 Google OAuth Scopes Reference
+
+Below is a reference of available Google OAuth scopes, grouped by sensitivity, with their user-facing descriptions. Use this table to decide which permissions to request for your app.
+
+### Non-sensitive Scopes
+
+| API       | Scope                                        | User-facing Description                                                                                              |
+| --------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| User Info | .../auth/userinfo.email                      | See your primary Google Account email address                                                                        |
+| User Info | .../auth/userinfo.profile                    | See your personal info, including any personal info you've made publicly available                                   |
+| OpenID    | openid                                       | Associate you with your personal info on Google                                                                      |
+| Drive     | .../auth/drive.file                          | See, edit, create, and delete only the specific Google Drive files you use with this app                             |
+| Drive     | .../auth/drive.appdata                       | See, create, and delete its own configuration data in your Google Drive                                              |
+| Drive     | .../auth/drive.install                       | Connect itself to your Google Drive                                                                                  |
+| Gmail     | .../auth/gmail.addons.current.action.compose | Manage drafts and send emails when you interact with the add-on                                                      |
+| Gmail     | .../auth/gmail.addons.current.message.action | View your email messages when you interact with the add-on                                                           |
+| Gmail     | .../auth/gmail.labels                        | See and edit your email labels                                                                                       |
+| Photos    | .../auth/photoslibrary.edit.appcreateddata   | Edit the info in your photos, videos, and albums created within this app, including titles, descriptions, and covers |
+
+### Sensitive Scopes
+
+| API    | Scope                                          | User-facing Description                                       |
+| ------ | ---------------------------------------------- | ------------------------------------------------------------- |
+| Drive  | .../auth/docs                                  | See, edit, create, and delete all of your Google Drive files  |
+| Drive  | .../auth/drive.photos.readonly                 | View the photos, videos and albums in your Google Photos      |
+| Drive  | .../auth/drive.apps.readonly                   | View your Google Drive apps                                   |
+| Drive  | .../auth/drive.apps                            | View and manage your Google Drive apps                        |
+| Drive  | .../auth/activity                              | View the activity history of your Google apps                 |
+| Gmail  | .../auth/gmail.addons.current.message.metadata | View your email message metadata when the add-on is running   |
+| Gmail  | .../auth/gmail.addons.current.message.readonly | View your email messages when the add-on is running           |
+| Gmail  | .../auth/gmail.send                            | Send email on your behalf                                     |
+| Photos | .../auth/photoslibrary                         | See, upload, and organize items in your Google Photos library |
+| Photos | .../auth/photoslibrary.appendonly              | Add to your Google Photos library                             |
+
+### Restricted Scopes
+
+| API   | Scope                            | User-facing Description                                                              |
+| ----- | -------------------------------- | ------------------------------------------------------------------------------------ |
+| Drive | .../auth/drive                   | See, edit, create, and delete all of your Google Drive files                         |
+| Drive | .../auth/drive.meet.readonly     | See and download your Google Drive files that were created or edited by Google Meet. |
+| Drive | .../auth/drive.readonly          | See and download all your Google Drive files                                         |
+| Drive | .../auth/drive.metadata          | View and manage metadata of files in your Google Drive                               |
+| Drive | .../auth/drive.metadata.readonly | See information about your Google Drive files                                        |
+| Drive | .../auth/drive.scripts           | Modify your Google Apps Script scripts' behavior                                     |
+| Drive | .../auth/drive.activity          | View and add to the activity record of files in your Google Drive                    |
+| Drive | .../auth/drive.activity.readonly | View the activity record of files in your Google Drive                               |
+| Gmail | .../auth/gmail.settings.basic    | See, edit, create, or change your email settings and filters in Gmail                |
+| Gmail | .../auth/gmail.settings.sharing  | Manage your sensitive mail settings, including who can manage your mail              |
+| Gmail | .../auth/gmail.readonly          | View your email messages and settings                                                |
+| Gmail | https://mail.google.com/         | Read, compose, send, and permanently delete all your email from Gmail                |
+| Gmail | .../auth/gmail.modify            | Read, compose, and send emails from your Gmail account                               |
+| Gmail | .../auth/gmail.compose           | Manage drafts and send emails                                                        |
+| Gmail | .../auth/gmail.metadata          | View your email message metadata such as labels and headers, but not the email body  |
+| Gmail | .../auth/gmail.insert            | Add emails into your Gmail mailbox                                                   |
+
+---
