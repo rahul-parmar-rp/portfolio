@@ -149,7 +149,7 @@
                 authUrl.searchParams.append('scope', this.config.scope);
                 authUrl.searchParams.append('state', state);  // CSRF protection
                 authUrl.searchParams.append('include_granted_scopes', 'true');  // Incremental auth
-                authUrl.searchParams.append('prompt', 'select_account');
+                authUrl.searchParams.append('prompt', 'consent');  // Force re-consent to get updated scopes
 
                 console.log('OAuth URL constructed:', authUrl.toString());
                 console.log('Redirecting to Google OAuth...');
@@ -590,18 +590,29 @@
 
                 grid.innerHTML = this.accounts.map(account => {
                     const isExpired = this.isTokenExpired(account);
+                    const hasPhotosScope = account.grantedScopes && (
+                        account.grantedScopes.includes('https://www.googleapis.com/auth/photoslibrary') ||
+                        account.grantedScopes.includes('https://www.googleapis.com/auth/photoslibrary.readonly')
+                    );
+                    const photosWarning = !hasPhotosScope ? '<p style="font-size:0.8em;color:orange;">⚠️ Missing photoslibrary scope — re-authenticate</p>' : '';
+                    const hasOldScope = account.grantedScopes && 
+                        account.grantedScopes.includes('https://www.googleapis.com/auth/photoslibrary.readonly') &&
+                        !account.grantedScopes.includes('https://www.googleapis.com/auth/photoslibrary');
+                    const scopeWarning = hasOldScope ? '<p style="font-size:0.8em;color:orange;">⚠️ Has deprecated photoslibrary.readonly scope — click Re-auth to fix</p>' : '';
                     return `
                         <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
                             ${account.picture ? `<img src="${account.picture}" width="50" height="50" style="border-radius: 50%;">` : ''}
                             <p><strong>${account.name || 'Google User'}</strong></p>
                             <p>${account.email}</p>
                             <p style="color: ${isExpired ? 'red' : 'green'};">${isExpired ? '⚠️ Expired' : '✓ Active'}</p>
+                            ${photosWarning}${scopeWarning}
                             <button onclick="app.listGmailLabels(app.accounts.find(a => a.id === '${account.id}'))">Labels</button>
                             <button onclick="app.listGmailDrafts(app.accounts.find(a => a.id === '${account.id}'))">Drafts</button>
                             <button onclick="app.getGmailProfile(app.accounts.find(a => a.id === '${account.id}'))">Profile</button>
                             <button onclick="app.getStorageQuota(app.accounts.find(a => a.id === '${account.id}'))">Storage Quota</button>
                             <button onclick="app.listPhotosAlbums(app.accounts.find(a => a.id === '${account.id}'))">📷 Albums</button>
                             <button onclick="app.listRecentPhotos(app.accounts.find(a => a.id === '${account.id}'))">📸 Recent Photos</button>
+                            <button onclick="app.addAccount()" style="background:#fff3cd;border-color:#ffc107;">🔄 Re-auth</button>
                             <button onclick="app.removeAccount('${account.id}')">Remove</button>
                             <div id="results-${account.id}"></div>
                         </div>
