@@ -1,0 +1,67 @@
+{
+  "name": "project-context-mco",
+  "displayName": "Project Context MCO",
+  "description": "Provides intelligent project context and navigation for your workspace",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "project-context-mco.showContext",
+        "title": "Show Project Context"
+      },
+      {
+        "command": "project-context-mco.analyzeStructure",
+        "title": "Analyze Project Structure"
+      },
+      {
+        "command": "project-context-mco.copyContext",
+        "title": "Copy Project Context to Clipboard"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "project-context-mco",
+          "title": "Project Context",
+          "icon": "$(file-directory)"
+        }
+      ]
+    },
+    "views": {
+      "project-context-mco": [
+        {
+          "id": "projectContextView",
+          "name": "Project Overview"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/node": "^18.15.0",
+    "@types/vscode": "^1.75.0",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
+    "eslint": "^8.35.0",
+    "glob": "^8.1.0",
+    "typescript": "^4.9.5"
+  }
+}
