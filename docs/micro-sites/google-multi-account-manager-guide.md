@@ -99,7 +99,9 @@ For each account, you can:
 - **Profile**: Click to view Gmail profile info
 - **Storage Quota**: Click to view Drive storage usage
 - **📷 Albums**: Click to browse Google Photos albums, then click **View** on any album to see its photos
-- **📸 Recent Photos**: Click to see your 25 most recent photos/videos with thumbnails
+- **📸 Recent**: Click to see your 25 most recent photos/videos with thumbnails
+- **📸 Fetch ALL Photos**: Full paginated library fetch — downloads metadata for your entire Google Photos library (100 items/page with progress tracking, rate-limit handling, and cancel support)
+- **🖼️ Photo Picker**: Opens Google's Picker API UI to manually select photos — works even after April 2025 restrictions
 - **Remove**: Click to remove the account from the app
 
 ### Step 4: Add More Accounts
@@ -200,6 +202,63 @@ https://www.googleapis.com/auth/userinfo.profile
 https://www.googleapis.com/auth/drive.metadata.readonly
 https://www.googleapis.com/auth/photoslibrary.readonly
 ```
+
+---
+
+## 📸 Google Photos Access (Post-April 2025)
+
+After April 2025, Google restricted the Photos Library API. Here's what still works for personal use:
+
+### Option A: Library API in Testing Mode (Full Library Fetch)
+
+**This is what "Fetch ALL Photos" uses.** Still works for personal/test apps.
+
+**Requirements:**
+
+1. App must be in **Testing** mode (not published) in Google Cloud Console
+2. Your Google account must be added as a **test user** in OAuth Consent Screen
+3. Scope: `photoslibrary.readonly`
+
+**How it works:**
+
+- Paginates through `mediaItems:search` at 100 items per page
+- Shows real-time progress (count, pages, elapsed time)
+- Handles 429 rate limits with automatic retry (5s backoff)
+- Cancel button to stop mid-fetch
+- Results can be exported as JSON or download URLs
+
+**Limitations:**
+
+- Access token expires in ~1 hour (re-authenticate for long fetches)
+- Large libraries (10k+ photos) take several minutes
+- Google may rate-limit heavy use
+- Only works while app stays in Testing mode
+
+### Option B: Picker API (User-Selected Photos)
+
+**This is what "Photo Picker" uses.** Works regardless of app publishing status.
+
+**How it works:**
+
+1. Creates a Picker session via `photospicker.googleapis.com`
+2. Opens Google's native photo selection UI
+3. User selects photos manually
+4. App retrieves selected media items
+
+**Limitations:**
+
+- Must manually select each photo (no silent full-library access)
+- Requires `photospicker.mediaitems.readonly` scope (may need to add & re-auth)
+
+### Option C: Google Takeout (Offline Alternative)
+
+If API headaches aren't worth it:
+
+1. Use [Google Takeout](https://takeout.google.com) to download your full library
+2. Use the [Offline Image Organizer](offline-image-organizer.html) to browse locally
+3. No API, no tokens, no rate limits
+
+---
 
 **Permissions granted:**
 

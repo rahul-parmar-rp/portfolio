@@ -2,13 +2,53 @@
 <html>
 <head>
     <title>Google OAuth Multi-Account Manager</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1100px; margin: 0 auto; padding: 16px; background: #fafafa; color: #222; }
+        h1 { margin-bottom: 4px; }
+        h2, h3 { margin-top: 20px; }
+        input[type="text"] { padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        button { padding: 6px 14px; border: 1px solid #bbb; border-radius: 4px; background: #fff; cursor: pointer; font-size: 13px; transition: background 0.15s; }
+        button:hover { background: #e8e8e8; }
+        button.primary { background: #4285f4; color: #fff; border-color: #357ae8; }
+        button.primary:hover { background: #357ae8; }
+        button.danger { background: #ea4335; color: #fff; border-color: #d33426; }
+        button.danger:hover { background: #d33426; }
+        .account-card { border: 1px solid #ddd; border-radius: 8px; padding: 14px; margin: 10px 0; background: #fff; }
+        .account-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+        .account-header img { border-radius: 50%; }
+        .account-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .progress-bar { width: 100%; height: 8px; background: #e0e0e0; border-radius: 4px; overflow: hidden; margin: 8px 0; }
+        .progress-bar-fill { height: 100%; background: #4285f4; transition: width 0.3s; }
+        .photos-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+        .photo-card { border: 1px solid #eee; border-radius: 6px; padding: 6px; width: 170px; text-align: center; font-size: 0.8em; background: #fff; }
+        .photo-card img { border-radius: 4px; }
+        .info-box { background: #e8f0fe; border: 1px solid #4285f4; border-radius: 6px; padding: 12px; margin: 12px 0; font-size: 0.9em; }
+        .warn-box { background: #fef7e0; border: 1px solid #f9ab00; border-radius: 6px; padding: 12px; margin: 12px 0; font-size: 0.9em; }
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 0.75em; margin: 2px; }
+        .tag-green { background: #e6f4ea; color: #1e8e3e; }
+        .tag-red { background: #fce8e6; color: #d93025; }
+        .tag-yellow { background: #fef7e0; color: #e37400; }
+        #photosPanel { display: none; border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-top: 12px; background: #fff; }
+        .stats-row { display: flex; gap: 16px; flex-wrap: wrap; margin: 8px 0; }
+        .stat-box { padding: 8px 14px; background: #f1f3f4; border-radius: 6px; font-size: 0.9em; }
+        .stat-box strong { font-size: 1.2em; }
+    </style>
 </head>
 <body>
     <h1>Google OAuth Manager</h1>
+    <p style="margin-top:0;color:#666;">Personal multi-account wrapper &mdash; post-April 2025 Photos API compatible</p>
     <p><a href="google-multi-account-manager-guide.md" target="_blank">📖 Read Full Documentation</a></p>
+
+    <div class="info-box">
+        <strong>ℹ️ Google Photos API (April 2025+):</strong> Full-library read via <code>photoslibrary.readonly</code> was restricted.
+        This app supports two modes:<br>
+        <strong>Option A:</strong> Library API in <em>testing mode</em> (personal use, paginated full fetch)<br>
+        <strong>Option B:</strong> Picker API (user-selected photos via Google's UI)
+    </div>
     
     <h3>Setup</h3>
-    <p>Add to Google Console Authorized JavaScript origins: https://gestures-techs.github.io</p>
+    <p>Add to Google Console Authorized JavaScript origins: <code>https://gestures-techs.github.io</code></p>
     
     <div>
         <label>Client ID:</label><br>
@@ -31,9 +71,14 @@
             config: {
                 clientId: '',
                 redirectUri: window.location.origin + window.location.pathname,
-                scope: 'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/photoslibrary'
+                // Post-April 2025: photoslibrary.readonly still works for personal test apps
+                // photospicker.mediaitems.readonly for Picker API flow
+                scope: 'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/photoslibrary.readonly'
             },
             accounts: [],
+            // Track ongoing photo fetch operations
+            photoFetchAbortControllers: {},
+            photoFetchCache: {},  // Cache fetched photos per account
 
             // Generate cryptographically random state for CSRF protection
             generateRandomState() {
@@ -433,14 +478,14 @@
                         const errorData = await response.json();
                         const apiMsg = errorData.error?.message || response.statusText;
                         if (response.status === 403) {
-                            throw new Error(`403 Forbidden: ${apiMsg}. The photoslibrary.readonly scope was removed in April 2025. Please re-authenticate to get the updated 'photoslibrary' scope.`);
+                            throw new Error(`403 Forbidden: ${apiMsg}. Ensure app is in Testing mode with your account as a test user.`);
                         }
                         throw new Error(`${response.status}: ${apiMsg}`);
                     }
                     const data = await response.json();
                     if (data.albums && data.albums.length > 0) {
                         resultDiv.innerHTML = `<h4>Photo Albums (${data.albums.length})</h4>` +
-                            '<p style="font-size:0.8em;color:#888;">⚠️ Since April 2025, the Library API only returns albums created by this app.</p>' +
+                            '<p style="font-size:0.8em;color:#888;">💡 For personal test apps, albums from your full library should appear.</p>' +
                             '<div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;">' +
                             data.albums.map(a => {
                                 const coverUrl = a.coverPhotoBaseUrl ? `${a.coverPhotoBaseUrl}=w200-h150-c` : '';
@@ -457,12 +502,12 @@
                     } else {
                         resultDiv.innerHTML = '<h4>Photo Albums</h4>' +
                             '<p>No albums found.</p>' +
-                            '<p style="font-size:0.85em;color:#888;">ℹ️ Since April 2025, the Google Photos Library API only returns albums <strong>created by this app</strong>. ' +
-                            'Your existing Google Photos albums are not accessible via this API. ' +
-                            'See <a href="https://developers.google.com/photos/library/guides/overview" target="_blank">Google Photos API docs</a> for details.</p>';
+                            '<div class="warn-box">ℹ️ If your app is <strong>published</strong>, only app-created albums are returned (April 2025 change). ' +
+                            'For personal use: keep app in <strong>Testing</strong> mode with yourself as test user. ' +
+                            '<a href="https://developers.google.com/photos/library/guides/overview" target="_blank">Docs</a></div>';
                     }
                 } catch (error) {
-                    resultDiv.innerHTML = `Error: ${error.message}`;
+                    resultDiv.innerHTML = `<div class="warn-box">❌ ${error.message}</div>`;
                 }
             },
 
@@ -486,7 +531,7 @@
                         const errorData = await response.json();
                         const apiMsg = errorData.error?.message || response.statusText;
                         if (response.status === 403) {
-                            throw new Error(`403 Forbidden: ${apiMsg}. The photoslibrary.readonly scope was removed in April 2025. Please re-authenticate to get the updated 'photoslibrary' scope.`);
+                            throw new Error(`403 Forbidden: ${apiMsg}. Ensure app is in Testing mode.`);
                         }
                         throw new Error(`${response.status}: ${apiMsg}`);
                     }
@@ -494,14 +539,14 @@
                     if (data.mediaItems && data.mediaItems.length > 0) {
                         resultDiv.innerHTML = `<h4>Album Media (${data.mediaItems.length} items)</h4>` +
                             `<button onclick="app.listPhotosAlbums(app.accounts.find(a => a.id === '${account.id}'))">← Back to Albums</button>` +
-                            '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;">' +
+                            '<div class="photos-grid">' +
                             data.mediaItems.map(m => app.renderMediaCard(m)).join('') + '</div>';
                     } else {
                         resultDiv.innerHTML = '<p>No media items in this album.</p>' +
                             `<button onclick="app.listPhotosAlbums(app.accounts.find(a => a.id === '${account.id}'))">← Back to Albums</button>`;
                     }
                 } catch (error) {
-                    resultDiv.innerHTML = `Error: ${error.message}`;
+                    resultDiv.innerHTML = `<div class="warn-box">\u274c ${error.message}</div>`;
                 }
             },
 
@@ -513,7 +558,6 @@
                 const resultDiv = document.getElementById(`results-${account.id}`);
                 resultDiv.innerHTML = 'Loading recent photos...';
                 try {
-                    // Use search endpoint — only returns app-created media since April 2025
                     const response = await fetch('https://photoslibrary.googleapis.com/v1/mediaItems:search', {
                         method: 'POST',
                         headers: {
@@ -526,25 +570,349 @@
                         const errorData = await response.json();
                         const apiMsg = errorData.error?.message || response.statusText;
                         if (response.status === 403) {
-                            throw new Error(`403 Forbidden: ${apiMsg}. The photoslibrary.readonly scope was removed in April 2025. Please re-authenticate to get the updated 'photoslibrary' scope.`);
+                            throw new Error(`403 Forbidden: ${apiMsg}. Check your scope and ensure app is in testing mode.`);
                         }
                         throw new Error(`${response.status}: ${apiMsg}`);
                     }
                     const data = await response.json();
                     if (data.mediaItems && data.mediaItems.length > 0) {
                         resultDiv.innerHTML = `<h4>Recent Photos (${data.mediaItems.length})</h4>` +
-                            '<p style="font-size:0.8em;color:#888;">⚠️ Since April 2025, the Library API only returns media created by this app.</p>' +
-                            '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px;">' +
+                            '<p style="font-size:0.8em;color:#888;">💡 For personal test apps, photoslibrary.readonly still returns your full library.</p>' +
+                            '<div class="photos-grid">' +
                             data.mediaItems.map(m => app.renderMediaCard(m)).join('') + '</div>';
                     } else {
                         resultDiv.innerHTML = '<h4>Recent Photos</h4>' +
                             '<p>No media items found.</p>' +
-                            '<p style="font-size:0.85em;color:#888;">ℹ️ Since April 2025, the Google Photos Library API only returns media items <strong>created by this app</strong>. ' +
-                            'Your existing photos/videos are not accessible via this API. ' +
-                            'See <a href="https://developers.google.com/photos/library/guides/overview" target="_blank">Google Photos API docs</a> for details.</p>';
+                            '<div class="warn-box">If your app is published or uses restricted scopes without approval, only app-created media is returned. ' +
+                            'For personal use: keep app in <strong>Testing</strong> mode with yourself as test user. ' +
+                            '<a href="https://developers.google.com/photos/library/guides/overview" target="_blank">Docs</a></div>';
                     }
                 } catch (error) {
-                    resultDiv.innerHTML = `Error: ${error.message}`;
+                    resultDiv.innerHTML = `<div class="warn-box">Error: ${error.message}</div>`;
+                }
+            },
+
+            // ========== FULL LIBRARY FETCH (PAGINATED) ==========
+            async fetchAllPhotos(account) {
+                if (this.isTokenExpired(account)) {
+                    alert('Token expired. Re-authenticate.');
+                    return;
+                }
+                const resultDiv = document.getElementById(`results-${account.id}`);
+                
+                // Create abort controller for this fetch
+                const abortKey = account.id;
+                if (this.photoFetchAbortControllers[abortKey]) {
+                    this.photoFetchAbortControllers[abortKey].abort();
+                }
+                const controller = new AbortController();
+                this.photoFetchAbortControllers[abortKey] = controller;
+
+                let allPhotos = [];
+                let nextPageToken = null;
+                let pageCount = 0;
+                const startTime = Date.now();
+
+                resultDiv.innerHTML = `
+                    <h4>📸 Fetching Entire Photo Library...</h4>
+                    <div class="info-box">
+                        <p>Using <code>photoslibrary.readonly</code> scope with pagination (100 items/page).</p>
+                        <p>⚠️ Works for personal test apps. Large libraries (10k+) may take several minutes.</p>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat-box" id="fetch-count-${account.id}"><strong>0</strong> photos</div>
+                        <div class="stat-box" id="fetch-pages-${account.id}"><strong>0</strong> pages</div>
+                        <div class="stat-box" id="fetch-time-${account.id}"><strong>0s</strong> elapsed</div>
+                    </div>
+                    <div class="progress-bar"><div class="progress-bar-fill" id="fetch-progress-${account.id}" style="width:2%"></div></div>
+                    <p id="fetch-status-${account.id}" style="font-size:0.85em;color:#666;">Starting...</p>
+                    <button class="danger" onclick="app.cancelPhotoFetch('${account.id}')">⏹ Cancel</button>
+                    <div id="fetch-preview-${account.id}" class="photos-grid" style="margin-top:12px;"></div>
+                `;
+
+                try {
+                    do {
+                        if (controller.signal.aborted) break;
+
+                        const body = { pageSize: 100 };
+                        if (nextPageToken) body.pageToken = nextPageToken;
+
+                        const response = await fetch('https://photoslibrary.googleapis.com/v1/mediaItems:search', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${account.accessToken}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(body),
+                            signal: controller.signal
+                        });
+
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            const apiMsg = errorData.error?.message || response.statusText;
+                            if (response.status === 429) {
+                                // Rate limited — wait and retry
+                                document.getElementById(`fetch-status-${account.id}`).textContent = '⏳ Rate limited, waiting 5s...';
+                                await new Promise(r => setTimeout(r, 5000));
+                                continue;
+                            }
+                            throw new Error(`${response.status}: ${apiMsg}`);
+                        }
+
+                        const data = await response.json();
+                        const items = data.mediaItems || [];
+                        allPhotos.push(...items);
+                        nextPageToken = data.nextPageToken;
+                        pageCount++;
+
+                        // Update progress UI
+                        const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+                        document.getElementById(`fetch-count-${account.id}`).innerHTML = `<strong>${allPhotos.length}</strong> photos`;
+                        document.getElementById(`fetch-pages-${account.id}`).innerHTML = `<strong>${pageCount}</strong> pages`;
+                        document.getElementById(`fetch-time-${account.id}`).innerHTML = `<strong>${elapsed}s</strong> elapsed`;
+                        document.getElementById(`fetch-status-${account.id}`).textContent = nextPageToken ? `Fetching page ${pageCount + 1}...` : 'Complete!';
+                        
+                        // Pulse progress bar (we don't know total, so animate indeterminately)
+                        const progressEl = document.getElementById(`fetch-progress-${account.id}`);
+                        if (nextPageToken) {
+                            progressEl.style.width = `${Math.min(90, 10 + pageCount * 3)}%`;
+                        } else {
+                            progressEl.style.width = '100%';
+                            progressEl.style.background = '#34a853';
+                        }
+
+                        // Show preview of last fetched batch (first 4 items)
+                        if (pageCount <= 3) {
+                            const previewDiv = document.getElementById(`fetch-preview-${account.id}`);
+                            previewDiv.innerHTML = allPhotos.slice(0, 12).map(m => app.renderMediaCard(m)).join('');
+                        }
+
+                        // Small delay between pages to be gentle on API
+                        if (nextPageToken) await new Promise(r => setTimeout(r, 200));
+
+                    } while (nextPageToken);
+
+                    // Cache results
+                    this.photoFetchCache[account.id] = allPhotos;
+
+                    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+                    const photoCount = allPhotos.filter(m => m.mimeType && m.mimeType.startsWith('image/')).length;
+                    const videoCount = allPhotos.filter(m => m.mimeType && m.mimeType.startsWith('video/')).length;
+
+                    resultDiv.innerHTML = `
+                        <h4>✅ Library Fetch Complete</h4>
+                        <div class="stats-row">
+                            <div class="stat-box"><strong>${allPhotos.length}</strong> total items</div>
+                            <div class="stat-box">🖼️ <strong>${photoCount}</strong> photos</div>
+                            <div class="stat-box">🎬 <strong>${videoCount}</strong> videos</div>
+                            <div class="stat-box">📄 <strong>${pageCount}</strong> pages</div>
+                            <div class="stat-box">⏱️ <strong>${elapsed}s</strong></div>
+                        </div>
+                        <div style="margin:10px 0;">
+                            <button class="primary" onclick="app.showAllPhotos('${account.id}')">🖼️ Show All (${allPhotos.length})</button>
+                            <button onclick="app.showPhotosByDate('${account.id}')">📅 Group by Date</button>
+                            <button onclick="app.exportPhotoList('${account.id}')">📋 Export JSON</button>
+                            <button onclick="app.downloadPhotosUrls('${account.id}')">🔗 Export URLs</button>
+                        </div>
+                        <div id="fetch-preview-${account.id}" class="photos-grid">
+                            ${allPhotos.slice(0, 24).map(m => app.renderMediaCard(m)).join('')}
+                        </div>
+                        ${allPhotos.length > 24 ? `<p style="color:#666;font-size:0.85em;">Showing 24 of ${allPhotos.length}. Click "Show All" to see everything.</p>` : ''}
+                    `;
+
+                } catch (error) {
+                    if (error.name === 'AbortError') {
+                        const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+                        resultDiv.innerHTML = `<div class="warn-box">⏹ Fetch cancelled after ${allPhotos.length} photos (${elapsed}s). ` +
+                            `<button onclick="app.fetchAllPhotos(app.accounts.find(a => a.id === '${account.id}'))">Retry</button></div>`;
+                    } else {
+                        resultDiv.innerHTML = `<div class="warn-box">❌ Error: ${error.message}<br>` +
+                            `Fetched ${allPhotos.length} photos before error. ` +
+                            `<button onclick="app.fetchAllPhotos(app.accounts.find(a => a.id === '${account.id}'))">Retry</button></div>`;
+                    }
+                } finally {
+                    delete this.photoFetchAbortControllers[abortKey];
+                }
+            },
+
+            cancelPhotoFetch(accountId) {
+                if (this.photoFetchAbortControllers[accountId]) {
+                    this.photoFetchAbortControllers[accountId].abort();
+                }
+            },
+
+            showAllPhotos(accountId) {
+                const photos = this.photoFetchCache[accountId];
+                if (!photos) return;
+                const resultDiv = document.getElementById(`results-${accountId}`);
+                const previewDiv = document.getElementById(`fetch-preview-${accountId}`);
+                if (previewDiv) {
+                    previewDiv.innerHTML = photos.map(m => app.renderMediaCard(m)).join('');
+                } else {
+                    resultDiv.innerHTML += `<div class="photos-grid">${photos.map(m => app.renderMediaCard(m)).join('')}</div>`;
+                }
+            },
+
+            showPhotosByDate(accountId) {
+                const photos = this.photoFetchCache[accountId];
+                if (!photos) return;
+                
+                // Group by month
+                const grouped = {};
+                photos.forEach(m => {
+                    const date = m.mediaMetadata?.creationTime 
+                        ? new Date(m.mediaMetadata.creationTime).toISOString().slice(0, 7) 
+                        : 'Unknown';
+                    if (!grouped[date]) grouped[date] = [];
+                    grouped[date].push(m);
+                });
+
+                const resultDiv = document.getElementById(`results-${accountId}`);
+                const sortedDates = Object.keys(grouped).sort().reverse();
+                resultDiv.innerHTML = `
+                    <h4>📅 Photos Grouped by Month (${sortedDates.length} months)</h4>
+                    <button onclick="app.fetchAllPhotos(app.accounts.find(a => a.id === '${accountId}'))">← Back</button>
+                    ${sortedDates.map(date => `
+                        <h5 style="margin-top:16px;">${date} (${grouped[date].length} items)</h5>
+                        <div class="photos-grid">
+                            ${grouped[date].slice(0, 12).map(m => app.renderMediaCard(m)).join('')}
+                            ${grouped[date].length > 12 ? `<p style="color:#888;font-size:0.85em;">+${grouped[date].length - 12} more</p>` : ''}
+                        </div>
+                    `).join('')}
+                `;
+            },
+
+            exportPhotoList(accountId) {
+                const photos = this.photoFetchCache[accountId];
+                if (!photos) return;
+                const exportData = photos.map(m => ({
+                    id: m.id,
+                    filename: m.filename,
+                    mimeType: m.mimeType,
+                    creationTime: m.mediaMetadata?.creationTime,
+                    width: m.mediaMetadata?.width,
+                    height: m.mediaMetadata?.height,
+                    baseUrl: m.baseUrl,
+                    productUrl: m.productUrl
+                }));
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `google-photos-${accountId}-${new Date().toISOString().slice(0,10)}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+            },
+
+            downloadPhotosUrls(accountId) {
+                const photos = this.photoFetchCache[accountId];
+                if (!photos) return;
+                // baseUrl with =d suffix triggers original quality download
+                const urls = photos.map(m => `${m.baseUrl}=d`).join('\n');
+                const blob = new Blob([urls], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `google-photos-urls-${accountId}-${new Date().toISOString().slice(0,10)}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+            },
+
+            // ========== GOOGLE PHOTOS PICKER API ==========
+            async openPhotosPicker(account) {
+                if (this.isTokenExpired(account)) {
+                    alert('Token expired. Re-authenticate.');
+                    return;
+                }
+                const resultDiv = document.getElementById(`results-${account.id}`);
+                resultDiv.innerHTML = 'Opening Google Photos Picker...';
+                
+                try {
+                    // Step 1: Create a picker session
+                    const createResp = await fetch('https://photospicker.googleapis.com/v1/sessions', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${account.accessToken}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({})
+                    });
+                    
+                    if (!createResp.ok) {
+                        const err = await createResp.json();
+                        throw new Error(`${createResp.status}: ${err.error?.message || createResp.statusText}. Ensure photospicker.mediaitems.readonly scope is granted.`);
+                    }
+                    
+                    const session = await createResp.json();
+                    
+                    resultDiv.innerHTML = `
+                        <h4>🖼️ Google Photos Picker</h4>
+                        <div class="info-box">
+                            <p><strong>Picker session created!</strong></p>
+                            <p>Click below to open the Google Photos UI and select your photos:</p>
+                            <a href="${session.pickerUri}" target="_blank" style="display:inline-block;padding:10px 20px;background:#4285f4;color:#fff;border-radius:6px;text-decoration:none;margin:8px 0;">📷 Open Photo Picker</a>
+                            <p style="font-size:0.85em;color:#666;">After selecting photos, click "Done" in the picker, then click the button below.</p>
+                        </div>
+                        <button class="primary" onclick="app.pollPickerSession('${account.id}', '${session.id}')">✅ Fetch Selected Photos</button>
+                        <p style="font-size:0.8em;color:#888;">Session ID: ${session.id} · Expires: ${session.expireTime || 'N/A'}</p>
+                        <div id="picker-results-${account.id}"></div>
+                    `;
+                    
+                } catch (error) {
+                    resultDiv.innerHTML = `<div class="warn-box">❌ Picker API Error: ${error.message}<br>
+                        <small>The Picker API requires the <code>photospicker.mediaitems.readonly</code> scope. 
+                        You may need to add this scope and re-authenticate.</small></div>`;
+                }
+            },
+
+            async pollPickerSession(accountId, sessionId) {
+                const account = this.accounts.find(a => a.id === accountId);
+                if (!account || this.isTokenExpired(account)) {
+                    alert('Token expired. Re-authenticate.');
+                    return;
+                }
+                const pickerResultDiv = document.getElementById(`picker-results-${accountId}`);
+                if (!pickerResultDiv) return;
+                pickerResultDiv.innerHTML = 'Checking picker session...';
+
+                try {
+                    // Get session to check if user has made selections
+                    const sessResp = await fetch(`https://photospicker.googleapis.com/v1/sessions/${sessionId}`, {
+                        headers: { 'Authorization': `Bearer ${account.accessToken}` }
+                    });
+                    if (!sessResp.ok) throw new Error(`Session fetch failed: ${sessResp.status}`);
+                    const sessData = await sessResp.json();
+
+                    // List selected media items
+                    const itemsResp = await fetch(`https://photospicker.googleapis.com/v1/sessions/${sessionId}/mediaItems`, {
+                        headers: { 'Authorization': `Bearer ${account.accessToken}` }
+                    });
+                    if (!itemsResp.ok) throw new Error(`Media items fetch failed: ${itemsResp.status}`);
+                    const itemsData = await itemsResp.json();
+                    
+                    const items = itemsData.mediaItems || [];
+                    if (items.length > 0) {
+                        pickerResultDiv.innerHTML = `
+                            <h5>Selected Photos (${items.length})</h5>
+                            <div class="photos-grid">
+                                ${items.map(m => {
+                                    const mediaFile = m.mediaFile || {};
+                                    return `<div class="photo-card">
+                                        <a href="${mediaFile.baseUrl || '#'}=w160-h160-c" target="_blank">
+                                            <img src="${mediaFile.baseUrl || ''}=w160-h160-c" width="160" height="160">
+                                        </a>
+                                        <p style="margin:4px 0;font-weight:bold;">${mediaFile.filename || m.id}</p>
+                                        <p style="margin:0;color:#999;">${mediaFile.mimeType || ''}</p>
+                                    </div>`;
+                                }).join('')}
+                            </div>
+                        `;
+                    } else {
+                        pickerResultDiv.innerHTML = '<p>No photos selected yet. Select photos in the picker window, click Done, then try again.</p>' +
+                            `<button onclick="app.pollPickerSession('${accountId}', '${sessionId}')">🔄 Check Again</button>`;
+                    }
+                } catch (error) {
+                    pickerResultDiv.innerHTML = `<div class="warn-box">Error: ${error.message}</div>`;
                 }
             },
 
@@ -568,9 +936,9 @@
                 }
                 const details = [created, dims, cameraInfo].filter(Boolean).join(' · ');
 
-                return `<div style="border:1px solid #eee;border-radius:6px;padding:6px;width:170px;text-align:center;font-size:0.8em;">` +
+                return `<div class="photo-card">` +
                     `<a href="${m.productUrl}" target="_blank">` +
-                    `<img src="${m.baseUrl}=w160-h160-c" width="160" height="160" style="border-radius:4px;" title="${m.filename || ''}">` +
+                    `<img src="${m.baseUrl}=w160-h160-c" width="160" height="160" title="${m.filename || ''}">` +
                     `</a>` +
                     `<p style="margin:4px 0 2px;font-weight:bold;">${isVideo ? '🎬 ' : ''}${m.filename || 'untitled'}</p>` +
                     (m.mimeType ? `<p style="margin:0;color:#999;">${m.mimeType}</p>` : '') +
@@ -594,26 +962,42 @@
                         account.grantedScopes.includes('https://www.googleapis.com/auth/photoslibrary') ||
                         account.grantedScopes.includes('https://www.googleapis.com/auth/photoslibrary.readonly')
                     );
+                    const hasPickerScope = account.grantedScopes && 
+                        account.grantedScopes.includes('https://www.googleapis.com/auth/photospicker.mediaitems.readonly');
                     const photosWarning = !hasPhotosScope ? '<p style="font-size:0.8em;color:orange;">⚠️ Missing photoslibrary scope — re-authenticate</p>' : '';
-                    const hasOldScope = account.grantedScopes && 
-                        account.grantedScopes.includes('https://www.googleapis.com/auth/photoslibrary.readonly') &&
-                        !account.grantedScopes.includes('https://www.googleapis.com/auth/photoslibrary');
-                    const scopeWarning = hasOldScope ? '<p style="font-size:0.8em;color:orange;">⚠️ Has deprecated photoslibrary.readonly scope — click Re-auth to fix</p>' : '';
+                    const scopeWarning = '';
+                    const scopeTags = (account.grantedScopes || []).filter(s => s.includes('photo')).map(s => {
+                        const short = s.split('/').pop();
+                        return `<span class="tag tag-green">${short}</span>`;
+                    }).join('');
                     return `
-                        <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
-                            ${account.picture ? `<img src="${account.picture}" width="50" height="50" style="border-radius: 50%;">` : ''}
-                            <p><strong>${account.name || 'Google User'}</strong></p>
-                            <p>${account.email}</p>
-                            <p style="color: ${isExpired ? 'red' : 'green'};">${isExpired ? '⚠️ Expired' : '✓ Active'}</p>
+                        <div class="account-card">
+                            <div class="account-header">
+                                ${account.picture ? `<img src="${account.picture}" width="50" height="50">` : ''}
+                                <div>
+                                    <strong>${account.name || 'Google User'}</strong><br>
+                                    <span style="color:#666;">${account.email}</span><br>
+                                    <span class="tag ${isExpired ? 'tag-red' : 'tag-green'}">${isExpired ? '⚠️ Expired' : '✓ Active'}</span>
+                                    ${scopeTags}
+                                </div>
+                            </div>
                             ${photosWarning}${scopeWarning}
-                            <button onclick="app.listGmailLabels(app.accounts.find(a => a.id === '${account.id}'))">Labels</button>
-                            <button onclick="app.listGmailDrafts(app.accounts.find(a => a.id === '${account.id}'))">Drafts</button>
-                            <button onclick="app.getGmailProfile(app.accounts.find(a => a.id === '${account.id}'))">Profile</button>
-                            <button onclick="app.getStorageQuota(app.accounts.find(a => a.id === '${account.id}'))">Storage Quota</button>
-                            <button onclick="app.listPhotosAlbums(app.accounts.find(a => a.id === '${account.id}'))">📷 Albums</button>
-                            <button onclick="app.listRecentPhotos(app.accounts.find(a => a.id === '${account.id}'))">📸 Recent Photos</button>
-                            <button onclick="app.addAccount()" style="background:#fff3cd;border-color:#ffc107;">🔄 Re-auth</button>
-                            <button onclick="app.removeAccount('${account.id}')">Remove</button>
+                            <div class="account-actions">
+                                <button onclick="app.listGmailLabels(app.accounts.find(a => a.id === '${account.id}'))">Labels</button>
+                                <button onclick="app.listGmailDrafts(app.accounts.find(a => a.id === '${account.id}'))">Drafts</button>
+                                <button onclick="app.getGmailProfile(app.accounts.find(a => a.id === '${account.id}'))">Profile</button>
+                                <button onclick="app.getStorageQuota(app.accounts.find(a => a.id === '${account.id}'))">Storage Quota</button>
+                            </div>
+                            <div class="account-actions" style="margin-top:4px;">
+                                <button onclick="app.listPhotosAlbums(app.accounts.find(a => a.id === '${account.id}'))">📷 Albums</button>
+                                <button onclick="app.listRecentPhotos(app.accounts.find(a => a.id === '${account.id}'))">📸 Recent</button>
+                                <button class="primary" onclick="app.fetchAllPhotos(app.accounts.find(a => a.id === '${account.id}'))">📸 Fetch ALL Photos</button>
+                                <button onclick="app.openPhotosPicker(app.accounts.find(a => a.id === '${account.id}'))">🖼️ Photo Picker</button>
+                            </div>
+                            <div class="account-actions" style="margin-top:4px;">
+                                <button onclick="app.addAccount()" style="background:#fff3cd;border-color:#ffc107;">🔄 Re-auth</button>
+                                <button class="danger" onclick="app.removeAccount('${account.id}')">Remove</button>
+                            </div>
                             <div id="results-${account.id}"></div>
                         </div>
                     `;
