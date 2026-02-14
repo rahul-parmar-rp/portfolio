@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: 20
       - name: Install dependencies
-        run: npm install twitter-api-v2
+        run: cd tools/twitter-poster/scripts && npm install twitter-api-v2
       - name: Tweet current date
         env:
           TWITTER_API_KEY: ${{ secrets.TWITTER_API_KEY }}
