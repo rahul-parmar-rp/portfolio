@@ -12,7 +12,8 @@
     "prettier-check": "prettier --check '**/*.{js,ts,jsx,tsx,css,json,md,yml,yaml}'",
     "prettier-write": "prettier --write '**/*.{js,ts,jsx,tsx,css,json,md,yml,yaml}'",
     "twitter:post-time": "node tools/twitter-poster/scripts/post-single.js",
-    "twitter:post-csv": "node tools/twitter-poster/scripts/post.js"
+    "twitter:post-csv": "node tools/twitter-poster/scripts/post.js",
+    "tweet-date": "node tools/twitter-poster/scripts/tweet-date.js"
   },
   "dependencies": {
     "@tailwindcss/postcss": "4.0.0-alpha.13",
