@@ -26,3 +26,5 @@ yarn-error.log*
 .next
 # Copilot agents cache
 .agents/
+
+tools/twitter-poster/scripts/node_modules
