@@ -180,6 +180,68 @@ Accounts loaded: 2 accounts
 
 ---
 
+## 🚨 403 Forbidden Troubleshooting (Google Photos API, 2025+)
+
+If you get a 403 error from any Google Photos API endpoint (Library or Picker), follow this checklist:
+
+### 1️⃣ Check OAuth Scopes
+
+- For Library API: `https://www.googleapis.com/auth/photoslibrary.readonly`
+- For Picker API: `https://www.googleapis.com/auth/photospicker.mediaitems.readonly`
+- Your access token **must** include the correct scope(s).
+- Check your token at: https://oauth2.googleapis.com/tokeninfo?access_token=YOUR_TOKEN
+- If missing, re-authenticate with both scopes and `&prompt=consent`.
+
+### 2️⃣ Test User Setup
+
+- App must be in **Testing** mode (not published)
+- Your Gmail must be added under **OAuth consent screen → Test Users**
+- If not, you will get 403.
+
+### 3️⃣ APIs Enabled
+
+- Both **Photos Library API** and **Photos Picker API** must be enabled in Google Cloud Console → APIs & Services → Library.
+
+### 4️⃣ Use OAuth, Not API Key
+
+- Only use `Authorization: Bearer ACCESS_TOKEN` in your requests.
+- Do **not** use `?key=API_KEY` — this will 403.
+
+### 5️⃣ App Verification & Sensitive Scopes
+
+- Photos scopes are sensitive. If your consent screen is incomplete, Google may block access.
+- For personal use, keep app in Testing mode.
+
+### 6️⃣ Project Creation Date
+
+- If your project was created **after April 2025**, Google may block full-library access for new apps, even with correct scopes. Only Picker API may work for your existing photos.
+
+### 7️⃣ Inspect the Error Message
+
+- In DevTools, click the failed request and check the response body. Google returns JSON like:
+
+```json
+{
+  "error": {
+    "code": 403,
+    "message": "Request had insufficient authentication scopes.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+```
+
+- The message tells you the real cause (scope, test user, etc).
+
+### ⚡ Fast Fix
+
+- Re-authenticate with BOTH scopes:
+  - `https://www.googleapis.com/auth/photoslibrary.readonly`
+  - `https://www.googleapis.com/auth/photospicker.mediaitems.readonly`
+- Add `&prompt=consent` to force Google to show the consent screen again.
+- Make sure you are a test user and both APIs are enabled.
+
+---
+
 ## 🔒 Security Notes
 
 - ⚠️ Tokens stored in browser localStorage (not encrypted)
@@ -459,3 +521,171 @@ Below is a reference of available Google OAuth scopes, grouped by sensitivity, w
 | Gmail | .../auth/gmail.insert            | Add emails into your Gmail mailbox                                                   |
 
 ---
+
+Good — your code is actually structured properly.
+The 403 is not a coding bug. It’s a policy/config issue.
+
+Let’s break this down precisely.
+
+🚨 Why You’re Getting 403
+
+You are:
+
+Using Implicit Flow (response_type=token)
+
+Calling Photos Library API from browser
+
+Hosting on GitHub Pages
+
+Requesting photoslibrary.readonly
+
+After April 2025, Google heavily restricted:
+
+Browser-only OAuth + full-library read access
+
+Even for testing apps.
+
+🔎 The Real Problem
+
+Google Photos API now behaves like this:
+
+Scenario Result
+Published app ❌ Only app-created content
+Testing app (new project) ❌ Often blocked for full library
+Backend OAuth flow ⚠️ Sometimes allowed
+Picker API ✅ Works
+
+Your 403 is almost certainly:
+
+{
+"error": {
+"code": 403,
+"status": "PERMISSION_DENIED",
+"message": "Request had insufficient authentication scopes."
+}
+}
+
+OR
+
+"Access to this API has been restricted."
+
+Even if the scope is correct.
+
+⚠️ Critical Issue In Your Setup
+
+You are using:
+
+response_type = token
+
+That is Implicit Flow.
+
+Google is slowly killing implicit flow for sensitive scopes.
+
+For sensitive APIs (Photos, Drive, Gmail):
+
+👉 You should now use Authorization Code Flow + PKCE
+
+Implicit flow + sensitive scope = 403 in many cases.
+
+🔥 The Actual Fix
+Switch from:
+response_type=token
+
+To:
+response_type=code
+code_challenge=...
+code_challenge_method=S256
+
+And exchange code server-side.
+
+Yes — that means you need a small backend.
+
+🧠 Why Gmail Works But Photos Doesn’t
+
+Gmail works because:
+
+It still allows implicit flow
+
+It has broader legacy compatibility
+
+Photos API:
+
+More restricted
+
+New enforcement layer
+
+Stricter OAuth validation
+
+📌 Also Important
+
+In your scope you included:
+
+gmail.readonly
+drive.metadata.readonly
+photoslibrary.readonly
+
+Google may reject if:
+
+App not verified
+
+Too many sensitive scopes
+
+Not in testing mode
+
+Not added as test user
+
+🧪 Quick Debug Step
+
+Open DevTools → Network → click 403 request →
+Copy the exact JSON response body.
+
+That message tells exactly which rule you hit.
+
+🎯 What Will Definitely Work
+
+For your personal wrapper:
+
+Option A (Cleanest & Stable)
+
+Use Picker API only
+
+Add scope:
+
+https://www.googleapis.com/auth/photospicker.mediaitems.readonly
+
+Remove full library calls
+
+Option B (Full Library Personal Access)
+
+Build small Node backend
+
+Use Authorization Code Flow + PKCE
+
+Keep app in Testing mode
+
+Add your account as test user
+
+⚠️ Brutal Truth
+
+Google is intentionally blocking:
+
+Pure browser apps
+
+Multi-account wrappers
+
+Mass library export tools
+
+Even for personal use.
+
+Your code is fine.
+The policy changed.
+
+If You Want
+
+Tell me:
+
+Do you want to keep this fully static (GitHub Pages)?
+
+Or can you run a tiny Node server?
+
+I’ll give you the exact working architecture that bypasses the 403 correctly — without violating ToS.
