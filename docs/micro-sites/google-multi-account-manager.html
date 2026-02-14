@@ -73,7 +73,8 @@
                 redirectUri: window.location.origin + window.location.pathname,
                 // Post-April 2025: photoslibrary.readonly still works for personal test apps
                 // photospicker.mediaitems.readonly for Picker API flow
-                scope: 'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/photoslibrary.readonly'
+                // Request both required scopes for Photos Library and Picker APIs
+                scope: 'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/photoslibrary.readonly https://www.googleapis.com/auth/photospicker.mediaitems.readonly'
             },
             accounts: [],
             // Track ongoing photo fetch operations
@@ -478,6 +479,15 @@
                         const errorData = await response.json();
                         const apiMsg = errorData.error?.message || response.statusText;
                         if (response.status === 403) {
+                            // Debug log for 403
+                            console.error('403 Forbidden (albums):', errorData);
+                            app.showDebugPanel('albums', {
+                                url: 'https://photoslibrary.googleapis.com/v1/albums',
+                                status: response.status,
+                                error: errorData,
+                                token: account.accessToken,
+                                scopes: account.grantedScopes
+                            });
                             throw new Error(`403 Forbidden: ${apiMsg}. Ensure app is in Testing mode with your account as a test user.`);
                         }
                         throw new Error(`${response.status}: ${apiMsg}`);
@@ -509,6 +519,19 @@
                 } catch (error) {
                     resultDiv.innerHTML = `<div class="warn-box">❌ ${error.message}</div>`;
                 }
+
+                <div id="debugPanel" style="display:none; background:#222; color:#fff; padding:12px; border-radius:8px; margin:16px 0; font-size:0.95em;">
+                    <h3 style="margin-top:0; color:#f9ab00;">Debug Info</h3>
+                    <pre id="debugContent" style="white-space:pre-wrap; word-break:break-all;"></pre>
+                    <button onclick="document.getElementById('debugPanel').style.display='none'">Close</button>
+                </div>
+                        // Show debug info panel for troubleshooting
+                        showDebugPanel(context, info) {
+                            const panel = document.getElementById('debugPanel');
+                            const content = document.getElementById('debugContent');
+                            content.textContent = JSON.stringify({ context, ...info }, null, 2);
+                            panel.style.display = 'block';
+                        },
             },
 
             async viewAlbumMedia(account, albumId) {
