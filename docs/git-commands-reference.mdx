@@ -1,7 +1,7 @@
 ---
-title: 'Git Commands Reference'
-publishedAt: '2024-01-24'
-summary: 'A comprehensive collection of commonly used Git commands for daily development workflow, including commits, branches, rebasing, and configuration.'
+title: "Git Commands Reference"
+publishedAt: "2024-01-24"
+summary: "A comprehensive collection of commonly used Git commands for daily development workflow, including commits, branches, rebasing, and configuration."
 ---
 
 ## Commit Commands
@@ -9,8 +9,8 @@ summary: 'A comprehensive collection of commonly used Git commands for daily dev
 Standard commit messages with ticket references:
 
 ```bash
-git commit -m "feat: [SHERPA-]"
-git commit -m "fix: [SHERPA-]"
+git commit -m "feat: [TICKET-]"
+git commit -m "fix: [TICKET-]"
 ```
 
 ## Branch Management
@@ -18,30 +18,28 @@ git commit -m "fix: [SHERPA-]"
 ### Creating Feature and Fix Branches
 
 ```bash
-git checkout -b feat/SHERPA-
-git checkout -b fix/SHERPA-
+git checkout -b feat/TICKET-
+git checkout -b fix/TICKET-
 
 # Example with full ticket number
-git checkout -b feat/SHERPA-16559-fix-price-filter-max-value-error
+git checkout -b feat/TICKET-12345-description
 ```
 
 ### Pushing New Branches
 
 ```bash
-git push -u origin feat/SHERPA-
+git push -u origin feat/TICKET-
 ```
 
 ### Checking Out Remote Branches
 
 ```bash
-# For dependabot branches
-git checkout -b dependabot/npm_and_yarn/component-library-da0ba3382c origin/dependabot/npm_and_yarn/component-library-da0ba3382c
-
+# For example branches
+git checkout -b update/dependency-name origin/update/dependency-name
 # Check if remote branch exists
-git branch -r | grep "dependabot/npm_and_yarn/component-library-da0ba3382c"
-
+git branch -r | grep "update/dependency-name"
 # For feature branches
-git checkout -b feat/SHERPA-15986-flickering-issue origin/feat/SHERPA-15986-flickering-issue
+git checkout -b feat/TICKET-12345-description origin/feat/TICKET-12345-description
 ```
 
 ## Git Worktree
@@ -50,16 +48,16 @@ git checkout -b feat/SHERPA-15986-flickering-issue origin/feat/SHERPA-15986-flic
 
 ```bash
 # Create a new worktree with a new branch
-git worktree add ../feature-branch feat/SHERPA-
+git worktree add ../feature-branch feat/TICKET-
 
 # Create worktree from existing branch
-git worktree add ../hotfix fix/SHERPA-
+git worktree add ../hotfix fix/TICKET-
 
 # Create worktree with detached HEAD at specific commit
 git worktree add ../temp-worktree abc123
 
 # Create worktree from remote branch
-git worktree add ../feature origin/feat/SHERPA-15986
+git worktree add ../feature origin/feat/TICKET-12345
 ```
 
 ### Listing Worktrees
@@ -138,7 +136,7 @@ git pull && git fetch origin main && git rebase origin/main
 
 ```bash
 git config --list --local
-git config user.name 
+git config user.name
 git config user.email
 git config --get pull.rebase
 ```
@@ -152,8 +150,8 @@ git config pull.rebase true
 ### Local Configuration (Personal)
 
 ```bash
-git config user.name "rahulparmarrp"
-git config user.email "rahulparmar.n@gmail.com"
+git config user.name "yourusername"
+git config user.email "your.email@example.com"
 ```
 
 ### Global Configuration
@@ -164,11 +162,11 @@ git config --global user.name
 git config --global user.email
 
 # Set global config
-git config --global user.name "Rahul Parmar"
-git config --global user.email "rahulparmar.n@gmail.com"
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
 
 # Work email
-git config --global user.email "pmr8ban@bosch.com"
+git config --global user.email "work.email@example.com"
 ```
 
 ### Remote URL with Token
@@ -176,6 +174,8 @@ git config --global user.email "pmr8ban@bosch.com"
 ```bash
 git remote set-url origin https://rahulparmarRP:TOKEN@github.com/rahulparmarRP/twitter-oauth.git
 git remote set-url origin https://rahulparmarRP:TOKEN@github.com/gestures-tech/everything.git
+git remote set-url origin https://yourusername:TOKEN@github.com/yourusername/twitter-oauth.git
+git remote set-url origin https://yourusername:TOKEN@github.com/yourorg/everything.git
 ```
 
 ## Patch Management
