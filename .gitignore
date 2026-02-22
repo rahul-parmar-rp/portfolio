@@ -2,8 +2,12 @@
 
 # dependencies
 /node_modules
-/.pnp
-.pnp.js
+*/**/.pnp
+*/**/.pnp.js
+*/**/.pnp.cjs
+*/**/.pnp.loader.mjs
+*/**/node_modules
+*/**/.yarn
 
 # testing
 /coverage
@@ -26,5 +30,3 @@ yarn-error.log*
 .next
 # Copilot agents cache
 .agents/
-
-tools/twitter-poster/scripts/node_modules
