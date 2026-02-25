@@ -1,11 +1,14 @@
 {
   "name": "ollama-local-test",
-  "packageManager": "yarn@4.6.0",
+  "packageManager": "yarn@4.12.0",
   "type": "module",
   "scripts": {
     "test:ollama": "node ollama-test.js"
   },
   "dependencies": {
     "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.0"
   }
 }
