@@ -14,7 +14,8 @@
     "twitter:post-time": "node tools/twitter-poster/scripts/post-single.js",
     "twitter:post-csv": "node tools/twitter-poster/scripts/post.js",
     "tweet-date": "node tools/twitter-poster/scripts/tweet-date.js",
-    "setup:repos:all": "bash setup.sh"
+    "setup:repos:all": "bash setup.sh",
+    "tree:sample": "npm ls minimatch >> sample.md"
   },
   "dependencies": {
     "@tailwindcss/postcss": "4.0.0-alpha.13",
