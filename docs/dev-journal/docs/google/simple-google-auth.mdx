@@ -1,0 +1,23 @@
+---
+title: Simple Google Auth
+description: Interactive minimal Google sign-in demo using a client ID, locally stored accounts, and JWT payload inspection without extra Google API scopes.
+sidebar_position: 5
+slug: /google/simple-google-auth
+---
+
+import SimpleGoogleAuthDemo from '@site/src/components/google-micro-site-demo/simple-google-auth-demo';
+
+# Simple Google Auth
+
+This is the stripped-down identity-only version of the Google demos. It now lives as an interactive MDX page instead of a guide-only migration target.
+
+<SimpleGoogleAuthDemo />
+
+## What Stays Intentionally Small
+
+- no Gmail scope
+- no Drive scope
+- no Photos scope
+- no broader OAuth manager features
+
+Use this pattern when the product only needs authentication and a local account chooser.

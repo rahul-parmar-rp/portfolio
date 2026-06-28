@@ -1,0 +1,68 @@
+name: EAS Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: EAS build profile from eas.json
+        required: true
+        type: choice
+        default: preview
+        options:
+          - development
+          - preview
+          - production
+  push:
+    branches:
+      - main
+    paths:
+      - app/**
+      - assets/**
+      - src/**
+      - package.json
+      - pnpm-lock.yaml
+      - app.json
+      - eas.json
+      - .github/workflows/eas-build.yml
+
+jobs:
+  build-android:
+    name: Build Android with EAS
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      EAS_NO_VCS: 1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: EAS build (push -> preview)
+        if: github.event_name == 'push'
+        run: eas build --platform android --profile preview --non-interactive --wait
+
+      - name: EAS build (manual)
+        if: github.event_name == 'workflow_dispatch'
+        run: eas build --platform android --profile ${{ inputs.profile }} --non-interactive --wait

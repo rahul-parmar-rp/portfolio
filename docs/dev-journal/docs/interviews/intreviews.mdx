@@ -1,0 +1,7853 @@
+Companies
+Data Crest Systems
+Netix AI
+Freecharge
+Wipro
+Data Crest Systems
+
+
+// React useState polyfill
+// If <input> is updating, what should we use to announce to the user that the input or something is changing?
+// aria-live
+
+
+// On button click <button aria-expanded="true">, modal is opening. So what aria attributes will be used?
+popup, modal, aria-expanded
+
+
+let company = {
+    sales: [
+      { name: "John", salary: 1000 },
+      { name: "Alice", salary: 1600 }
+    ],
+    development: {
+      sites: [
+        { name: "Peter", salary: 2000 },
+        { name: "Alex", salary: 1800 }
+      ],
+      internals: [
+        { name: "Jack", salary: 1300 }
+      ]
+    }
+  };
+ 
+  function findSum(obj) {
+    let sumOfSalary = 0;
+    Object.keys(obj).forEach((k) => {
+      const child = obj[k];
+      if (Array.isArray(child) && child?.length > 0) {
+        child.forEach((person) => {
+          sumOfSalary = sumOfSalary + person.salary;
+        });
+      }
+      if (typeof child === "object") {
+        sumOfSalary = sumOfSalary + findSum(child);
+      }
+    });
+    return sumOfSalary;
+  }
+ 
+  // O(// objecct.keys.length * child.length)
+  console.log(findSum(company));
+ 
+  let items = [
+    {
+      "name": "item1",
+      "count": 123,
+      "char1": "val1",
+      "char2": "val2",
+      "char3": {
+        "subchar": "val"
+      }
+    },
+    {
+      "name": "item2",
+      "count": 43,
+      "char1": "val1"
+    }
+  ];
+ 
+  interface Counter {
+    name: string;
+    count: number;
+    char1: string;
+    char2?: string;
+    char3?: {
+      subchar: string;
+      [T: keyof string]: string;
+    };
+  }
+ 
+  // & - union | - intersection
+  type Address = string | number;
+ 
+  interface Address {
+  }
+ 
+  // useState()
+
+
+
+
+Simprosys
+- Hover over a message to pin it.
+- `vh` keep `vw`.
+
+
+/*
+Find number occurrences for numbers present in the array. [10,20,5,10,1,2,11,1,2,5,5,55]
+*/
+
+
+function findOccurences(nums) {
+  const result = {};
+  for (let index = 0; index < nums.length; index++) {
+    const element = nums[index];
+    if (result[element]) {
+      result[element] = result[element] + 1;
+    } else {
+      result[element] = 1;
+    }
+  }
+  return result;
+}
+
+
+
+
+
+
+// Find smallest number from array [10,-1,5,-5,0]
+const numbersArr = [10, -1, 5, -5, 0];
+
+
+function findMin(nums) {
+  let min = Infinity;
+  for (let index = 0; index < nums.length; index++) {
+    if (min > nums[index]) {
+      min = nums[index];
+    }
+  }
+  return min;
+}
+console.log(findMin(numbersArr));
+// Write a program to make words in reverse. String “This is your frontend design to implement with developer”
+let example = "This is your frontend design to implement with developer";
+
+
+function reverseWords(testStr) {
+  const words = [];
+  let word = "";
+  for (let index = 0; index < testStr.length; index++) {
+    const char = testStr[index];
+    if (char !== " " || index == testStr.length - 1) {
+      const result = word.concat(char);
+      word = result;
+    } else {
+      words.push(word);
+      word = "";
+    }
+    // store last word
+    if (index == testStr.length - 1) {
+      words.push(word);
+      word = "";
+    }
+  }
+  let strg = "";
+  for (let index = words.length - 1; 0 <= index; index--) {
+    strg = strg.concat(words[index]) + (index !== 0 ? " " : "");
+  }
+
+
+  return strg;
+}
+
+
+console.log(reverseWords(example));
+
+
+
+
+
+
+```javascript
+var() calc()
+let var const
+```
+
+
+```javascript
+// Find the lowest price and return that object.
+const data = [
+  { name: 'test1', price: 200 },
+  { name: 'test2', price: 600 },
+  { name: 'test3', price: 100 },
+  { name: 'test4', price: 700 },
+  { name: 'test6', price: 500 }
+];
+```
+
+
+### Find the vowels and count them from the below word "Simprosys"
+- "SImprOsys"
+
+
+### SVG
+
+
+```javascript
+NaN
+(function(){})();
+var let const
+```
+
+
+### useCallback useMemo
+
+
+### axios - api call create axoisClient
+`.catch`
+
+
+### center tag iframe type & |
+```typescript
+type Address = string | number {
+  [key: string]: string;
+}
+```
+`outlet`
+
+
+### git clone origin fear/branchname
+`box model = border + padding + margin`
+
+
+### useImperative
+
+
+Willington sapient 
+Week 1
+
+
+- Revise EventLoop, event queue, sync, async, event emitters with some sample app
+- Clustering in NodeJS
+- ExpressJS (Create Server, add Routing & Middlewares)
+- Expose REST APIs
+- Add JWT Authentication
+- Design Patterns
+  - Singleton, Factory & Builder, Creational pattern
+  - At least 1 pattern each from Structural and Behavioral
+  - Composition vs Inheritance
+- Caching (In-memory and distributed)
+  - Caching strategies
+
+
+### Week 2
+
+
+- AWS
+  - Lambda
+  - API Gateway
+  - AWS S3
+  - AWS Batch
+  - SNS, SQS
+- OpenSearch - add, query data and basic understanding
+- SQL
+  - Keys, constraints, indexes and joins with hands-on
+
+
+### Week 3 (only 3 days)
+
+
+- NoSQL
+- ORM (TypeORM) (connect with your node app)
+- Microservices
+  - Design Patterns (CQRS, 2PC, Saga)
+  - OAS, API Versioning
+- Closure
+- CSS positioning - absolute relative document, relative, default - static
+- HTML semantic elements - header, footer, article, section, main, nav, figure
+- Web crawler, SEO, a11y, voice-over
+- React custom hook
+- Promises - async operations
+- Shallow copy deep copy
+- `this`
+- Function - `this` - window, context
+- Structured clone - deep copy
+
+
+If you need further clarification or assistance, feel free to ask!
+
+
+EPAM
+
+
+### promiseMerge Function
+You have to implement a function called `promiseMerge` that can take n number of promises as input. It should return a promise that fulfils with:
+- Summation of all resulting values if the type of all inputs is number.
+- Concatenated value if the type of all inputs is string.
+- Computed value using AND operator if the type of all input is boolean.
+- A new concatenated array if the type of all inputs is array.
+- A new object with all the keys from inputs if the type of all inputs is object.
+
+
+It should reject with a TypeError if either of the inputs is different from other input types.
+
+
+const value = await promiseMerge(
+    Promise.resolve(1),
+    Promise.resolve(2)
+);// => 3
+const value = await promiseMerge(
+    Promise.resolve("devtools"),
+    Promise.resolve(".tech")
+);// => devtools.tech
+const value = await promiseMerge(
+    Promise.resolve([1, 2, 3]),
+    Promise.resolve([4, 5, 6]),
+    Promise.resolve([7, 8, 9])
+);// => [1,2,3,4,5,6,7,8,9]
+const value = await promiseMerge(
+    Promise.resolve({ a: 1 }),
+    Promise.resolve({ b: 2 }),
+    Promise.resolve({ c: 3 })
+);// => { a: 1, b: 2, c: 3}
+const value = await promiseMerge(
+    Promise.resolve(true),
+    Promise.resolve(false)
+);// => false
+const value = await promiseMerge(
+    Promise.resolve("devtools"),
+    Promise.resolve(1)
+);// => rejects with TypeError
+const value = await promiseMerge(
+    Promise.resolve("devtools"),
+    Promise.resolve([1, 2])
+);// => rejects with TypeError
+const value = await promiseMerge();// => rejects with TypeError
+
+
+### promiseRetry Function
+Write a function `retryPromise` that takes a function returning a promise, maximum number of retries, and retry interval (in milliseconds) as arguments. The function should execute the input function repeatedly until it resolves successfully or the maximum number of retries is reached. If the function doesn't resolve successfully within the maximum number of retries, the returned promise should reject with the last error encountered.
+
+
+### Concurrent Promise Execution Function
+Write a function `concurrentPromises` that takes an array of functions returning promises and a concurrency limit as arguments. The function should execute the promises concurrently, limiting the number of concurrent executions to the specified limit. The function should return a promise that resolves with an array of results in the same order as the input array.
+
+
+### Promise Timeout Function
+Implement a function `promiseTimeout` that takes a promise and a timeout duration (in milliseconds) as arguments. The function should return a promise that resolves with the result of the input promise if it resolves within the specified timeout duration. If the input promise doesn't resolve within the timeout, the returned promise should reject with a timeout error.
+
+
+### Promise Waterfall Function
+Implement a function `promiseWaterfall` that takes an array of functions returning promises as arguments. The functions represent tasks that depend on the result of the previous task. The function should execute the tasks sequentially, passing the result of each task to the next task, similar to `Array.prototype.reduce()`. The function should return a promise that resolves with the final result of the last task.
+
+
+### Checking Mobile Device Using JavaScript
+To check if you are on a mobile device using JavaScript, you can utilise the `navigator.userAgent` property or the `navigator.platform` property. Here's an example:
+
+
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+if (isMobile) {
+  // Do something for mobile devices
+} else {
+  // Do something for non-mobile devices
+}
+
+
+Miscellaneous Notes
+- Replace string using regex: `/pattern/ig`.
+- `event.stopPropagation()` to prevent children from calling parent events.
+- Accessing string array indexes: `arr[1]`, `arr[2]`.
+- Component map syntax for data mapping from an array.
+- `shouldComponentUpdate` method.
+- Component snapshot lifecycle method.
+- Print console log of the optional argument of a function:
+function details(id: string, name: string, phn_num?: string) {
+  console.log("num", phn_num);
+}
+
+
+————————
+SIMFORM
+
+
+atoms molecules organisms templates
+pages services types constants context hooks styles assets
+
+
+interface Address<T> {
+    address: T;
+} // extend
+
+
+
+
+type Address = string | number; // & |
+
+
+
+
+response: unknown any
+
+
+
+
+const t: Address = response;
+
+
+
+
+let a = { x: 1, y: 2, };
+let b = { ...a };
+a.x = 5;
+console.log(a);
+console.log(b); // { x: 5, y: 2, };
+// { x: 1, y: 2, };
+
+
+
+
+function () { this; }
+var yi = function () { }
+const test = () => { console.log(this); }
+
+
+
+
+// bind call apply this.fname + this.lname
+const getName = getFullName.bind(person);
+getFullname.call(person, "hello", "world")
+getFullname.apply(person, ["hello", "world"])
+
+
+
+
+// pass by value
+const arr = [1, 2, 3, 4, 5];
+arr.double() // [2,4,6,8,10]
+
+
+
+
+Array.prototype.double = function () {
+    const self = this;
+    const doubled = self.map(el => el * 2);
+    return doubled;
+}
+
+
+
+
+
+
+
+
+console.log(1)
+
+
+
+
+function test() {
+    Promise.resolve(console.log(2))
+    setTimeout(() => console.log(3))
+}
+test()
+console.log(4);
+// 1 4 2 3
+
+
+
+
+new Promise((resolve, reject) => {
+    resolve("success")
+    reject()
+}).then().catch();
+
+
+
+
+function test() {
+    var b = 10
+    console.log(b)
+    var a = 11
+    console.log(a)
+}
+test()
+console.log(b)
+// 10 11 undefined
+
+
+function counter() {
+    let count = 0;
+
+
+    function add() {
+        count = count + 1;
+        return count;
+    }
+    return add;
+}
+
+
+const count = counter();
+console.log(count());
+console.log(count());
+
+
+
+
+
+
+Questions:
+- What is the Builder Design Pattern?
+- What is the Singleton Pattern, how can it be broken, and what are the solutions?
+- What is Serialization, and what is its purpose?
+- What are the differences between ArrayList and LinkedList?
+- What is the contract between the hashcode and equals methods?
+- Answer some basic Java collection questions.
+
+
+Coding:
+- Create a binary tree and add a method to display the leftmost element at each level.
+- Print the second highest value from an array or ArrayList of random, non-repetitive integers.
+- Java HashMap working
+- Explain Binary Search Tree.
+- Explain the Pub-Sub Pattern and working of Kafka
+
+
+Basic questions in the first round. OOP concepts Design patterns you have used. Collections, Multithreading. Microservices architecture advantages. Stack, Queue, Linked List, etc.
+
+
+Interview:
+The interview process was of 2 technical rounds and was good where all topics related to Javascript and UI development were covered. The analysis was based on both technical viva and written process.
+
+
+Interview Questions:
+- Closure
+- React advanced concepts like context, Portals,
+- JS Event Loop
+- IIFE, Prototypal Inheritance
+
+
+CODEMONK
+
+
+
+
+https://codesandbox.io/p/devbox/unit-testing-forked-plldx6
+
+Practical Test 
+
+
+1. form
+2. 3 fields
+    1 select
+        OPTIONS 
+            1 - input required
+            2 - radio button required
+            3 - both required
+    2 input type text 
+            min 5 max 30
+    3 radio button - no default
+            yes no
+
+
+best practices
+component structure
+accessibility
+unit test case branch statement line functions - 80 %
+
+
+
+
+
+
+
+
+Simprosys
+
+
+
+
+/*
+Find number occurrences for numbers present in the array. [10,20,5,10,1,2,11,1,2,5,5,55]
+*/
+
+function findOccurences(nums) {
+  const result = {};
+  for (let index = 0; index < nums.length; index++) {
+    const element = nums[index];
+    if (result[element]) {
+      result[element] = result[element] + 1;
+    } else {
+      result[element] = 1;
+    }
+  }
+  return result;
+}
+
+
+
+
+
+
+
+
+
+
+// Write a program to make words in reverse. String “This is your frontend design to implement with developer”
+
+let example = "This is your frontend design to implement with developer";
+
+
+function reverseWords(testStr) {
+  const words = [];
+  let word = "";
+  for (let index = 0; index < testStr.length; index++) {
+    const char = testStr[index];
+    if (char !== " " || index == testStr.length - 1) {
+      const result = word.concat(char);
+      word = result;
+    } else {
+      words.push(word);
+      word = "";
+    }
+    // store last word
+    if (index == testStr.length - 1) {
+      words.push(word);
+      word = "";
+    }
+  }
+  let strg = "";
+  for (let index = words.length - 1; 0 <= index; index--) {
+    strg = strg.concat(words[index]) + (index !== 0 ? " " : "");
+  }
+
+
+  return strg;
+}
+
+
+console.log(reverseWords(example));
+
+
+
+
+
+// Find smallest number from array [10,-1,5,-5,0]
+const numbersArr = [10, -1, 5, -5, 0];
+
+
+function findMin(nums) {
+  let min = Infinity;
+  for (let index = 0; index < nums.length; index++) {
+    if (min > nums[index]) {
+      min = nums[index];
+    }
+  }
+  return min;
+}
+console.log(findMin(numbersArr));
+
+
+
+
+Custom hook
+
+
+import { useState, useEffect } from "react";
+import { UseCountryDataProps, Country } from "../types";
+import { fetchCountryData } from "../services/countryService";
+
+
+export const useCountryData = ({ query }: UseCountryDataProps) => {
+  const [data, setData] = useState<Country[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [hasSearched, setHasSearched] = useState<boolean>(false);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!query) {
+        setData([]);
+        setHasSearched(false);
+        return;
+      }
+
+
+      setLoading(true);
+      setHasSearched(true);
+      setError(null);
+      try {
+        const fetchedData = await fetchCountryData(query);
+        setData(fetchedData);
+      } catch (error) {
+        setError("Error fetching countries");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+
+    fetchData();
+  }, [query]);
+
+
+  return { data, loading, error, hasSearched };
+};
+
+
+
+
+call-child-function-from-parent
+
+// ParentComponent.js
+import React, { useRef } from "react";
+
+
+const ChildComponent = React.forwardRef((props, ref) => {
+  const handleShouldBeCalledFromParent = () => {
+    console.log("Function in child component called from parent!");
+    // You can add your logic here
+  };
+
+
+  React.useImperativeHandle(ref, () => ({
+    handleShouldBeCalledFromParent
+  }));
+
+
+  return <p>Child</p>;
+});
+
+
+const ParentComponent = () => {
+  const childRef = useRef(null);
+
+
+  const callChildFunction = () => {
+    childRef.current.handleShouldBeCalledFromParent();
+  };
+
+
+  return (
+    <div>
+      <h1>Parent Component</h1>
+      <button onClick={callChildFunction}>Call Child Function</button>
+      <ChildComponent ref={childRef} />
+    </div>
+  );
+};
+
+
+
+
+
+
+
+
+
+
+Tech Mahindra
+
+
+Requirements were clear they wanted
+
+
+React
+Python
+SQL
+
+
+Diff between MySQL and SQL
+Diff between primary key and unique key
+Diff between list and tuple in Python
+What is a Python garbage collector
+What are the Python libraries - numpy, panda, Django framework
+
+Javascript practical
+1 find the longest word from the string
+2 check word is palindrome or not
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Coachbar
+
+
+Node js
+
+
+
+
+
+
+Middleware
+Primary key 
+Foreign key
+Diff primary key
+Diff unique
+
+
+Design a user and asset management system
+System design
+Table Design
+Database 
+
+React lifecycle methods
+React hooks
+
+
+Mongo DB
+
+
+
+
+
+Amazon s3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let y = "Five";
+let x = + y;
+console.log(typeof y);
+console.log(x);
+
+
+
+
+const products = [
+  { name: "P1", description: "Product 1", isChecked: "true", category: "Phone" },
+  { name: "P2", description: "Product 2", isChecked: "true", category: "Book" },
+  { name: "P3", description: "Product 3", isChecked: "true", category: "Phone" },
+  { name: "P4", description: "Product 4", isChecked: "true", category: "Book" }, 
+];
+
+
+
+
+function categorize () {
+let categorized = {}
+
+
+products.forEach((product)=>{
+
+
+if(categorized[`${product.category}`] && categorized[`${product.category}`].length > 0){
+categorized[`${product.category}`].push(product);
+
+
+}else{
+
+
+categorized[`${product.category}`] = [product];
+}
+
+
+
+
+})
+return categorized;
+
+
+
+
+}
+
+
+
+
+
+
+
+
+console.log(categorize(products));
+
+
+/** start here *//
+// 2 - Using let
+for (let i = 0; i < 3; i++) {
+  setTimeout(() => console.log('let:', i), 0);
+}
+
+
+
+
+// 0 1 2
+
+
+j = j + 1
+// Using const
+for (const j = 0; j < 3; j++) {
+  setTimeout(() => console.log('const:', j), 0);
+}
+
+
+// throw error
+
+
+
+
+// 3 -  Using var
+for (var k = 0; k < 3; k++) {
+  setTimeout(() => console.log('var:', k), 0);
+}
+
+
+// 3 3 3  
+
+
+
+
+// 1 - Using var L
+for (var l = 0; l < 3; l++) {
+console.log('var L:', l)
+}
+
+
+
+
+// 0 1 2 
+
+
+/** emd here */
+
+
+let y = "Five";
+let x = + y;
+console.log(typeof y);
+console.log(typeof x); // typeof Nan  - > number
+
+
+
+
+
+
+
+
+
+
+
+
+PureSoftware
+
+Static position and fixed position
+Diff between em and rem
+Position relative and position absolute
+
+
+// body
+// parent 
+// 4 div child rectangular row form
+//What if 3rd child is given absolute
+
+
+What will happen to its original space
+Diff flex and grid CSS
+Position sticky and fixed
+If some element is positioned absolutely what will happen to its original position the original space will be occupied or not
+React reconciliation
+Shallow copy deep copy
+Object assign and clone
+Object methods
+
+
+React optimization
+Call back / memo
+Event delegation
+event Propagation
+Passing child props to parent
+
+
+
+
+TypeScript types such as Partial, Pick, and Omit are commonly used in frontend development.
+
+
+
+
+// Write a "nthEven" function that takes an integer parameter n and returns the nth even number. 
+// nthEven(1) //=> 0, the first even number is 0 
+// nthEven(3) //=> 4, the 3rd even number is 4 (0, 2, 4) 
+// nthEven(100) //=> 198 
+// nthEven(1298734) //=> 2597466
+
+
+
+
+
+
+function nthEven(n) {
+
+
+let result = 0.0;
+for(let index = 0; index < n-1; index++){
+result = result + 2.0;
+}
+
+
+return result;
+}
+
+
+
+
+
+
+function nthEvent(n) {
+    return 2 * (n - 1);
+}
+
+
+
+
+console.log(nthEvent(1298734));
+
+
+
+
+
+
+
+Publicis Sapient jobs
+
+
+
+
+Senior Experience Engineer - React
+
+
+Job ID: ENRICH150132896Bagmane Constellation Park,Bengaluru,Karnataka, IndiaFull-time
+
+
+Share share icon
+
+
+
+
+Job Description
+As a Senior Experience Technologist, you’ll be working as part of an agile team with other passionate, driven, and talented people, creating innovative solutions for our clients. Your primary responsibilities will include developing interactive web-based, mobile, and/or desktop applications using Sapient as well as industry best practices to deliver high value and quality to Publicis Sapient clients. 
+
+
+Your Impact:.
+
+
+Technical end-to-end design for stories by collaborating with business analyst/product owner, technical architect, and clients
+Implement stories end-to-end, which includes Frontend, Backends for Frontend (BFF), Caching and service orchestration in some cases) using best engineering practices like test-driven development, SOLID principles and consideration of non-functional requirements like performance, scalability, security or cloud readiness (as applicable) at the story level
+Automates testing at unit, module and integration level as needed using tools relevant for the platform (e.g. Jasmine, Jest, Karma, Webdriver.io etc.)
+Focus on quality by implementing best practices like logging, calling out technical debt, meeting KPIs using code quality tools like SonarQube, ESLint (customize and sync with Sonar), Stylelint/Sasslint and so on.
+Hands-on with automating redundant work, like common component structure, both in terms of scaffolding as well as using the right design patterns / creating abstractions.
+Mentor junior engineers in helping review code, guiding on technical decision making
+Qualifications
+
+
+Your Skills & Experience:
+
+
+4 to 6 years of Experience in Frontend Technologies
+Hands-on knowledge of HTML5, CSS3, JavaScript
+Hands-on experience working with Object Oriented JavaScript (OOJS), JavaScript - and practical uses in building complex interactive experiences, primarily with ECMAScript 2015+. You should be up to date with new specifications (different stages), and, using transpilers like Babel to use features from all stages
+Good understanding of creational and structural design patterns in JavaScript
+Experience working with Single Page Applications (SPA) with universal rendering capabilities.
+Good understanding of React.js, and its core principles - lifecycle methods, virtual DOM, etc.
+Understanding of one-way data flow and the Flux architecture.
+Understanding of stateful (container) vs stateless (presentational) components and how to break down the application page into components
+Core understanding of how React’s state management works out of the box.
+Understanding of different CSS architectures that go hand-in-hand with React.js application development. Pros and cons of component-level CSS vs global and where to apply each
+Thorough understanding of Webpack bundler (version 2+).
+Good understanding of the Web Components standard.
+Hands-on experience with building Progressive Web Apps (PWAs) on any framework.
+Hands-on experience with Frontend Performance Optimization – especially in a React application with respect to resource loading strategy, and CPU/Memory profiling on the browser.
+Hands-on experience with test-driven development using Jest or equivalent. Familiar with snapshot testing, and code coverage. Experience working with utilities like Enzyme
+Experience using fluid grids, and building responsive/adaptive websites using Bootstrap, etc.
+Understanding SEO and accessibility and making it part of the development workflow
+Set Yourself Apart With:
+
+
+Logically understands relational databases like MySQL and non-relational databases like MongoDB and can manage to work with them.
+Hands-on experience with GraphQL.
+Hands-on experience working with client-side templating languages like Handlebars, Mustache, etc.
+Hands-on experience with Functional Programming (FP)
+Hands-on experience working with frontend build systems and automating the same using any task runner
+Understanding of hybrid vs native mobile apps – and pros/cons with respect to PWA.
+Hands-on experience working with server-side JavaScript frameworks like Express, Koa, Hapi etc. (based on Node.js
+Good understanding of REST APIs and Microservices. Should have an understanding of how resources are organized and how an application should align based on the same. You are expected to have an understanding of how CRUD operations map to HTTP methods for a well-designed service.
+Hands-on with DevOps pipeline and able to tweak/change build/deployment pipeline as needed in the context of a module (e.g. Jenkins / Travis / Now.sh / Gitlab)
+Experience with configuring Webpack from scratch and working knowhow of Rollup / Parcel.
+ 
+
+
+Additional Information
+Health and Wellness Benefits like Leaves, Insurance, Employee Assistance
+Statutory benefits
+Lifestyle and Financial Planning Benefits
+Learning, Upskilling & Growth Opportunities
+Flexi Work Policy
+
+
+
+
+Company Description
+Publicis Sapient is a digital transformation partner helping established organizations get to their future, digitally-enabled state, both in the way they work and the way they serve their customers. We help unlock value through a start-up mindset and modern methods, fusing strategy, consulting, and customer experience with agile engineering and problem-solving creativity. United by our core values and our purpose of helping people thrive in the brave pursuit of the next, our 20,000+ people in 53 offices around the world combine experience across technology, data sciences, consulting and customer obsession to accelerate our clients’ businesses through designing the products and services their customers truly value
+
+
+
+
+
+Grid Dynamics bangalore
+
+
+Dhiraj Mittal  to  Everyone 10:20
+
+
+
+
+console.log('The main stream starts');
+
+
+
+
+setTimeout(() => console.log('From a timeout'),0);
+
+
+
+
+let resolvedPromise = Promise.resolve();
+resolvedPromise.then(() => console.log('An already resolved promise'));
+
+
+
+
+let promiseWithPreparation = new Promise((resolve) => {
+  console.log('Prepare a promise');
+  resolve();
+});
+promiseWithPreparation.then(() => console.log('A promise resolved later'));
+
+
+
+
+console.log('The main stream ends.');
+
+
+
+
+// In which order will the lines be printed? ;)
+
+
+You  to  Everyone 10:25
+console.log('The main stream starts');
+// 1
+
+
+setTimeout(() => console.log('From a timeout'),0);
+// 6
+
+
+let resolvedPromise = Promise.resolve();
+resolvedPromise.then(() => console.log('An already resolved promise'));
+// 4
+
+
+let promiseWithPreparation = new Promise((resolve) => {
+  console.log('Prepare a promise');
+  // 3
+  resolve();
+});
+promiseWithPreparation.then(() => console.log('A promise resolved later'));
+// 5
+
+
+console.log('The main stream ends.');
+// 2
+
+
+// In which order will the lines be printed? ;)
+
+
+Dhiraj Mittal  to  Everyone 10:25
+// for (var i = 0; i < 3; i++) {
+//   setTimeout(() => console.log(i), 1);
+// }
+
+
+Dhiraj Mittal  to  Everyone 10:38
+// let arr = [
+//   [1, 2],
+//   [3, 4],
+//   [5, 6, [7, 8]],
+//   [9, 10, [11]],
+// ];
+
+
+
+
+// OUTPUT // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+
+You  to  Everyone 10:49
+let arr = [[1, 2],
+  [3, 4],
+  [5, 6, [7, 8]],
+  [9, 10, [11]],
+];
+
+
+
+
+ // OUTPUT : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+ 
+ 
+ // result - new array 
+ // array 
+ // recursion call the same fn
+ // return result
+ 
+ function flatten (arr)
+ {
+     
+     let result = [];
+     
+     
+     for(let i = 0; i < arr.length; i++) {
+         if(Array.isArray(arr[i])) {
+             result = [...result,...flatten(arr[i])]
+         }else{
+             result.push(arr[i])
+         }
+     }
+     return result;
+     
+ }
+ 
+ console.log(flatten(arr));
+
+
+You  to  Everyone 11:04
+let arr= [1,5,-2,-3,1,2,6,8];
+// output [3,4,5,7]
+// loop
+// < 0 skip
+// +ve find the next missing elements
+// find max
+// min to max find missing elements
+
+
+function findMissing(arr) {
+    for(let i = 0; i < arr.length; i++) {
+        if(arr[i]<0){ continue; }
+        if(arr[i]>0){
+            // check existence
+            const checkNext = arr[i] + 1;
+            const isPresent = arr.some((n)=> n === checkNext);
+            if(isPresent) {
+                continue;
+            }else{
+                return checkNext;
+            }
+        }
+    }
+}
+
+
+console.log(findMissing(arr));
+
+
+
+
+
+
+Nielsen Holding
+
+
+
+
+What are the core of the react hooks
+What are the hooks 
+What are the rules of the hooks
+How do you optimise the apps
+What are the best practices 
+
+
+Job ID: ENRICH150132896Bagmane Constellation Park, Bengaluru, Karnataka, IndiaFull-time
+
+
+Share Share icon
+
+
+
+
+
+
+
+
+Capegemini
+
+Round 1 - 30 mins
+
+
+
+
+
+What is npm
+What is node
+What version of npm do you use
+What is the latest version of node
+What is redux
+Why is it used
+What is routing in react
+Why is routing is used
+
+
+What are hooks in react
+Create any example of custom hook
+
+
+import "./styles.css";
+import { useState, useEffect } from "react";
+function useFetchData() {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  useEffect(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+      const result = await res.json();
+      if (result.ok) {
+        setData(result.data);
+      }
+    } catch (err) {
+      console.log(error);
+      setError({ message: err, err });
+    }
+  }, []);
+
+
+  return { data, loading, error };
+}
+
+
+
+
+
+
+
+
+What is routing in react 
+What do we use
+Create one example of login page routing
+
+
+So he then asked to create just sample / pseudo code of the logic 
+How we should use the react routing
+So created the custom logic for routing
+// provide router
+// router
+// define routes
+// use switch to redirect between routes
+// use the specific logic into root components to authenticate user
+// create pseudo login page form
+
+
+// Home
+// get the state of authenticated user - store , context api
+// if(isAuthenticated){
+  // return <Redirect to={"/dashboard"} />
+// }
+  // else{
+  //   return <Redirect to={"/login"} />
+
+
+  // }
+
+
+
+
+
+
+// BrowserRouter
+export default function App() {
+  const { data, loading } = useFetchData();
+
+
+
+
+  return (
+
+
+    <div className="App">
+      {/* Provider */}
+      {/* Private routes
+      Public routes concept*/}
+      <Router>
+  <Routes>
+      <Switch>
+      <Route path="/" element={<Home/>} />
+      <Route path="/dashbaord" element={<Dashbaord/>} />
+      <Router exact path="/login" element={<Login />}/>
+        </Switch>
+    </Router>
+        </Router>
+    </div>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+Miscellaneous
+
+
+(() => {
+    let x, y;
+    try {
+        throw new Error();
+    } catch (x) {
+        x = 1;
+        y = 2;
+        console.log(x); // prints 1
+    }
+    console.log(x); // prints undefined
+    console.log(y); // prints 2
+})();
+
+
+
+
+Harman
+hoisting, closure, scoping, promise, array methods, call,bind, 1-3 programmes
+CSS responsive
+flex
+HTML new semantic elements
+observable Vs promise
+Custom array method using prototype.
+Custom pipe and directive
+API calls
+angular lifecycle hooks
+JavaScript object creation type
+questions on arrays and object reference
+Routing
+Lazy loading
+Auth guard
+Interceptors.
+Reactive forms Vs template driven forms
+Java Script : Clousure, IIFM
+Basic HTML and SCSS quesito
+print all keys in json format which has inner loops in it
+
+
+
+Harman
+
+[12:06 PM] Mishra, Swapnashree Debidatta
+console.log(varNumber);
+console.log(letNumber);
+var varNumber = 1;
+let letNumber = 1;
+[12:07 PM] Rahul Parmar
+1
+Reference error
+[12:08 PM] Mishra, Swapnashree Debidatta
+const a = {x:5, y:10};
+const b = a;
+b.x=15;
+console.log(a);
+console.log(b);
+[12:09 PM] Rahul Parmar
+{x:15, y:10}
+[12:10 PM] Mishra, Swapnashree Debidatta
+let a=5, b=10, c=15;
+console.log(a);
+setTimeout(() => console.log(b),0);
+console.log(c);
+[12:11 PM] Rahul Parmar
+5
+15
+10
+[12:12 PM] Rahul Parmar
+5
+15
+20
+10
+[12:12 PM] Rahul Parmar
+rest, spread, import , export , map , foreach, class, 
+[12:12 PM] Rahul Parmar
+arrow
+[12:16 PM] Rahul Parmar
+normal fn - legacy - this  - context - obj
+arrow - 
+Promise - async - operation
+ 
+ 
+fn - callback - sync
+[12:16 PM] Mishra, Swapnashree Debidatta
+const person = {
+ name: "John",
+ contact: {
+   phone: "987-654-3210",
+   email: "john123@xyz.com",
+   address: {
+     city: "Berlin",
+     country: "Germany"
+   }
+ }
+};
+[12:44 PM] Rahul Parmar
+contrucor
+ 
+use state - 
+ 
+render - dom - mounted
+ 
+ 
+useeffect - api , event listernres - ref ele, 
+return => {
+ // clean up - compnent is unmounting 
+}
+[] - once
+ 
+componentDidMount
+
+
+
+const person = {
+ name: "John",
+ contact: {
+   phone: "987-654-3210",
+   email: "john123@xyz.com",
+   address: {
+     city: "Berlin",
+     country: "Germany"
+   }
+ }
+};
+
+
+
+
+
+
+
+
+console.log(Object.keys(person));
+
+
+// object keys - values  - entries 
+// flatten
+
+
+function keyValuePairs (obj){
+  let result = [];
+  const t = Object.keys(obj);
+  for(let i = 0; i < t.length; i++) {
+    if(typeof obj[t[i]] === 'object') {
+      const keyValuePair = [t[i], obj[t[i]]];
+      result = [...result, keyValuePair, ...keyValuePairs(obj[t[i]])];
+    } else {
+      result.push([t[i], obj[t[i]]]);
+    }
+  }
+  return result;
+}
+
+
+
+
+Virtusa
+
+
+/*
+
+
+: Given an array. Multiply all elements
+ and if the result is negative, return 1.
+If the result is positive,
+ return 1.
+if the result is 0 return 0. Let arr = [1,4,5,7,2,8,-1]
+*/
+
+
+// store result
+// loop
+// multiply
+// checks
+
+
+function checkMultiplication (arr){
+
+
+let result = 1;
+  arr.forEach(el=>{
+result = result * el;
+})
+
+
+if(result === 0 ){ return 0; }
+else {
+return 1;
+}
+}
+const test = [1,4,5,7,2,8,-1]
+console.log(checkMultiplication(test));
+
+
+const test2 = [1,4,5,7,2,8,0]
+console.log(checkMultiplication(test2));
+
+
+const test3 = [1,4,5,7,2,8]
+console.log(checkMultiplication(test3));
+
+
+
+
+
+
+
+
+// capitalise first letter of each word
+
+
+let str1 ="I am js developer"
+
+
+
+
+
+
+// array - split - words array
+// for each word - capitalise the first
+//  store it
+// join that array
+
+
+
+
+function capitalizeString(str) {
+
+
+let allWords = str.split(" ");
+let updateWords = []
+for(let i = 0; i < allWords.length; i++) {
+const word = allWords[i];
+const capitalize = word.charAt(0).toUpperCase();
+const remainingString = word.slice(1);
+const updatedWord = capitalize + remainingString;
+updateWords.push(updatedWord);
+}
+ 
+const updatedStr = updateWords.join(" ");
+return  updatedStr;
+}
+
+
+
+
+console.log(capitalizeString(str1))
+
+
+
+
+
+
+
+
+ON oFF button state - button text 
+
+Parent - rerender
+ To prevent - child re rendering we can use react.memo
+
+Pure component  - react.memo - HOC
+– input props same  - rendered output should be same
+- firstName 
+- lastName
+
+
+
+
+
+Sedin Technologies
+javascript.info
+NOTE : after this Interview i was like WHY the hell i exist here
+
+Interviewer feedback for me: you have good problem solving but sometimes you do not know why are you using something that is in the javascript or in any language
+Why does it exist in the first place
+That's how you clear up a strong foundation
+
+Me in my mind - bhai muje software banana hai usko working mode pe krna ata he, 
+tu ruk abhi AI se tera game bajata he me
+
+Pure component  - react.memo - HOC
+– input props same  - rendered output should be same
+Why we use react hoc - why react created the concept of HOC
+Why do we react to memoization?
+Why we react to cache
+Why Service worker -
+prototypal
+Why Promise - internal mechanism
+Callback hell
+Why Context api - redux api - predictability
+Redux is based on pure reducers
+
+
+Why to use context api and redux
+Why to use memoization
+Why is caching needed
+Why service workers
+Why react
+Why HOCs exist
+Why prototypal inheritance
+Why some functions are called expensive operation
+What is inside the promist what javascript uses internally to create promises
+What is generators in javascript
+
+Why do we use webpack
+What are the different ways that we can use the webpack to optimise the app
+What are the alternative then webpack
+What are the other tools that you have used rather than webpack
+What is tree shaking
+How will you optimise the react app apart from using react lazy loading
+What are the other ways other than minification, chunking, and uglification that is done by webpack
+Including tree shaking
+
+
+
+
+Jest api Mocking and api stub and spying
+
+
+What is debounced - polyfills, map for each
+Never create polyfills - with arrow functions
+
+
+Create custom Promise - using generators
+Ideal function - event loop
+
+
+What have you used for testing in javascript
+Jest, react/testing-library
+
+Why do we create mock in jest
+If we have auth Tokens and authentication sessions storage
+If Backend is data change 
+
+
+
+
+
+
+Why mocking is needed in the first place
+Cant we do test components without mocking apis or functions
+What is the difference between call, apply and bind
+
+
+Played with array variables
+
+
+
+Why why why
+Give proper examples
+
+
+
+
+Javascript materials
+
+
+
+
+
+
+[02:11] Rahul Parmar
+js cafe
+ 
+[02:12] Rahul Parmar
+react component patterns
+[02:16] Rahul Parmar
+Leetcode javascript 30 - DSA type of questions
+[02:16] Rahul Parmar
+problems
+[02:17] Rahul Parmar
+neet code
+[02:22] Rahul Parmar
+javascript.info
+[02:23] Rahul Parmar
+namaste javascript
+ 
+[02:24] Rahul Parmar
+add(1)(2)()
+[02:27] Rahul Parmar
+code with mosh - next js - unit testing
+
+
+
+
+
+
+Accion labs
+[02:24] Rahul Parmar
+add(1)(2)()
+[02:27] Rahul Parmar
+code with mosh - next js - unit testing
+
+/*
+
+
+Finding a pair of numbers that add up to a
+target sum in a sorted or unsorted array.
+Input: [3, 5, 2, 8, 11], target = 10
+Output: [2, 8]
+
+
+*/
+// result
+// loop
+// 
+const inp = [3, 5, 2, 8, 11];
+function findTargetSum(arr, target){
+  
+  const result= []
+  for(let i = 0; i < arr.length; i++) {
+    for(let j = i + 1; j < arr.length; j++) {
+    result.push([arr[i], arr[j]])
+    }
+  }
+  const r = result.filter(el=> el.reduce((acc, el)=> acc + el, 0) === target)
+  return r.flat();
+}
+
+
+console.log(findTargetSum(inp, 10));
+
+
+
+
+
+
+import "./styles.css";
+import { useRef, useState } from "react";
+export default function App() {
+  const [todos, setTodos] = useState(["task 1", "task 2"]);
+  const inpRef = useRef(null);
+
+
+  const handleAddTodo = () => {
+    const todo = inpRef.current.value;
+    setTodos((prevTodos) => {
+      const updatedTodos = [...prevTodos, todo];
+      return updatedTodos;
+    });
+    inpRef.current.value = "";
+  };
+
+
+  return (
+    <div className="">
+      <input ref={inpRef} placeholder="add a todo" />
+      <button onClick={handleAddTodo}> add todo</button>
+      <ul>
+        {todos.map((todo) => {
+          return <li key={todo}>{todo}</li>;
+        })}
+      </ul>
+    </div>
+  );
+}
+
+
+manish Kashyap
+10:02 AM
+Explain the virtual DOM and its role in React.
+manish Kashyap
+10:05 AM
+What are React hooks?
+manish Kashyap
+10:06 AM
+What are higher-order components (HOCs) and render props?
+manish Kashyap
+10:07 AM
+how you optimize rendering performance
+manish Kashyap
+10:09 AM
+React Router and Authenticate mechanism
+manish Kashyap
+10:11 AM
+JSX in React
+manish Kashyap
+10:14 AM
+CSS3 media queries
+You
+10:15 AM
+@media screen and (max-width: 768px){
+
+
+}
+manish Kashyap
+10:15 AM
+CSS3 box-shadow and text-shadow
+You
+10:17 AM
+GET POST
+UPDATE
+manish Kashyap
+10:17 AM
+REST Architecture
+You
+10:17 AM
+header
+body
+query params
+manish Kashyap
+10:18 AM
+SOAP vs REST
+You
+10:18 AM
+XML
+POST vs PUT
+manish Kashyap
+10:23 AM
+https://onecompiler.com/
+Finding a pair of numbers that add up to a
+target sum in a sorted or unsorted array.
+Input: [3, 5, 2, 8, 11], target = 10
+Output: [2, 8]
+You
+10:24 AM
+describe("check inpute",()=>{
+
+
+test("is array", ()=>{
+const roleNumbers = getByTestId("form-roleNumbs");
+expect.(typeof roleNumbers).to
+})
+
+
+})
+manish Kashyap
+10:37 AM
+in react 
+Tasks:
+
+
+Create the todo list UI with options to add, edit, and delete tasks.
+Implement local storage to persist tasks across page refreshes.
+Add functionality to mark tasks as completed.
+manish Kashyap
+10:46 AM
+rebase
+Accion labs Technical Discussion -Rahul Parmar-SSE (React) - Accion labs
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+Finding a pair of numbers that add up to a
+target sum in a sorted or unsorted array.
+Input: [3, 5, 2, 8, 11], target = 10
+Output: [2, 8]
+
+
+*/
+// result
+// loop
+// 
+const inp = [3, 5, 2, 8, 11];
+function findTargetSum(arr, target){
+  
+  const result= []
+  for(let i = 0; i < arr.length; i++) {
+    for(let j = i + 1; j < arr.length; j++) {
+    result.push([arr[i], arr[j]])
+    }
+  }
+  const r = result.filter(el=> el.reduce((acc, el)=> acc + el, 0) === target)
+  return r.flat();
+}
+
+
+console.log(findTargetSum(inp, 10));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+IBM
+
+
+Hacker rank test
+
+/*
+1 ) problem hacker rank
+// choose the winner from the card games between maria and andrea
+*/
+
+
+
+
+'use strict';
+
+
+const fs = require('fs');
+
+
+process.stdin.resume();
+process.stdin.setEncoding('utf-8');
+
+
+let inputString = '';
+let currentLine = 0;
+
+
+process.stdin.on('data', function(inputStdin) {
+    inputString += inputStdin;
+});
+
+
+process.stdin.on('end', function() {
+    inputString = inputString.split('\n');
+
+
+    main();
+});
+
+
+function readLine() {
+    return inputString[currentLine++];
+}
+
+
+
+
+
+
+/*
+ * Complete the 'winner' function below.
+ *
+ * The function is expected to return a STRING.
+ * The function accepts following parameters:
+ *  1. INTEGER_ARRAY andrea
+ *  2. INTEGER_ARRAY maria
+ *  3. STRING s
+ */
+
+
+
+
+function winner(andrea, maria, s) {
+    // Write your code here
+    let andreaScore = [];
+    let mariaScore = [];
+    const evenOddStartIndex = s === "Even" ? 0 : 1;
+   
+    // unshift
+    for(let i = evenOddStartIndex; i < andrea.length; i = i + 2) {    
+        andreaScore[i] = andrea[i] - maria[i];
+        mariaScore[i] = maria[i] - andrea[i];
+    }
+   
+    const aSum = andreaScore.reduce((acc,n)=>acc+n);
+    const mSum = mariaScore.reduce((acc,n)=>acc+n);
+   
+    if(aSum > mSum){
+        return 'Andrea'
+    }
+    else if (mSum > aSum) {
+        return 'Maria'
+    }
+    else {
+        return 'Tie'
+    }
+
+
+}
+
+
+function main() {
+    const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
+
+
+    const andreaCount = parseInt(readLine().trim(), 10);
+
+
+    let andrea = [];
+
+
+    for (let i = 0; i < andreaCount; i++) {
+        const andreaItem = parseInt(readLine().trim(), 10);
+        andrea.push(andreaItem);
+    }
+
+
+    const mariaCount = parseInt(readLine().trim(), 10);
+
+
+    let maria = [];
+
+
+    for (let i = 0; i < mariaCount; i++) {
+        const mariaItem = parseInt(readLine().trim(), 10);
+        maria.push(mariaItem);
+    }
+
+
+    const s = readLine();
+
+
+    const result = winner(andrea, maria, s);
+
+
+    ws.write(result + '\n');
+
+
+    ws.end();
+}
+
+
+
+
+/*
+2 ) problem hacker rank
+// count the number of binaries 1s into a number and show all the positions of that 1s into the representation
+*/
+
+
+"use strict";
+
+
+const fs = require("fs");
+
+
+process.stdin.resume();
+process.stdin.setEncoding("utf-8");
+
+
+let inputString = "";
+let currentLine = 0;
+
+
+process.stdin.on("data", function (inputStdin) {
+  inputString += inputStdin;
+});
+
+
+process.stdin.on("end", function () {
+  inputString = inputString.split("\n");
+
+
+  main();
+});
+
+
+function readLine() {
+  return inputString[currentLine++];
+}
+
+
+/*
+ * Complete the 'getOneBits' function below.
+ *
+ * The function is expected to return an INTEGER_ARRAY.
+ * The function accepts INTEGER n as parameter.
+ */
+
+
+function getOneBits(n) {
+  const binary = n.toString(2);
+  let positions = [];
+  for (let i = 0; i < binary.length; i++) {
+    if (binary[i] === "1") {
+      positions.push(i + 1);
+    }
+  }
+  return [positions.length, ...positions];
+}
+
+
+function main() {
+  const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
+
+
+  const n = parseInt(readLine().trim(), 10);
+
+
+  const result = getOneBits(n);
+
+
+  ws.write(result.join("\n") + "\n");
+
+
+  ws.end();
+}
+
+
+
+
+
+
+https://codesandbox.io/p/sandbox/damp-microservice-f9ygng?file=%2Fsrc%2Ftest%3A138%2C24
+const mock = [
+  {
+    id: 1,
+    name: "Google Home",
+    buyable: true,
+    type: "REGULAR",
+    description: "Some Description",
+  },
+  {
+    id: 2,
+    name: "Lowes Gift Card",
+    buyable: true,
+    type: "GIFT_CARD",
+    description: "Some Description",
+  },
+  {
+    id: 3,
+    name: "Lumbar",
+    buyable: false,
+    type: "CONSIGNMENT",
+    description: "Some Description",
+  },
+];
+
+
+
+
+
+
+
+
+const test =[{id:1,name:'abc'},{id:2,name:'pqr'},{id:'1',name:'xyz'}];
+
+
+function removeDuplicate(arr){
+
+
+const result = {}
+
+
+arr.forEach((p)=>{
+
+
+if(!result[p.id]){
+result[p.id] = [p];
+}
+})
+return Object.values(result);
+}
+
+
+
+
+console.log(removeDuplicate(test));
+
+
+const testNum = [1,1,2,2,3,3,3,4,5,6,];
+// ...rest
+
+
+const t = {...obj};
+
+
+/*
+sass
+flex grid
+media 
+tailwind
+*/
+
+
+// unit test - jest - testing react library
+
+
+function findOccur(n1,n2, ...rest){
+  
+  const resObj = {}
+  arr.forEach((num)=> {
+
+
+    if(resObj[num] > 0){
+      resObj[num] = resObj[num] + 1;
+    }
+    else{
+      resObj[num]= 1;
+    }
+})
+return resObj;
+
+
+}
+console.log(findOccur(testNum));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from Kavya (internal) to everyone:    11:08 AM
+[
+    {
+      id: 1,
+      name: 'Google Home',
+      buyable: true,
+      type: 'REGULAR',
+      description: 'Some Description',
+    },
+    {
+      id: 2,
+      name: 'Lowes Gift Card',
+      buyable: true,
+      type: 'GIFT_CARD',
+      description: 'Some Description',
+    },
+    {
+      id: 3,
+      name: 'Lumbar',
+      buyable: false,
+      type: 'CONSIGNMENT',
+      description: 'Some Description',
+    },
+  ]
+
+
+from Kavya (internal) to everyone:    11:23 AM
+[
+    {
+      attrbuteName: 'id',
+      label: 'Item Number',
+      editable: false,
+    },
+    {
+      attrbuteName: 'name',
+      label: 'Item Name',
+      editable: true,
+      inputType: 'text',
+    },
+    {
+      attrbuteName: 'description',
+      label: 'Item Description',
+      editable: true,
+      inputType: 'textarea',
+    },
+    {
+      attrbuteName: 'buyable',
+      label: 'Is Buyable?',
+      editable: true,
+      inputType: 'checkbox',
+    },
+    {
+      attrbuteName: 'type',
+      label: 'Item Type',
+      editable: true,
+      inputType: 'select',
+      choices: [
+        {
+          label: 'Regular Item',
+          value: 'REGULAR',
+        },
+        {
+          label: 'Gift Card Item',
+          value: 'GIFT_CARD',
+        },
+        {
+          label: 'Consignment Item',
+          value: 'CONSIGNMENT',
+        },
+      ],
+    },
+  ]
+
+
+
+
+
+
+
+
+const mock = [
+  {
+    id: 1,
+    name: "Google Home",
+    buyable: true,
+    type: "REGULAR",
+    description: "Some Description",
+  },
+  {
+    id: 2,
+    name: "Lowes Gift Card",
+    buyable: true,
+    type: "GIFT_CARD",
+    description: "Some Description",
+  },
+  {
+    id: 3,
+    name: "Lumbar",
+    buyable: false,
+    type: "CONSIGNMENT",
+    description: "Some Description",
+  },
+];
+
+
+
+
+
+
+
+
+const test =[{id:1,name:'abc'},{id:2,name:'pqr'},{id:'1',name:'xyz'}];
+
+
+function removeDuplicate(arr){
+
+
+const result = {}
+
+
+arr.forEach((p)=>{
+
+
+if(!result[p.id]){
+result[p.id] = [p];
+}
+})
+return Object.values(result);
+}
+
+
+
+
+console.log(removeDuplicate(test));
+
+
+const testNum = [1,1,2,2,3,3,3,4,5,6,];
+// ...rest
+
+
+const t = {...obj};
+
+
+/*
+sass
+flex grid
+media 
+tailwind
+*/
+
+
+// unit test - jest - testing react library
+
+
+function findOccur(n1,n2, ...rest){
+  
+  const resObj = {}
+  arr.forEach((num)=> {
+
+
+    if(resObj[num] > 0){
+      resObj[num] = resObj[num] + 1;
+    }
+    else{
+      resObj[num]= 1;
+    }
+})
+return resObj;
+
+
+}
+console.log(findOccur(testNum));
+
+
+
+
+const mock = [
+  {
+    id: 1,
+    name: "Google Home",
+    buyable: true,
+    type: "REGULAR",
+    description: "Some Description",
+  },
+  {
+    id: 2,
+    name: "Lowes Gift Card",
+    buyable: true,
+    type: "GIFT_CARD",
+    description: "Some Description",
+  },
+  {
+    id: 3,
+    name: "Lumbar",
+    buyable: false,
+    type: "CONSIGNMENT",
+    description: "Some Description",
+  },
+];
+
+
+
+
+
+
+
+
+const test =[{id:1,name:'abc'},{id:2,name:'pqr'},{id:'1',name:'xyz'}];
+
+
+function removeDuplicate(arr){
+
+
+const result = {}
+
+
+arr.forEach((p)=>{
+
+
+if(!result[p.id]){
+result[p.id] = [p];
+}
+})
+return Object.values(result);
+}
+
+
+
+
+console.log(removeDuplicate(test));
+
+
+const testNum = [1,1,2,2,3,3,3,4,5,6,];
+// ...rest
+
+
+const t = {...obj};
+
+
+/*
+sass
+flex grid
+media 
+tailwind
+*/
+
+
+// unit test - jest - testing react library
+
+
+function findOccur(n1,n2, ...rest){
+  
+  const resObj = {}
+  arr.forEach((num)=> {
+
+
+    if(resObj[num] > 0){
+      resObj[num] = resObj[num] + 1;
+    }
+    else{
+      resObj[num]= 1;
+    }
+})
+return resObj;
+
+
+}
+console.log(findOccur(testNum));
+
+
+
+
+
+
+
+
+
+
+
+
+// print  - 1 to 10 - in every 2 seconds
+
+
+
+
+function test() {
+  
+for(let i = 1; i<= 10; i++) {
+
+
+
+
+    const id = setTimeout(()=>{
+              console.log("i", i);
+    }, 2 * 1000)
+
+
+}
+  
+  
+}
+test();
+
+
+const t = [["test", "test"],[],[]]
+var arr = [{ A: '', B: null, C: '0', D: '' }]
+
+
+var arr = [{ A: '', B: null, C: '0', D: '', ...obj }, ...t]
+const arr=[
+  
+  ...arr,
+  
+]
+
+
+// mount
+
+
+//
+
+
+// update
+
+
+// return - cleanup
+// unmount
+
+
+call
+
+
+fun = bind(person)
+
+
+call(person, a1, a2)
+apply(person, [a1, a2})
+
+
+
+
+
+
+
+
+const arr = [[],[],[]]
+
+
+//const t = Array.fill(5);
+const ar2= [4,5]
+const test = [...arr, ...ar2];
+      
+      
+      
+
+
+// private - render user
+      // public
+
+
+// print  - 1 to 10 - in every 2 seconds
+
+
+
+
+function test() {
+  
+for(let i = 1; i<= 10; i++) {
+
+
+
+
+    const id = setTimeout(()=>{
+              console.log("i", i);
+    }, 2 * 1000)
+
+
+}
+  
+Version 1 systems
+}
+test();
+
+
+const t = [["test", "test"],[],[]]
+var arr = [{ A: '', B: null, C: '0', D: '' }]
+
+
+var arr = [{ A: '', B: null, C: '0', D: '', ...obj }, ...t]
+const arr=[
+  
+  ...arr,
+  
+]
+
+
+// mount
+
+
+//
+
+
+// update
+
+
+// return - cleanup
+// unmount
+
+
+call
+
+
+fun = bind(person)
+
+
+call(person, a1, a2)
+apply(person, [a1, a2})
+
+
+
+
+
+
+
+
+const arr = [[],[],[]]
+
+
+//const t = Array.fill(5);
+const ar2= [4,5]
+const test = [...arr, ...ar2];
+      
+      
+      
+
+
+// private - render user
+// public
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Radix Web Ahmedabad 
+Using a util function that checks those conditions
+Diff between context API and redux library
+How to check so many conditions 
+Array.some to check so many conditions
+What is promise and why do we use it
+What are event emitters in node js
+What are the ways we can perform async operation in node js
+Diff between put update and post request methods
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Mphasis
+
+
+
+
+Diff Redux and context API
+
+
+
+
+Write a React component that calls a function every 5 seconds and ends when some condition is met
+Write a react component for the search bar that on the type of some input shows the filtered data on the screen
+
+
+Write any custom hook for example
+
+So I wrote a useFetchData hook providing 3 state values - data, loading, error, and taking API URL as the input
+
+
+
+
+
+
+
+
+
+
+Ameriprise
+
+
+
+
+create a promise that retries an API call for a certain duration or till the max tries are reached and resolves once it receives a successful response.
+
+
+
+
+Create a custom hook for api call data loading and error states should be there and use it inside the component 
+
+
+
+
+Persistent Systems
+
+
+https://codesandbox.io/p/sandbox/tender-wood-3vlhgl?file=%2Fsrc%2Findex.mjs%3A1%2C1-33%2C1
+
+
+Partial function currying
+
+
+
+
+// calculate the max profit
+
+
+const a = [10, 20, 30, 40, 50];
+
+
+function maxProfit(arr, ...restProp) {
+  const min = Math.min(...arr);
+  const max = Math.max(...arr);
+  const profit = max - min;
+  return profit;
+}
+
+
+console.log(maxProfit(a));
+
+
+// const t = { ...obj };
+
+
+const test = [2, 3, 3, 4, 5, 6, 7, 7];
+
+
+function removeDuplicates(arr) {
+  let temp = {};
+  for (let index = 0; index < arr.length; index++) {
+    const element = arr[index];
+    if (!temp[element]) {
+      temp[element] = element;
+    }
+  }
+  return Object.values(temp);
+}
+
+
+console.log(removeDuplicates(test));
+
+
+
+
+/*
+useRef
+*/
+
+
+
+
+Gokaran  - SDE 2
+
+
+
+
+
+
+
+
+PromiseMerge Function
+You have to implement a function called promiseMerge that can take n number of promises as input.
+
+
+It should return a promise that fulfils with:
+
+
+Summation of all resulting values if the type of all inputs is number.
+Concatenated value if the type of all inputs is string.
+Computed value using AND operator if the type of all input is boolean.
+A new concatted array if the type of all inputs is array.
+A new object with all the keys from inputs if the typeof all inputs is object.
+It should reject with a TypeError if either of the inputs is different from other input types.
+
+
+
+
+
+
+
+
+
+
+Valid input types are: Number, String, Boolean, Array, and Object.
+
+
+javascript
+Copy code
+const value = await promiseMerge(Promise.resolve(1), Promise.resolve(2)); // => 3
+const value = await promiseMerge(Promise.resolve("devtools"), Promise.resolve(".tech")); // => devtools.tech
+const value = await promiseMerge(Promise.resolve([1, 2, 3]), Promise.resolve([4, 5, 6]), Promise.resolve([7, 8, 9])); // => [1,2,3,4,5,6,7,8,9]
+const value = await promiseMerge(Promise.resolve({ a: 1 }), Promise.resolve({ b: 2 }), Promise.resolve({ c: 3 })); // => { a: 1, b: 2, c: 3};
+const value = await promiseMerge(Promise.resolve(true), Promise.resolve(false)); // => false
+const value = await promiseMerge(Promise.resolve("devtools"), Promise.resolve(1)); // => rejects with TypeError
+const value = await promiseMerge(Promise.resolve("devtools"), Promise.resolve([1, 2])); // => rejects with TypeError
+const value = await promiseMerge(); // => rejects with TypeError
+
+
+
+
+
+
+Promise Retry
+Write a function retryPromise that takes a function returning a promise, maximum number of retries, and retry interval (in milliseconds) as arguments. The function should execute the input function repeatedly until it resolves successfully or the maximum number of retries is reached. If the function doesn't resolve successfully within the maximum number of retries, the returned promise should reject with the last error encountered.
+
+
+Additional Snippets
+
+
+
+
+javascript
+
+
+
+
+Copy code
+promiseMerge(Promise.resolve(new Set()), Promise.resolve(new Set()))
+
+
+sum(1,2,3,4)(5)(6,7)()
+
+
+sum(1)(2)(3)()
+
+
+sum(1)()
+
+
+sum(1)(2,3)()
+Polyfill of Filter, Map
+The polyfill of the filter, map is not provided. You can find polyfills for these methods easily online or implement them yourself.
+
+
+Memoize Function
+javascript
+Copy code
+const memoize = (fn) => {
+  const cache = {};
+  return (...args) => {
+    let key = args.join("_");
+    if (!cache.hasOwnProperty(key)) {
+      console.log("Inside computation");
+      cache[key] = fn(...args);
+      return cache[key];
+    } else {
+      console.log("Inside cache");
+      return cache[key];
+    }
+  };
+};
+
+
+const memoizedSum = memoize((a, b) => a + b);
+console.log(memoizedSum(2, 4)); // Output will be 6, computed
+console.log(memoizedSum(2, 4)); // Output will be 6, from cache
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+round 1 for the salary 25 LPA
+
+
+1. Arrow function and what is the difference apart from syntax?
+
+
+2. Call, apply bind (write down the code for one of them)
+
+
+3. Generator Function and write a range Generator functions
+
+
+4. Real time example of Generator Functions?
+
+
+5. ES6 features
+
+
+6. Write down the code for spread operator, rest operator and Object destructuring?
+
+
+7. Difference between forEach and map?
+
+
+8. Difference between Object.assign(), Object.create()? Which one mutates the data ?
+
+
+9. What is a Promise ?
+
+
+10. Write a function component in react which returns a lazy loaded Button Component and add the Suspense with fallback UI?
+
+
+11. What is Error Boundary, How can we write a separate Error Boundary Component?
+
+
+12. What is Redux, Why Redux, Core principles of redux?
+
+
+13. Write down a basic sum function using Typescript and how do you accept params in either string or number?
+
+
+14. What are Generics functions (inside Typescript), can you write down types?
+
+
+15. Abstract function mean?
+
+
+16. Software Principles (DRY, KISS) how do you implement in your codebase
+
+
+17. Git hook (pre-commit, husky)
+
+
+18. SOLID Principles
+
+
+19. Write down test cases? What does beforeEach and beforeAll do?
+
+
+20. Difference between mock vs spy in testing?
+
+
+21. Explain the Testing Pyramid.
+
+
+22. Differences between Integration Testing vs End to End testing?
+
+
+23. Which tool you have used for above of them?
+
+
+24. What do we mean by code coverage? How do you measure code coverage?
+
+
+25. What is meant by OWASP top 10?
+
+
+26. What is meant by CSP, XSS (where do we set these CSP headers? In Client or Server)
+
+
+27. What is meant by CORS? (Where do we set them)
+
+
+28. DDD?
+
+
+29. Explain me the various ways of Performance Optimization that you can do at any level (ex: CSS, JS, HTML)
+
+
+30.What is CRP?
+
+
+31. What are memory leaks in react? Why do they happen?
+
+
+32. Promise.all vs Promise.any vs Promise.race?
+
+
+33. How do you configure typescript in your project?
+
+
+34. How many ways you can create an object?
+
+
+35. What does we have in.tsconfig.json? can you explain them?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+javascript
+
+
+
+
+// @ts-check
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// function currying
+// closure
+
+
+function counterfn() {
+  let counter = 0;
+
+
+  function innerFunction() {
+    counter = counter + 1;
+    return counter;
+  }
+
+
+  return innerFunction;
+}
+
+
+console.log(counterFn());
+function add(num1) {
+  let sum = num1;
+  function innerFunction(num2) {
+    if (num2 === undefined) {
+      return sum;
+    }
+    sum = sum + num2;
+    return innerFunction;
+  }
+
+
+  return innerFunction;
+}
+
+
+add(2)(3)();
+console.log(add(2)(2)(2)(2)());
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+function message(msg1) {
+  function innerFunction(msg2) {
+    return msg1 + msg2;
+  }
+  return innerFunction;
+}
+
+
+console.log(message("Hello")("World"));
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+function print(msg1) {
+  let msg = msg1;
+  function innerFunction(msg2) {
+    if (msg2 === undefined) {
+      return msg;
+    }
+    msg = msg + " " + msg2;
+    return innerFunction;
+  }
+  return innerFunction;
+}
+
+
+console.log(print("Hello")("World")());
+console.log(print("Hello")("World")(null)());
+console.log(print("Hello")("World")("go")("go")("go")());
+console.log(print("Hello")());
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+// do not use if conditions or ternary
+function oddEven(num) {
+  return ["even", "odd"][num % 2];
+}
+
+
+console.log(oddEven(5));
+console.log(oddEven(4));
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+function occurrences(str) {
+  const counts = {};
+  str.split("").forEach((chars) => {
+    counts[chars] === undefined ? (counts[chars] = 1) : counts[chars]++;
+  });
+  return counts;
+}
+
+
+console.log(occurrences("abc"));
+console.log(occurrences("abracadabra"));
+// --------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+// Reverse Words in a String:
+// Input: "the sky is blue"
+// Output: "blue is sky the"
+
+
+function reverseString(msg) {
+  return msg.split(" ").reverse().join(" ");
+}
+
+
+console.log(reverseString("hello world"));
+
+
+// --------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+/**
+ * Create a Person object constructor that takes a name and age as arguments.
+ * Add a method to the Person prototype called greet
+ * that returns a greeting message with the person's name.
+ */
+
+
+function Person(age, name) {
+  this.age = age;
+  this.name = name;
+}
+
+
+Person.prototype.greet = function () {
+  return "hello " + this.name;
+};
+
+
+const p1 = new Person(22, "john");
+console.log(p1.greet());
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+class Human {
+  constructor(behavior) {
+    this.behavior = behavior;
+  }
+}
+
+
+class People extends Human {
+  constructor(age, name) {
+    super("good");
+    this.age = age;
+    this.name = name;
+  }
+  greet() {
+    return "hello " + this.name;
+  }
+}
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+class Sum {
+  constructor(a, b) {
+    this.sum = a + b;
+  }
+}
+
+
+class Numbers1 extends Sum {
+  constructor(age) {
+    super();
+    this.age = age;
+  }
+}
+
+
+const p2 = new People(33, "John");
+console.log(p2);
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+function shiftLastElements(array, steps) {
+  let result = [...array];
+  for (let index = steps; index >= 1; index--) {
+    result.unshift(result.pop());
+  }
+  return result;
+}
+
+
+const numbers = [1, 2, 3, 4, 5, 6, 7];
+const steps = 3;
+console.log(shiftLastElements(numbers, steps));
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+// promise
+
+
+new Promise((resolve) => {
+  resolve(null);
+});
+
+
+new Promise((_, reject) => {
+  reject();
+});
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+// object methods
+const obj1 = { a: 1, b: 2, c: 3 };
+console.log(Object.keys(obj1)); // Output: ["a", "b", "c"]
+
+
+const obj2 = { a: 1, b: 2, c: 3 };
+console.log(Object.values(obj2)); // Output: [1, 2, 3]
+
+
+const obj3 = { a: 1, b: 2, c: 3 };
+console.log(Object.entries(obj3)); // Output: [["a", 1], ["b", 2], ["c", 3]]
+
+
+const target = { a: 1, b: 2 };
+const source = { b: 3, c: 4 };
+const merged = Object.assign(target, source);
+console.log(merged); // Output: { a: 1, b: 3, c: 4 }
+const merged2 = { ...target, ...source };
+console.log(merged2); // Output: { a: 1, b: 3, c: 4 }
+
+
+// freeze
+const frozenObj = { prop: 42 };
+Object.freeze(frozenObj);
+frozenObj.prop = 33; // This will not have any effect
+console.log(frozenObj.prop); // Output: 42
+
+
+// seal
+const sealedObj = { a: 1, b: 2 };
+Object.seal(sealedObj);
+
+
+// Modifying existing property
+sealedObj.a = 10; // This will work
+console.log(sealedObj.a); // Output: 10
+
+
+// Adding new property
+sealedObj.c = 3; // This won't work
+console.log(sealedObj.c); // Output: undefined
+
+
+// Deleting existing property
+// delete sealedObj.b; // This won't work
+console.log(sealedObj.b); // Output: 2
+
+
+try {
+  // Changing property configuration
+  Object.defineProperty(sealedObj, "a", { configurable: true }); // This won't work
+} catch (error) {
+  console.log(error.message);
+}
+
+
+try {
+  // Attempting to add a method to the sealed object
+  sealedObj.method = function () {
+    console.log("Method added");
+  }; // This won't work
+  sealedObj.method();
+} catch (error) {
+  console.log(error.message);
+}
+
+
+console.log(sealedObj);
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+// Extend the Array prototype with customMap method
+
+
+// @ts-ignore
+Array.prototype.customMap = function (callback, thisArg) {
+  const array = this;
+  const newArray = [];
+
+
+  for (let i = 0; i < array.length; i++) {
+    if (!(i in array)) {
+      continue;
+    }
+
+
+    const result = callback.call(thisArg, array[i], i, array);
+    newArray[i] = result;
+  }
+
+
+  return newArray;
+};
+
+
+const numbers1 = [1, 2, 3, 4, 5];
+// @ts-ignore
+const doubledNumbers = numbers1.customMap(function (num) {
+  return num * 2;
+});
+
+
+console.log(doubledNumbers); // Output: [2, 4, 6, 8, 10]
+console.log(doubledNumbers.length); // Output: [2, 4, 6, 8, 10]
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+const obj = {
+  multiplier: 2,
+  multiply: function (num) {
+    return num * this.multiplier;
+  }
+};
+const multipliedNumbers = numbers1.map(obj.multiply, obj);
+console.log(multipliedNumbers); // Output: [2, 4, 6, 8, 10]
+
+
+// higher order functions
+// Higher-order function that returns a function
+function createMultiplier(multiplier) {
+  // This function is returned by createMultiplier
+  return function (number) {
+    return number * multiplier;
+  };
+}
+
+
+// Create a multiplier function with a multiplier of 2
+const double = createMultiplier(2);
+const triple = createMultiplier(3);
+
+
+// Use the multiplier function to double a number
+console.log(triple(4));
+console.log(double(5)); // Should return 10
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+// reducer function
+const n1 = [1, 2, 3];
+const initSum = 0;
+const addition = (sum, currentEle) => {
+  return sum + currentEle;
+};
+console.log(n1.reduce(addition, initSum));
+
+
+// flat
+console.log([1, 2, [3, 4]].flat());
+
+
+// call apply bind
+var bikeDetails = {
+  displayDetails: function (registrationNumber, brandName) {
+    return (
+      this.name +
+      " , " +
+      "bike details: " +
+      registrationNumber +
+      " , " +
+      brandName
+    );
+  }
+};
+
+
+var person1 = { name: "john" };
+
+
+var detailsOfPerson1 = bikeDetails.displayDetails.bind(
+  person1,
+  "TS0122",
+  "Bullet"
+);
+
+
+// Binds the displayDetails function to the person1 object
+detailsOfPerson1();
+// Returns john, bike details: TS0122, Bullet
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+// call will directly call the function
+// same as call but array arguments
+// bind return a function
+
+
+class Person1 extends Human {}
+
+
+// closure
+// inheritance
+
+
+// fallback object
+
+
+// new Promise().then()
+
+
+console.log(1);
+
+
+setTimeout(() => {
+  console.log(2);
+}, 1000);
+
+
+console.log(3);
+
+
+// 1,3,2
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+function summation(num1) {
+  let sum = num1;
+  function innerFunction(num2) {
+    sum = sum + num2;
+    return sum;
+  }
+  return innerFunction;
+}
+
+
+console.log(summation(1)(3)());
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+/*
+for arr.some() example use us bank branch hours array example
+that array object had weekdays data, each day having
+start timing, end timing, and is for the whole week those 2 properties
+are null then that particular branch is temporary closed
+or else if some data is present when those timings data are present
+then its just the case of holidays on other weekdays
+so use chatgpt to create this data and keep this example as an example of
+arr.some() method
+*/
+
+
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+// -------------------------------------------------------------------
+
+
+function findDuplicates(nums) {
+  const seen = {};
+  const duplicates = [];
+
+
+  for (let i = 0; i < nums.length; i++) {
+    const num = nums[i];
+    if (seen[num]) {
+      duplicates.push(num);
+    } else {
+      seen[num] = true;
+    }
+  }
+
+
+  return duplicates;
+}
+
+
+const numsArrr = [1, 2, 3, 4, 5, 2, 7, 8, 1];
+console.log("Duplicates:", findDuplicates(numsArrr));
+
+
+/*
+
+
+: Given an array. Multiply all elements
+ and if the result is negative, return 1.
+If the result is positive,
+ return 1.
+if the result is 0 return 0. Let arr = [1,4,5,7,2,8,-1]
+*/
+
+
+// store result
+// loop
+// multiply
+// checks
+
+
+function checkMultiplication(arr) {
+  let result = 1;
+  arr.forEach((el) => {
+    result = result * el;
+  });
+
+
+  if (result === 0) {
+    return 0;
+  } else {
+    return 1;
+  }
+}
+const test = [1, 4, 5, 7, 2, 8, -1];
+console.log(checkMultiplication(test));
+
+
+const test2 = [1, 4, 5, 7, 2, 8, 0];
+console.log(checkMultiplication(test2));
+
+
+const test3 = [1, 4, 5, 7, 2, 8];
+console.log(checkMultiplication(test3));
+
+
+// capitalise first letter of each word
+
+
+let str1 = "I am js developer";
+
+
+// array - split - words array
+// for each word - capitlise the first
+//  store it
+// join that array
+
+
+function capitalizeString(str) {
+  let allWords = str.split(" ");
+  let updateWords = [];
+  for (let i = 0; i < allWords.length; i++) {
+    const word = allWords[i];
+    const capitalize = word.charAt(0).toUpperCase();
+    const remainingString = word.slice(1);
+    const updatedWord = capitalize + remainingString;
+    updateWords.push(updatedWord);
+  }
+
+
+  const updatedStr = updateWords.join(" ");
+  return updatedStr;
+}
+
+
+console.log(capitalizeString(str1));
+
+
+
+
+
+
+Caspex - hydr - experian
+
+
+
+
+function abc (){
+	return new Promise((resolve,reject)=> {
+  	setTimeout(()=>{
+    resolve()
+    },2000)
+	  })
+}
+ 
+(async function(){
+for(let i =0;i<10; i++){
+	const value =await abc()
+  console.log(i)
+}
+})()
+
+
+Randstad - Walmart
+
+
+Mobx complete code using missing words or code from dropdown
+React class component codes
+Design patterns in react
+Class set state syntax
+React key prop warning and printing a list
+
+
+
+Coding problem 
+Simulator - Find and replace the word or group of words using replaceAll
+
+https://kodevalapp.glider.ai/browserurl/633c61e95a00756b07f444ff_1121326_282055_editablequestions-genericui-q1574062193007_1/index.html
+
+
+
+
+
+
+
+
+
+
+
+
+Typescript 
+
+
+Inheritance - extends
+Why typescript Static typing 
+and why is it beneficial - 
+Access modifiers and how do they impact class members - public, protected, private
+
+Product Cordova and typescript
+
+
+Experian - Caspex - hyderabad - R2
+
+
+https://codesandbox.io/p/sandbox/boring-heisenberg-g7gmt9?file=%2Fsrc%2FApp.js%3A27%2C12-27%2C17
+
+Basic questions
+
+
+
+
+Closures
+javascript 
+React
+Virtual dom
+Context api example
+Create a Error boundary example 
+Custom hooks
+React hook
+What are react hooks
+Prototypal chaining
+Typescript
+
+
+
+
+
+
+Node
+Buffer 
+Streams
+How to handle multiple requests
+Node js sockets
+DBMS Stored procedures
+SQL
+
+
+
+
+
+
+
+Accion labs
+
+https://codesandbox.io/p/sandbox/summer-architecture-jh8hpq?file=%2Fsrc%2Findex.mjs%3A21%2C27
+
+
+
+
+Mobile Programming AI recruitment
+
+
+
+function foo() {
+    console.log(a);
+}
+
+
+function bar() {
+    var a = 5;
+    foo();
+}
+
+
+var a = 10;
+bar();
+
+—--------------------------------------------------------------------
+let a = true;
+
+
+setTimeout(() => {
+a = false
+}, 2000);
+
+
+
+
+while (a) {
+    // Infinite loop
+console.log("test")
+}
+—--------------------------------------------------------------------
+function findLeaders(arr) {
+    const leaders = [];
+    let maxRight = arr[arr.length - 1]; // Start with the last element as the maximum
+    leaders.push(maxRight); // The last element is always a leader
+
+
+
+
+    // Iterate the array from right to left
+    for (let i = arr.length - 2; i >= 0; i--) {
+        if (arr[i] > maxRight) {
+            leaders.unshift(arr[i]); // Add the leader to the beginning of the leaders array
+            maxRight = arr[i]; // Update the maximum element encountered so far
+        }
+    }
+
+
+
+
+    return leaders;
+}
+
+
+
+
+const array = [16, 17, 4, 3, 5, 2];
+const leaders = findLeaders(array);
+console.log('Leaders:', leaders); // Output: [17, 5, 2]
+
+
+
+
+
+
+—--------------------------------------------------------------------
+
+
+
+
+function findMissing(arr, N) {
+    // Calculate the sum of the first N natural numbers
+    let sumNatural = N * (N + 1) / 2;
+
+
+    // Calculate the sum of all elements in the array
+    let sumArr = arr.reduce((acc, curr) => acc + curr, 0);
+
+
+    // The missing number is the difference between the sum of natural numbers and the sum of the array elements
+    let missingNumber = sumNatural - sumArr;
+
+
+    console.log(missingNumber);
+}
+
+
+// Example usage:
+let arr = [1, 3, 7, 5, 6, 2];
+let n = arr.length + 1; // Considering one number is missing
+findMissing(arr, n);
+
+
+
+
+
+
+
+
+
+
+Warp drive Bangalore
+
+
+https://stackblitz.com/edit/vitejs-vite-fxw38y?file=index.html&terminal=dev
+https://fakestoreapi.com/products
+You
+3:28 PM
+config driven ui
+Hover over a message to pin it
+Keep
+https://fakestoreapi.com/products
+https://stackblitz.com/edit/vitejs-vite-ljjxo7?file=src%2FApp.tsx,src%2FApp.css,src%2Findex.css,src%2Fmain.tsx&terminal=dev
+
+
+
+
+
+
+System design
+For project
+Config drive ui
+Next config js
+Css
+Sass
+Positioning
+animations
+Searching and sorting 
+
+
+ARM semiconductor
+
+
+
+
+
+
+
+
+
+
+Infovision labs
+
+https://stackblitz.com/edit/vitejs-vite-cmksah?file=src%2FApp.tsx,public%2Fproducts.,src%2FLoginForm.tsx&terminal=dev
+
+
+
+import { useState } from 'react';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
+import './App.css';
+
+
+// create a calculator
+
+
+//0 to 9
+
+
+// input
+
+
+// add
+// minus
+// div
+// multi
+function App() {
+  const nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const [value, setValue] = useState([]);
+  // const handleChange = (e) => {
+  //   const v = e.currentTarget.value;
+  //   setValue(v);
+  // };
+  const handleClick = (e, input) => {
+
+
+    if(input==='add') {
+      setValue((prevState) => {
+        const temp = [...prevState];
+        temp.push(input);
+        return temp;
+      });
+    }
+  };
+  const getAnswer = () => {
+    let result = 0;
+    value.forEach((el) => {});
+  };
+  const add = () => {};
+  return (
+    <>
+      <div>
+        <div>
+          <input value={value} />
+        </div>
+        <br />
+        {nums.map((n) => {
+          return <button onClick={(e) => handleClick(e, n)}>{n}</button>;
+        })}
+        <button onClick={(e) => handleClick(e, 'add')}>+</button>
+        {/* <button onClick={getAnswer}>=</button> */}
+      </div>
+    </>
+  );
+}
+
+
+export default App;
+
+
+
+function createCounter() {
+  let count = 0;
+
+
+  function innner() {
+    return ++count;
+  }
+
+
+  return innner;
+}
+
+
+const counter = createCounter();
+
+
+console.log(counter());
+console.log(counter());
+
+
+
+
+const arr1 = [[2,4,3,1],[3,7,11,13]]
+
+
+// [3,11]
+
+
+
+
+function findSecondHighest(arr){
+
+
+let result = []
+  arr.forEach(el =>{
+
+
+  const temp = el.slice().sort((a,b)=>a-b)
+  const high = temp[temp.length - 2];
+  result.push(high);
+})
+return result;
+}
+
+
+
+
+console.log(findSecondHighest(arr1));
+
+
+// 6 api -- all -  allSettled
+
+
+
+
+
+
+
+
+
+
+Harman L2 - round 2
+
+
+https://stackblitz.com/edit/vitejs-vite-ijnhsc?file=src%2FApp.tsx,src%2FApp.css,src%2Findex.css&terminal=dev
+
+
+Always watch your job description before going for the round 2 
+
+
+
+
+
+
+// 1. setTimeout is declared first, with a delay of 2 seconds
+setTimeout(() => {
+  console.log('setTimeout function executed');
+}, 2000);
+
+
+// 2. The Promise is declared with a delay of 4 seconds
+const myPromise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    console.log('Promise executed');
+    resolve('Promise resolved');
+  }, 4000);
+});
+
+
+// 3. The Promise is then handled
+myPromise.then((result) => {
+  console.log(result);
+});
+
+
+
+
+
+
+Create polyfill of debounce
+
+
+
+
+
+
+setTimeout function executed
+Promise executed
+Promise resolved
+
+
+
+
+
+
+const [test,setTest] = useState(value)
+setTest(function(prevValue){
+return updateVal;
+
+
+})
+
+
+function useState(initialValue){
+
+
+let state = initialValue || undefined;
+
+
+
+
+function setState (callbackOrValue) {
+
+
+if(typeof callbackOrValue !== 'function') {
+  state = callbackOrValue
+}
+  else {
+    const updatedValue = callbackOrValue(state)
+    state = updatedValue;
+  }
+  // rerender
+}
+  
+  
+
+
+return [state, setState];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const [test,setTest] = useState(value);
+
+
+setTest(function(prevValue) {
+  return updateVal;
+})
+
+
+
+
+let state = undefined;
+
+
+function useState(initialValue){
+
+
+
+
+if(state == undefined) {
+  state = initialValue;
+}
+
+
+function setState (callbackOrValue) {
+
+
+  if(typeof callbackOrValue !== 'function') {
+    state = callbackOrValue
+  }
+  else {
+    const updatedValue = callbackOrValue(state)
+    state = updatedValue;
+  }
+  // rerender
+  }
+  
+  
+
+
+  return [state, setState];
+}
+
+
+
+
+
+
+
+
+
+
+X Factor. ai
+
+
+https://codesandbox.io/p/live/b44d645e-71e5-49d2-8158-c3f43ea7c2c6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Tech mahindra
+
+
+
+
+[11:08 AM] Gokulan Ayyakkannu
+var a=10;
+
+
+var b="Hello"
+
+
+var c=10;
+
+
+console.log(a+b+c);
+
+
+console.log(b+a+c);
+
+
+console.log(a+c+b);
+
+
+
+
+
+
+
+
+
+
+https://codesandbox.io/p/sandbox/trusting-solomon-f7djhj?file=%2Fsrc%2Findex.html%3A8%2C9
+
+
+https://codesandbox.io/p/sandbox/bold-shannon-qwdgtn?file=%2Fsrc%2FApp.js%3A17%2C1
+https://codesandbox.io/p/sandbox/bold-shannon-qwdgtn?file=%2Fsrc%2FApp.js%3A1%2C34
+
+
+
+
+
+Speridian technologies
+
+
+// return 5 .then .then. Finally
+// return 10
+// return 15
+What does the finally do
+
+
+// [5:27 PM] Shreesh Nirgudkar
+// "My name is Rahul" 
+
+
+const test = "My name is Rahul";
+
+
+test.split(" ");
+word.map(w=> w.reverse()).join(" ")
+
+
+// store 
+// space - > " "
+// loop 
+// parent - useCallback(callback)
+// child
+
+
+
+
+function reverseWords(str) {
+  let words = [];
+  let word = "";
+  for(let i = 0; i < str.length; i++){
+    const currentChar = str[i];
+    if(currentChar === " "){
+      let reversed = ""
+      for(let t = word.length; t >= 0; t--){
+        reversed = reversed + word[t];
+      }
+      words.push(reversed);
+      word = ""
+      continue;
+    }
+    word = word + currentChar;
+  }
+  
+  let join = "";
+  for(let w = 0 ; w < words.length ; w++){
+    join = join  + word + (w === words.length - 1  ? "" : " ");
+  }
+
+
+  return join;
+}
+
+
+
+
+console.log(reverseWords(test));
+
+Speridian technologies Round 2
+
+
+const T = [[1,2,3],[4,5,6],[7,8,9]];
+// n * n+1 / 2 => 9 (10)/ 2 -> 45 / 9 = 5
+
+
+
+
+
+
+
+
+function avg (arr){
+  let avgFinal = 0;
+  arr.forEach((ar)=>{
+    let sum = 0;
+    for(let i = 0; i< ar.length; i++){
+      sum = sum + ar[i];
+    }
+    const avg = sum / ar.length;
+    avgFinal = avgFinal + avg;
+  });
+  
+  return avgFinal / arr.length;
+}
+
+
+console.log(avg(T));
+
+
+// debounce
+
+
+// function cb
+// check if timer id - reset timer
+// otherwise create timer
+
+
+
+
+function debounce(callback, time){
+
+
+    let timerId = null;
+
+
+  
+  return function(...arg) {
+    
+      if(timerId){
+          clearTimeout(timerId);
+      }
+   
+        timerId = setTimout(()=>{
+                    callback(...arg);
+                  },time)
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+slate.ai round 2
+
+
+
+
+[8:13 PM] Mayank Kodesia
+Reverse a string 
+Input:- My name is Rahul
+Output: Rahul is name My
+[8:19 PM] Mayank Kodesia
+list = [1,2,3,4,4,4,4,3,3,3,3,3,,5,5,5]
+Find out the number having maximum occurance in the list
+[8:19 PM] Mayank Kodesia
+here answer is 3
+[8:42 PM] Mayank Kodesia
+Given an unsorted array A of size N that contains only non negative integers, find a continuous sub-array that adds to a given number S and return the left and right index of that subarray
+ 
+ 
+input:N = 5, S = 12
+A[] = {1,2,3,7,5}
+Output: 1 3 
+ 
+Explanation: The sum of elements 
+from 1st position to 3rd position 
+is 12.
+
+
+
+
+
+
+
+
+
+
+// Reverse a string
+// Input:- My name is Rahul
+// Output: Rahul is name My
+const input = "My name is Rahul";
+function reverseWords(str1) {
+  const words = str1.split(" ");
+  const reverseWords = words.reverse();
+  const result = reverseWords.join(" ");
+  return result;
+}
+
+
+console.log(reverseWords(input));
+
+
+/*
+list = [1,2,3,4,4,4,4,3,3,3,3,3,,5,5,5]
+Find out the number having maximum occurance in the list
+*/
+
+
+// for
+// store key
+// if present - inc count
+// store
+// find the max occurance
+function findMaxOccurence(arr) {
+  let occurance = {};
+
+
+  for (let index = 0; index < arr.length; index++) {
+    const num = arr[index];
+    if (occurance[num]) {
+      occurance[num] = occurance[num] + 1;
+    } else {
+      occurance[num] = 1;
+    }
+  }
+
+
+  const allNums = Object.entries(occurance);
+  console.log(allNums);
+  let tempMax = allNums[0][0];
+  let tempMaxOccu = allNums[0][1];
+  //   allNums.forEach((ele) => {
+  //     console.log(ele);
+  //     if (tempMaxOccu < ele[1]) {
+  //       tempMax = ele[0];
+  //     }
+  //   });
+  for (let index = 1; index <= allNums.length - 1; index++) {
+    const currEntry = allNums[index];
+    if (tempMaxOccu < currEntry[1]) {
+      tempMaxOccu = currEntry[1];
+      tempMax = currEntry[0];
+    }
+  }
+  return { numb: tempMax, occur: tempMaxOccu };
+}
+
+
+console.log(findMaxOccurence([1, 2, 3, 4, 4, 4, 4, 3, 3, 3, 3, 3, 5, 5, 5]));
+
+
+/*
+
+
+Given an unsorted array A of size N that contains only non negative integers, find a continuous sub-array that adds to a given number S and return the left and right index of that subarray
+ 
+ 
+input:N = 5, S = 12
+A[] = {1,2,3,7,5}
+Output: 1 3
+ 
+Explanation: The sum of elements
+from 1st position to 3rd position
+is 12.
+
+
+*/
+
+
+const A = [1, 2, 3, 7, 5];
+
+
+function findSub(arr, sum) {
+  // loop i
+  // add further ele === sum && tempSum > sum{// next index }
+
+
+  for (let i = 0; i < arr.length; i++) {
+    let tempSum = arr[i];
+    for (let j = i + 1; j < arr.length; j++) {
+      tempSum = tempSum + arr[j];
+      if (tempSum === sum) {
+        return [i, j];
+      }
+    }
+  }
+}
+
+
+console.log(findSub(A, 12));
+console.log(findSub(A, 5));
+console.log(findSub(A, 10));
+console.log(findSub(A, 18));
+
+
+
+
+
+
+
+
+Synechron
+
+
+
+
+
+
+In built closures in js
+Why do we use redux 
+What are the middleware in the redux and can we use any other than the thunk middleware
+Yes we can use our custom middleware to create custom async methods actions by which i can perform multiple actions for redux actions
+Gave a leetcode problem to solve  - was not able grasp or solve
+
+
+Then gave me a problem - creating a dynamic table, which can have dynamic headers and dynamic rows
+And headers can have dynamic buttons or inputs and then can be editable 
+What is content editable attribute into html
+
+
+What is css grid and css flex
+What are the 1 and -1 into css grid system
+
+
+
+
+
+
+
+
+https://leetcode.com/problems/cache-with-time-limit/description/
+
+
+Manoj
+7:52 PM
+https://leetcode.com/problems/cache-with-time-limit
+You
+8:21 PM
+https://codesandbox.io/p/sandbox/festive-glade-s5cq94?layout=%257B%2522sidebarPanel%2522%253A%2522EXPLORER%2522%252C%2522rootPanelGroup%2522%253A%257B%2522direction%2522%253A%2522horizontal%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522id%2522%253A%2522ROOT_LAYOUT%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522direction%2522%253A%2522vertical%252
+keep
+Pin message
+You
+8:22 PM
+https://codesandbox.io/p/sandbox/festive-glade-s5cq94?file=%2Fsrc%2FTable.jsx%3A7%2C23
+keep
+Pin message
+send
+Send message. Messages are recorded.
+Checking who can access file
+8:23PM
+mii-dozt-bsp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Randstad client - walmart (retail space)
+
+
+
+
+
+
+What are Nested views
+Memory leakages in react
+Optimization apart from the hooks - because of now react will be having compiler
+What are the optimization way like other than the hooks - code splitting, lazy loading, splitting the app it self,
+Need to know the Architecture level of things as the senior person
+What is Owasp
+What is WCAG
+
+
+What is redux and why do we use redux and how does it optimises the performance of the application
+What does it(redux) do that enhances the performance
+- redux can be used when we have some of the states which can be common for multiple components then those states can be used as the redux states because when we use use selector hook it ensure only the consumer components are only rerendered
+
+
+What are the hook by which we can check this part of the code is re rendering these many times,
+- he was expecting some time slot related hooks which can be used to also see the performance of the component
+Normal answers like chrome dev tools, redux dev tools, console logs, use effect, strict mode are not valid in this case
+They wanted advance concepts only
+
+
+They wanted someone who knows how to build frameworks from the scratch and someone who have deep level of understanding at the react and javascript level
+
+
+
+
+Why do we use bootstrap and tailwind css preprocessors apart from reducing the css file size what problems does it solve
+
+
+So is makes my web app looks same across cross platform devices, that is why we use css frameworks like bootstrap
+
+
+What is cross browser compatibility 
+And how can we achieve that into react project - modernizr - is the library or tool by which we can build cross browser web apps not using polyfills and blah blah blah
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EY - client - Adobe - round 1 
+https://codesandbox.io/p/sandbox/kind-wing-qwr6sz?file=%2Fsrc%2Findex.mjs%3A31%2C24
+
+
+// arr.map(callback) => []
+function (){
+counter = 0
+functoin innerfunction(){
+counter ++
+}
+ 
+return innerfucntion
+}
+
+
+Array.prototype.map = function(callback) {
+    const arry = this;
+    const result = [];
+    for(let i =0; i < arry.length; i++) {
+        const temp = callback(arry[i], i, arry);
+        result.push(temp);
+    }
+    return result;
+}
+
+
+// push pop empty
+
+
+const q = Queue([1,2,3]);
+q.push(5); // [1,2,3,5]
+ // q.pop() -> 1; -> [2,3,5]
+ // q.empty() -> []
+
+
+
+
+
+
+class Queue(init) {  
+constructor() {
+  this.q = [...init]
+}
+
+
+
+
+ push(element) {
+this.q.push(element)
+  
+}
+
+
+
+
+pop(){
+return this.q.shift();
+}
+
+
+
+
+
+
+empty() {
+this.q =[]
+return this.q;
+}
+  
+}
+
+
+
+
+
+
+
+
+Answer 
+
+
+class Queue {
+  constructor(init = []) {
+    this.q = [...init];
+  }
+
+
+  push(element) {
+    this.q.unshift(element);
+    return this.q;
+  }
+
+
+  pop() {
+    this.q.pop();
+    return this.q;
+  }
+
+
+  empty() {
+    this.q = [];
+    return this.q;
+  }
+}
+
+
+const q = new Queue([1, 2, 3]);
+console.log(q.push(5));
+console.log(q.pop()); // -> 3
+console.log(q.empty());
+
+
+
+
+EY Round 2 
+
+
+Const test = “”
+if( test) console.log(entered if block);
+Else console.log(entered else  block)
+
+
+
+
+Const result = test && “new”
+
+
+Max frequency
+
+
+
+
+Const colors = [‘red’, yellow, white]
+Const selectedColor = {color : ‘indigo’};
+// 
+Const colorTobereplaced = ‘yellow’
+
+
+// Bracket pair validator
+const goodBrackets_1 = '(((())))';
+const goodBrackets_2 = '(()())';
+const badBrackets_1 = '(()())()))';
+const badBrackets_2 = '(()))(()';
+
+
+
+
+Main heading
+
+
+Some description message 
+
+
+
+
+// new Set
+// find index of last
+// swap with last value
+// object 
+// inplace - without in place memoery
+On^2
+
+
+Flattern array
+// array - to string 
+// comma separated - propeteie will give flatern array
+
+
+// higher order function 
+// patterns.dev
+
+Componnet composition pattern
+
+
+
+
+
+const colors = ['red', 'yellow','yellow','yellow', 'white', 'white']
+const selectedColor = {color : 'indigo'};
+const colorTobereplaced = 'yellow';
+
+
+
+
+const result = colors.map((color)=>{
+if(color === colorTobereplaced){
+return selectedColor.color
+}
+return color;
+});
+
+
+console.log(result);
+
+
+
+
+// console.log(new Set(colors));
+
+
+function removedDupicates (arr) {
+let occur= {}
+arr.forEach((color)=>{
+if(!occur[color]){
+	occur[color] = color;
+}
+})
+return Object.keys(occur);
+}
+
+
+
+
+console.log(removedDupicates(colors));
+
+
+
+
+
+
+
+
+const goodBrackets_1 = '(((())))';
+const goodBrackets_2 = '(()())';
+
+
+const badBrackets_1 = '(()())()))';
+
+
+
+
+
+
+function isGoodBrackets(str){
+let tokens =[];
+
+
+const brcs = str.split("")
+for(let i = 0; i < brcs.length; i ++){
+const token = brcs[i];
+if(token ==='('){
+tokens.push('(');
+}
+if(token=== ')'){
+const res = tokens.pop();
+if(!res){
+return false;
+}
+}
+
+
+}
+
+
+
+
+if(tokens.length > 0){
+return false;
+}
+return true;
+}
+
+
+console.log(isGoodBrackets(goodBrackets_1));
+console.log(isGoodBrackets(goodBrackets_2));
+console.log(isGoodBrackets(badBrackets_1));
+const badBrackets_2 = '(()))(()';
+console.log(isGoodBrackets(badBrackets_2));
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container">
+
+
+<div class="child">
+<h3>
+Main Heading
+</h3>
+ <p>
+ Some description message
+ </p>
+</div>
+</div>
+useCallback(callback, [state]);
+
+
+
+
+
+
+new Promise((resolve, reject)=>{
+
+
+// resolve(result);
+
+
+reject();
+
+
+})
+
+
+.container {
+  background-color:grey;
+  height:200px;
+  display:flex;
+  justify-content:center;
+  align-items: center;
+}
+
+
+
+
+EY Round 3
+https://awesome-dresser-e79.notion.site/React-Interview-Question-1-28f71c04e62a43538f6517545e9174ed
+
+
+### Editor
+
+
+- Application to read a list of JSON files from the file system, view, and edit them.
+- URL needs to be unique so that specified file contents are loaded.
+- Only when the Update button is clicked, Viewable JSON needs to be updated.
+- If the JSON is invalid, an error message must be shown inline and the update button should be disabled.
+- When the reset button is pressed, the original JSON must be updated in Viewable and Editable JSON.
+
+
+### Left Navigation menu
+
+
+- 2-level, expandable menu (2nd level is optional)
+- The currently selected item needs to be highlighted
+https://codesandbox.io/p/sandbox/mystifying-phoebe-q6r2x6?file=%2Fsrc%2FApp.js%3A1%2C1-62%2C1
+Data.json
+
+{
+  "test": "test",
+  "person": {
+    "firstName": "rahul",
+    "lastName": "parmar"
+  },
+  "array": [12, 3]
+}
+
+
+Styles 
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+}
+.left {
+  width: 300px;
+  padding: 20px;
+}
+.content-editors {
+  width: 80%;
+  height: 80%;
+}
+.viewable {
+  border: 1px solid black;
+}
+.right {
+  width: 40%;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.right-side-footer {
+  width: 80%;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+
+.btn {
+  border-radius: 4px;
+  background-color: cornflowerblue;
+  border-color: darkblue;
+  color: white;
+  padding: 6px 10px;
+}
+.reset {
+  background-color: bisque;
+  color: black;
+  border-color: burlywood;
+}
+
+
+
+
+
+
+import "./styles.css";
+import { useState } from "react";
+import data from "./data.json";
+export default function App() {
+  const originalData = JSON.stringify(data, null, 4);
+
+
+  const [fileInput, setFileInput] = useState(originalData);
+  const [readOnlyInput, setReadOnlyInput] = useState("");
+
+
+  const handleChange = (e) => {
+    const val = e.target.value;
+    setFileInput(val);
+  };
+
+
+  const validateJSON = () => {
+    try {
+      const updatedJson = JSON.parse(fileInput);
+      const updatedValue = JSON.stringify(updatedJson, null, 4);
+      setReadOnlyInput(updatedValue);
+    } catch (error) {
+      alert("Invalid json", error);
+    }
+  };
+
+
+  const handleReset = () => {
+    setFileInput(originalData);
+    setReadOnlyInput(originalData);
+  };
+
+
+  return (
+    <div className="App">
+      <div className="container">
+        <div className="left">
+          {/* <textarea
+            className="content-editors"
+            disabled
+            value={readOnlyInput}
+          /> */}
+          <pre className="content-editors viewable">{readOnlyInput}</pre>
+        </div>
+        <div className="right">
+          <textarea
+            className="content-editors"
+            placeholder="editable json"
+            value={fileInput}
+            onChange={handleChange}
+          />
+
+
+          <div className="right-side-footer">
+            <button className="btn" onClick={validateJSON}>
+              Update
+            </button>
+            <button className="btn reset" onClick={handleReset}>
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+
+
+EY Round 4 - adobe - hr - round - 22 fix - upto 26 variable
+
+
+const T = [true, false, true,false, null,undefined];
+
+
+function checkFalsy(arr){
+  let counter = 0;
+  for(let i = 0; i < arr.length; i++){
+    if(arr[i] === false) {
+      counter = counter + 1;
+      if(counter > 1){
+          return false;
+      }
+    }
+  }
+if(counter === 1){
+  return true;
+}
+}
+
+
+
+
+console.log(checkFalsy(T));
+
+
+
+
+
+
+X Factor ai
+
+
+https://codesandbox.io/p/sandbox/sleepy-water-3fr4jf?file=%2Fsrc%2FApp.tsx%3A1%2C1-20%2C1
+
+
+Why do we use redux
+What are the hooks that you have used in react
+What are the optimization techniques that you have used for the react application
+Have you use custom hooks and for what type of implementation you have used custom hooks
+What are the promises
+What do we used async and await
+What is the difference between use state and use ref
+Why do we use ref
+Why do we use forward ref hoc
+How to call child callback function from parent component button click
+
+
+
+
+[5:12 PM] William Jones Ebenezar
+Find the problem with the code why even if we click on the stop button the printing of the number does not stop
+
+
+import { useState, useEffect } from "react";
+ 
+const StartStopButton = () => {
+  const [count, setCount] = useState(2000);
+  const [isLooping, setIsLooping] = useState(false);
+ 
+  const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+ 
+  useEffect(() => {
+ 
+    const loop = async () => {
+      for (let i = 1; i <= count; i++) {
+        console.log(i);
+        try {
+          await delay(500);
+          if (!isLooping)
+             break;
+        } catch (error) {
+          console.error(error);
+          break;
+        }
+      }
+    };
+ 
+    if (isLooping) {
+      loop()
+    }
+  }, [count, isLooping]);
+ 
+  const handleStartStop = () => {
+    setIsLooping(!isLooping);
+  };
+ 
+  return (
+    <div>
+      <input type="number" onChange={(e) => setCount(+e.target.value)} />
+      <button onClick={handleStartStop}>{isLooping ? 'Stop' : 'Start'}</button>
+    </div>
+  );
+};
+ 
+ 
+export default StartStopButton;
+ 
+ 
+[5:23 PM] William Jones Ebenezar
+const fetchTodos = async ()=>{
+    const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+    const data = await response.json();
+    console.log(data);
+}
+ 
+fetchTodos();
+ 
+console.log("demo")
+
+
+
+
+There is problem with this code on stop click the printing of the console log numbers is not happening
+import { useState, useEffect } from "react";
+
+
+// parent - click
+// Child - ref - dispatch
+const StartStopButton = () => {
+  const [count, setCount] = useState(2000);
+  const [isLooping, setIsLooping] = useState(false);
+
+
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
+
+  useEffect(() => {
+    const loop = async () => {
+      for (let i = 1; i <= count; i++) {
+        console.log(i);
+        try {
+          await delay(500);
+          if (!isLooping) break;
+        } catch (error) {
+          console.error(error);
+          break;
+        }
+      }
+    };
+
+
+    if (isLooping) {
+      loop();
+    }
+  }, [count, isLooping]);
+
+
+  useEffect(() => {
+    console.log("rahul parmar");
+  });
+
+
+  const handleStartStop = () => {
+    setIsLooping((prevState) => !prevState);
+  };
+
+
+  return (
+    <div>
+      <input type="number" onChange={(e) => setCount(+e.target.value)} />
+      <button onClick={handleStartStop}>{isLooping ? "Stop" : "Start"}</button>
+    </div>
+  );
+};
+
+
+export default StartStopButton;
+
+
+
+KPMG
+
+
+- create simple todo component
+- input
+- on add button click add the input text to todo list
+- display to do list using ul li 
+- on li click toggle todo done or not done state
+- show appropriate count of the all todos and remaining todos
+
+
+import cx from 'classnames';
+import { Component } from 'react';
+
+
+export default class TodoList extends Component {
+    constructor(props){
+        super(props);
+        this.state={
+            inputText:"",
+            todos:[]
+        }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleAddTodo= this.handleAddTodo.bind(this);
+        this.handleTodoClick = this.handleTodoClick.bind(this);
+    }
+
+
+handleChange(event) {
+    const val = event.target.value;
+    this.setState({ inputText: val });
+}
+
+
+handleAddTodo() {
+const aTodo = { name: this.state.inputText, isDone: false};
+if(this.state.inputText){
+this.setState((prevState)=>({
+    inputText:"",
+    todos:[...prevState.todos, aTodo]
+}))
+}
+}
+
+
+
+
+handleTodoClick(todoId) {
+
+
+const updatedTodos = this.state.todos.map((todo, index)=>{
+    if(index === todoId){
+        const updatedTodo = {...todo, isDone: !todo.isDone };
+        return updatedTodo;
+    }
+    return todo;
+})
+
+
+ this.setState({
+     todos: updatedTodos
+ })
+}
+
+
+    render() {
+        const remainingTasksCount = this.state.todos.filter(todo => !todo.isDone).length;
+        return (
+            <>
+                <div>
+                <input type="text" value={this.state.inputText} onChange={this.handleChange}/>
+                <button onClick={this.handleAddTodo}>Add</button>
+                <div className="task-counter">{remainingTasksCount} remaining out of {this.state.todos.length} tasks</div>
+                <ul>
+                {this.state.todos.map((todo, todoId)=>(
+                <li className={cx({"is-done": todo.isDone})} key={`${todo.name}${todoId}`}  onClick={()=>this.handleTodoClick(todoId)}>
+                {todo.name}
+                </li>
+                ))}
+                </ul>
+                </div>
+                <style>{`
+                    .is-done {
+                        text-decoration: line-through;
+                    }
+                `}</style>
+            </>
+        );
+    }
+}
+
+
+
+
+
+
+
+
+
+
+Synechron round 2
+
+
+React fiber
+Diff between polyfills and prototype methods
+Give proper examples between the use cases of those two
+Why should we use redux
+What is react unidirectional flow
+How does react virtual dom work internally
+Why do we create mock into jest unit testing
+What  are the aria attributes that you have used for the projects
+
+
+Javascript garbage collection
+JS garbage collection algorithm
+TypeScript Utility Types
+Generics
+Index typing
+Interface
+Type alias
+Mark and sweep algorithm for javascript
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Indium Software
+https://codesandbox.io/p/sandbox/nostalgic-browser-dmsgx7?file=%2Fsrc%2FApp.js%3A10%2C27
+
+
+React fibre
+Propr drilling
+redux
+
+
+Event loop
+Mechanism
+Does Promises also goes into control of browser apis
+Fetch will goes into control of browser api
+
+
+
+
+
+
+
+
+Interviewer
+12:40 PM
+https://docs.google.com/document/d/1ZSbGTXM24nB2_kEagVqk2F-K6fcdOtBWuKMdzN7qNbw/edit
+You
+1:15 PM
+useRef - el, instance
+use callback -
+You
+1:16 PM
+data transformation
+atm - counter 0 12
+You
+1:21 PM
+memo(comp, callback) - hoc - props, callback - 
+should comp(prepops, cureprop) - return true , false
+pure comp - props - output
+You
+1:23 PM
+var t  undefined - null - ""
+You
+1:25 PM
+Object Array.prototype.doulbe - inehritance - extends - REact.Class
+You
+1:27 PM
+Object -
+You
+1:32 PM
+var let const
+
+
+import React, { useState } from "react";
+import "./styles.css";
+
+
+const APIURL = "https://jsonplaceholder.typicode.com/users";
+
+
+function App() {
+  const [users, setUsers] = useState([]);
+  const [sorted, setSorted] = useState([]);
+  const [order, setOrder] = useState("default");
+  const getUsers = () => {
+    fetch(APIURL)
+      .then((res) => res.json())
+      .then((result) => {
+        setSorted([...result]);
+        setUsers([...result]);
+      });
+  };
+
+
+  const sortList = () => {
+    //write code here
+    // sort the user list by name's length
+    // on first click list will sorted in assending order
+
+
+    // default
+    // setUsers()
+    // assending
+    if (order === "default") {
+      const updated = [...users].sort(
+        (u1, u2) => u1.name.length - u2.name.length
+      );
+      setSorted([...updated]);
+      setOrder("ascending");
+    }
+    // on second click list will be sorted in descending order
+    // assending
+    // setUsers
+    if (order === "ascending") {
+      const updated = [...users].sort(
+        (u1, u2) => u2.name.length - u1.name.length
+      );
+      setSorted([...updated]);
+      setOrder("descending");
+    }
+    // on third click default list will be rendered
+    // descending
+    // setUsers
+    // default
+    console.log(order);
+    if (order === "descending") {
+      setSorted([...users]);
+      // setUsers([...users]);
+      setOrder("default");
+    }
+  };
+  // console.log(result, sorted);
+  return (
+    <main>
+      <h1>User List</h1>
+      <div>
+        <button onClick={getUsers}>Get Users</button>
+        <button onClick={sortList}>Sort list </button>
+      </div>
+      <ul>
+        {sorted.map((user) => {
+          return <li key={user.id}>{user.name}</li>;
+        })}
+      </ul>
+    </main>
+  );
+}
+
+
+export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+jsbin
+
+
+FE - Nizam 16:15
+hoisting
+function k() {
+   var a = 100;
+  function inner() {
+    c = 100
+  }
+  inner()
+}
+k();
+const b = 100;
+console.log(a + b + c);
+Messages addressed to "Meeting Group Chat" will also appear in the meeting group chat in Team Chat
+
+
+FE - Nizam 16:24
+printGreeting()
+printName()
+const printName = () => {
+  console.log("Hello Biswajit")
+}
+function printGreeting() {
+  console.log("Welcome")
+}.
+
+
+FE - Nizam 16:31
+function printPopulation() {
+  setTimeout(() => {
+    console.log("1000000000");
+  }, 0);
+}
+
+
+function printMessage() {
+  new Promise((resolve) => {
+    resolve("Hello world");
+  }).then((text) => console.log(text));
+}
+
+
+printPopulation();
+printMessage();
+
+
+FE - Nizam 16:35
+const user = {
+  fname: "John",
+  lname: "doe",
+  address: {
+    city: "Delhi",
+  },
+  printName: function () {
+    console.log(this.fname + " " + this.lname);
+  },
+};
+const user2 = {
+  ...user,
+};
+user2.address.city = "Mumbai";
+user.fname = "Rajat";
+console.log(user.address.city, user2.address.city);
+console.log(user.printName(), user2.printName());
+
+
+
+
+Stop unnecessary rerendering of the components
+
+
+const [salary, setSalary] = useState(2000);
+  const [age, setAge] = useState(30);
+
+
+  const incrementAge = () => {
+    setAge(age + 5);
+  };
+
+
+  const incrementSalary = () => {
+    setSalary(salary + 100);
+  };
+  return (
+    <div>
+      <Title />
+      <Display text="age" displayvalue={age} />
+      <Button handleClick={incrementAge}>Update Age</Button>
+      <Display text="salary" displayvalue={salary} />
+      <Button handleClick={incrementSalary}>Update Salary</Button>
+    </div>
+  );
+
+
+FE - Nizam 16:40
+const Title = () => {
+  console.log("Title Component is rendered");
+  return <h1>This is title</h1>;
+};
+
+
+const Display = ({ text, displayvalue }) => {
+  console.log("Display Component Rendered ", { displayvalue });
+
+
+  return (
+    <p>
+      This person's {text} is {displayvalue}
+    </p>
+  );
+};
+
+
+const Button = ({ handleClick, children }) => {
+  console.log("Button Component Renders - ", { children });
+  return <button onClick={handleClick}>{children}</button>;
+};
+FE - Nizam left
+
+
+
+
+
+
+import "./styles.css";
+import React, { useCallback, useState } from "react";
+export const Title = React.memo(() => {
+  console.log("Title Component is rendered");
+  return <h1>This is title</h1>;
+});
+
+
+const Display = React.memo(({ text, displayvalue }) => {
+  console.log("Display Component Rendered ", { displayvalue });
+
+
+  return (
+    <p>
+      This person's {text} is {displayvalue}
+    </p>
+  );
+});
+
+
+const Button = React.memo(({ handleClick, children }) => {
+  console.log("Button Component Renders - ", { children });
+  return <button onClick={handleClick}>{children}</button>;
+});
+export default function App() {
+  const [salary, setSalary] = useState(2000);
+  const [age, setAge] = useState(30);
+
+
+  const incrementAge = useCallback(() => {
+    setAge((prevAge) => prevAge + 5);
+  }, []);
+
+
+  const incrementSalary = useCallback(() => {
+    setSalary((prevSalary) => prevSalary + 100);
+  }, []);
+
+
+  return (
+    <div>
+      <Title />
+      <Display text="age" displayvalue={age} />
+      <Button handleClick={incrementAge}>Update Age</Button>
+      <Display text="salary" displayvalue={salary} />
+      <Button handleClick={incrementSalary}>Update Salary</Button>
+    </div>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+ITC limited
+const A = [15,26,36,49];
+// reverse digits
+
+
+
+
+// A.reverse()
+
+
+function reverse(arr){
+
+
+return arr.map((el)=>{
+
+
+const r = (el % 10);
+const t = Math.floor((el%100)/10)
+return Number(`${r}${t}`);
+});
+}
+
+
+console.log("reverse",reverse(A));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.container{
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  height:200px;
+}
+#btn-test{
+  background-color:red;
+}
+<div class="container">
+<div>
+
+
+
+
+<div class="child">
+child 1
+</div>
+<button  id="btn-test">
+btn
+</button>
+ </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { useState } from "react";
+import "./styles.css";
+let theme = ["red", "green", "yellow", "orange", "pink"];
+export default function App() {
+  const [counter, setCounter] = useState(1);
+  // usetestes
+  // counter
+  // 1 to 5
+  // 1 red
+  // 2 green
+  // 3 yellow
+  // 4 orange
+  // 5 pink
+  const handleClick = () => {
+    setCounter((prevState) => {
+      if (prevState === 5) {
+        return 1;
+      }
+      return prevState + 1;
+    });
+  };
+  return (
+    <div
+      className="App"
+      style={{ backgroundColor: theme[counter - 1], height: "vh" }}
+    >
+      <button onClick={handleClick}> change theme:{counter}</button>
+    </div>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+Wissen
+https://codesandbox.io/p/sandbox/charming-forest-59cqtc?file=%2Fsrc%2FApp.js%3A39%2C49
+
+
+Add to cart functionality
+Add button
+Remove button
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+HCL Tech client - PayPal
+
+
+Print numbers of the array after some delay
+Awaiting each element to be printed once
+
+Const arr = [3,4,1,5,6]
+
+Log all numbers after the delay which is equal to the number itself
+And log all numbers one after the other only rather than giving control to set time out timer
+
+
+
+
+
+
+const arr = [3, 4, 1, 5, 6];
+
+
+async function logNumbersWithDelay() {
+  for (let i = 0; i < arr.length; i++) {
+    await new Promise(resolve => {
+      setTimeout(() => {
+          console.log(arr[i]);
+        resolve();
+      }, arr[i] * 1000); // Delay equal to the number itself (in seconds)
+    });
+  }
+}
+
+
+logNumbersWithDelay();
+
+
+
+
+
+
+Siemens
+
+
+
+
+ Variable typing in js
+Redux
+React 
+React hooks
+Angular 
+Javascript strict mode
+React strict mode
+Life cycle methods
+Life cycle hooks
+Component types
+Optimizations techniques
+Css flex box
+Css box model
+Content model
+Flex properties
+Pseudo elements
+Pseudo classes
+Css
+How react works
+What is Browser dom
+
+
+
+
+
+
+
+
+let arrTest= [
+  [0, 1, 1, 1],
+  [0, 0, 1, 1],
+  [1, 1, 1, 1],
+  [0, 0, 0, 0]
+];
+
+
+// store in arr
+// loop
+// loop - count - no of 1s
+
+
+
+
+
+
+function checkMaxOnes(arr){
+  
+    let maxCountIndex = 0;
+  let maxCounter = 0;
+  for(let i =0; i< arr.length; i++){
+    const ar = arr[i];
+let counter = 0; 
+for(let j= 0; j < ar.length; j++){
+        if(ar[j]===1){
+          counter= counter +1 ;
+        }
+if(counter > maxCounter){
+maxCounter= counter;
+  maxCountIndex = i;
+}
+
+
+}
+    
+    
+}
+  
+  return maxCountIndex;
+}
+
+
+
+
+console.log(checkMaxOnes(arrTest));
+
+
+
+
+undefined == null
+true
+undefined === null
+false
+undefined == null
+true
+undefined == undefined
+true
+undefined === undefined
+true
+null == null
+true
+null === nll
+VM6129:1 Uncaught ReferenceError: nll is not defined
+    at <anonymous>:1:1
+(anonymous) @ VM6129:1Understand this errorAI
+null === null
+true
+NaN === NaN
+false
+
+
+
+
+
+
+
+
+
+
+
+
+Speechify - manuj - interview
+
+
+Tree walker api in javascript and parsing and 
+Text to speech conversion using html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+—------------------------------------------------------------------------------------
+
+
+
+
+
+
+SIMFORM
+
+
+atoms molecules organisms templates
+pages services types constants context hooks styles assets
+
+
+interface Address<T> {
+    address: T;
+} // extend
+
+
+
+
+type Address = string | number; // & |
+
+
+
+
+response: unknown any
+
+
+
+
+const t: Address = response;
+
+
+
+
+let a = { x: 1, y: 2, };
+let b = { ...a };
+a.x = 5;
+console.log(a);
+console.log(b); // { x: 5, y: 2, };
+// { x: 1, y: 2, };
+
+
+
+
+function () { this; }
+var yi = function () { }
+const test = () => { console.log(this); }
+
+
+
+
+// bind call apply this.fname + this.lname
+const getName = getFullName.bind(person);
+getFullname.call(person, "hello", "world")
+getFullname.apply(person, ["hello", "world"])
+
+
+
+
+// pass by value
+const arr = [1, 2, 3, 4, 5];
+arr.double() // [2,4,6,8,10]
+
+
+
+
+Array.prototype.double = function () {
+    const self = this;
+    const doubled = self.map(el => el * 2);
+    return doubled;
+}
+
+
+
+
+
+
+
+
+console.log(1)
+
+
+
+
+function test() {
+    Promise.resolve(console.log(2))
+    setTimeout(() => console.log(3))
+}
+test()
+console.log(4);
+// 1 4 2 3
+
+
+
+
+new Promise((resolve, reject) => {
+    resolve("success")
+    reject()
+}).then().catch();
+
+
+
+
+function test() {
+    var b = 10
+    console.log(b)
+    var a = 11
+    console.log(a)
+}
+test()
+console.log(b)
+// 10 11 undefined
+
+
+function counter() {
+    let count = 0;
+
+
+    function add() {
+        count = count + 1;
+        return count;
+    }
+    return add;
+}
+
+
+const count = counter();
+console.log(count());
+console.log(count());
+
+
+
+
+
+
+
+
+
+
+PureSoftware
+
+Static position and fixed position
+Diff between em and rem
+Position relative and position absolute
+
+
+// body
+// parent 
+// 4 div child rectangular row form
+//What if 3rd child is given absolute
+
+
+What will happen to its original space
+Diff flex and grid CSS
+Position sticky and fixed
+If some element is positioned absolutely what will happen to its original position the original space will be occupied or not
+React reconciliation
+Shallow copy deep copy
+Object assign and clone
+Object methods
+
+
+React optimization
+Call back / memo
+Event delegation
+event Propagation
+Passing child props to parent
+
+
+
+
+TypeScript types such as Partial, Pick, and Omit are commonly used in frontend development.
+
+
+
+
+// Write a "nthEven" function that takes an integer parameter n and returns the nth even number. 
+// nthEven(1) //=> 0, the first even number is 0 
+// nthEven(3) //=> 4, the 3rd even number is 4 (0, 2, 4) 
+// nthEven(100) //=> 198 
+// nthEven(1298734) //=> 2597466
+
+
+
+
+
+
+function nthEven(n) {
+
+
+let result = 0.0;
+for(let index = 0; index < n-1; index++){
+result = result + 2.0;
+}
+
+
+return result;
+}
+
+
+
+
+
+
+function nthEvent(n) {
+    return 2 * (n - 1);
+}
+
+
+
+
+console.log(nthEvent(1298734));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+IBM
+
+
+Hacker rank test
+
+/*
+1 ) problem hacker rank
+// choose the winner from the card games between maria and andrea
+*/
+
+
+
+
+'use strict';
+
+
+const fs = require('fs');
+
+
+process.stdin.resume();
+process.stdin.setEncoding('utf-8');
+
+
+let inputString = '';
+let currentLine = 0;
+
+
+process.stdin.on('data', function(inputStdin) {
+    inputString += inputStdin;
+});
+
+
+process.stdin.on('end', function() {
+    inputString = inputString.split('\n');
+
+
+    main();
+});
+
+
+function readLine() {
+    return inputString[currentLine++];
+}
+
+
+
+
+
+
+/*
+ * Complete the 'winner' function below.
+ *
+ * The function is expected to return a STRING.
+ * The function accepts following parameters:
+ *  1. INTEGER_ARRAY andrea
+ *  2. INTEGER_ARRAY maria
+ *  3. STRING s
+ */
+
+
+
+
+function winner(andrea, maria, s) {
+    // Write your code here
+    let andreaScore = [];
+    let mariaScore = [];
+    const evenOddStartIndex = s === "Even" ? 0 : 1;
+   
+    // unshift
+    for(let i = evenOddStartIndex; i < andrea.length; i = i + 2) {    
+        andreaScore[i] = andrea[i] - maria[i];
+        mariaScore[i] = maria[i] - andrea[i];
+    }
+   
+    const aSum = andreaScore.reduce((acc,n)=>acc+n);
+    const mSum = mariaScore.reduce((acc,n)=>acc+n);
+   
+    if(aSum > mSum){
+        return 'Andrea'
+    }
+    else if (mSum > aSum) {
+        return 'Maria'
+    }
+    else {
+        return 'Tie'
+    }
+
+
+}
+
+
+function main() {
+    const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
+
+
+    const andreaCount = parseInt(readLine().trim(), 10);
+
+
+    let andrea = [];
+
+
+    for (let i = 0; i < andreaCount; i++) {
+        const andreaItem = parseInt(readLine().trim(), 10);
+        andrea.push(andreaItem);
+    }
+
+
+    const mariaCount = parseInt(readLine().trim(), 10);
+
+
+    let maria = [];
+
+
+    for (let i = 0; i < mariaCount; i++) {
+        const mariaItem = parseInt(readLine().trim(), 10);
+        maria.push(mariaItem);
+    }
+
+
+    const s = readLine();
+
+
+    const result = winner(andrea, maria, s);
+
+
+    ws.write(result + '\n');
+
+
+    ws.end();
+}
+
+
+
+
+/*
+2 ) problem hacker rank
+// count the number of binaries 1s into a number and show all the positions of that 1s into the representation
+*/
+
+
+"use strict";
+
+
+const fs = require("fs");
+
+
+process.stdin.resume();
+process.stdin.setEncoding("utf-8");
+
+
+let inputString = "";
+let currentLine = 0;
+
+
+process.stdin.on("data", function (inputStdin) {
+  inputString += inputStdin;
+});
+
+
+process.stdin.on("end", function () {
+  inputString = inputString.split("\n");
+
+
+  main();
+});
+
+
+function readLine() {
+  return inputString[currentLine++];
+}
+
+
+/*
+ * Complete the 'getOneBits' function below.
+ *
+ * The function is expected to return an INTEGER_ARRAY.
+ * The function accepts INTEGER n as parameter.
+ */
+
+
+function getOneBits(n) {
+  const binary = n.toString(2);
+  let positions = [];
+  for (let i = 0; i < binary.length; i++) {
+    if (binary[i] === "1") {
+      positions.push(i + 1);
+    }
+  }
+  return [positions.length, ...positions];
+}
+
+
+function main() {
+  const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
+
+
+  const n = parseInt(readLine().trim(), 10);
+
+
+  const result = getOneBits(n);
+
+
+  ws.write(result.join("\n") + "\n");
+
+
+  ws.end();
+}
+
+
+
+
+
+
+https://codesandbox.io/p/sandbox/damp-microservice-f9ygng?file=%2Fsrc%2Ftest%3A138%2C24
+const mock = [
+  {
+    id: 1,
+    name: "Google Home",
+    buyable: true,
+    type: "REGULAR",
+    description: "Some Description",
+  },
+  {
+    id: 2,
+    name: "Lowes Gift Card",
+    buyable: true,
+    type: "GIFT_CARD",
+    description: "Some Description",
+  },
+  {
+    id: 3,
+    name: "Lumbar",
+    buyable: false,
+    type: "CONSIGNMENT",
+    description: "Some Description",
+  },
+];
+
+
+
+
+
+
+
+
+const test =[{id:1,name:'abc'},{id:2,name:'pqr'},{id:'1',name:'xyz'}];
+
+
+function removeDuplicate(arr){
+
+
+const result = {}
+
+
+arr.forEach((p)=>{
+
+
+if(!result[p.id]){
+result[p.id] = [p];
+}
+})
+return Object.values(result);
+}
+
+
+
+
+console.log(removeDuplicate(test));
+
+
+const testNum = [1,1,2,2,3,3,3,4,5,6,];
+// ...rest
+
+
+const t = {...obj};
+
+
+/*
+sass
+flex grid
+media 
+tailwind
+*/
+
+
+// unit test - jest - testing react library
+
+
+function findOccur(n1,n2, ...rest){
+  
+  const resObj = {}
+  arr.forEach((num)=> {
+
+
+    if(resObj[num] > 0){
+      resObj[num] = resObj[num] + 1;
+    }
+    else{
+      resObj[num]= 1;
+    }
+})
+return resObj;
+
+
+}
+console.log(findOccur(testNum));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from Kavya (internal) to everyone:    11:08 AM
+[
+    {
+      id: 1,
+      name: 'Google Home',
+      buyable: true,
+      type: 'REGULAR',
+      description: 'Some Description',
+    },
+    {
+      id: 2,
+      name: 'Lowes Gift Card',
+      buyable: true,
+      type: 'GIFT_CARD',
+      description: 'Some Description',
+    },
+    {
+      id: 3,
+      name: 'Lumbar',
+      buyable: false,
+      type: 'CONSIGNMENT',
+      description: 'Some Description',
+    },
+  ]
+
+
+from Kavya (internal) to everyone:    11:23 AM
+[
+    {
+      attrbuteName: 'id',
+      label: 'Item Number',
+      editable: false,
+    },
+    {
+      attrbuteName: 'name',
+      label: 'Item Name',
+      editable: true,
+      inputType: 'text',
+    },
+    {
+      attrbuteName: 'description',
+      label: 'Item Description',
+      editable: true,
+      inputType: 'textarea',
+    },
+    {
+      attrbuteName: 'buyable',
+      label: 'Is Buyable?',
+      editable: true,
+      inputType: 'checkbox',
+    },
+    {
+      attrbuteName: 'type',
+      label: 'Item Type',
+      editable: true,
+      inputType: 'select',
+      choices: [
+        {
+          label: 'Regular Item',
+          value: 'REGULAR',
+        },
+        {
+          label: 'Gift Card Item',
+          value: 'GIFT_CARD',
+        },
+        {
+          label: 'Consignment Item',
+          value: 'CONSIGNMENT',
+        },
+      ],
+    },
+  ]
+
+
+
+
+
+
+
+
+const mock = [
+  {
+    id: 1,
+    name: "Google Home",
+    buyable: true,
+    type: "REGULAR",
+    description: "Some Description",
+  },
+  {
+    id: 2,
+    name: "Lowes Gift Card",
+    buyable: true,
+    type: "GIFT_CARD",
+    description: "Some Description",
+  },
+  {
+    id: 3,
+    name: "Lumbar",
+    buyable: false,
+    type: "CONSIGNMENT",
+    description: "Some Description",
+  },
+];
+
+
+
+
+
+
+
+
+const test =[{id:1,name:'abc'},{id:2,name:'pqr'},{id:'1',name:'xyz'}];
+
+
+function removeDuplicate(arr){
+
+
+const result = {}
+
+
+arr.forEach((p)=>{
+
+
+if(!result[p.id]){
+result[p.id] = [p];
+}
+})
+return Object.values(result);
+}
+
+
+
+
+console.log(removeDuplicate(test));
+
+
+const testNum = [1,1,2,2,3,3,3,4,5,6,];
+// ...rest
+
+
+const t = {...obj};
+
+
+/*
+sass
+flex grid
+media 
+tailwind
+*/
+
+
+// unit test - jest - testing react library
+
+
+function findOccur(n1,n2, ...rest){
+  
+  const resObj = {}
+  arr.forEach((num)=> {
+
+
+    if(resObj[num] > 0){
+      resObj[num] = resObj[num] + 1;
+    }
+    else{
+      resObj[num]= 1;
+    }
+})
+return resObj;
+
+
+}
+console.log(findOccur(testNum));
+
+
+
+
+const mock = [
+  {
+    id: 1,
+    name: "Google Home",
+    buyable: true,
+    type: "REGULAR",
+    description: "Some Description",
+  },
+  {
+    id: 2,
+    name: "Lowes Gift Card",
+    buyable: true,
+    type: "GIFT_CARD",
+    description: "Some Description",
+  },
+  {
+    id: 3,
+    name: "Lumbar",
+    buyable: false,
+    type: "CONSIGNMENT",
+    description: "Some Description",
+  },
+];
+
+
+
+
+
+
+
+
+const test =[{id:1,name:'abc'},{id:2,name:'pqr'},{id:'1',name:'xyz'}];
+
+
+function removeDuplicate(arr){
+
+
+const result = {}
+
+
+arr.forEach((p)=>{
+
+
+if(!result[p.id]){
+result[p.id] = [p];
+}
+})
+return Object.values(result);
+}
+
+
+
+
+console.log(removeDuplicate(test));
+
+
+const testNum = [1,1,2,2,3,3,3,4,5,6,];
+// ...rest
+
+
+const t = {...obj};
+
+
+/*
+sass
+flex grid
+media 
+tailwind
+*/
+
+
+// unit test - jest - testing react library
+
+
+function findOccur(n1,n2, ...rest){
+  
+  const resObj = {}
+  arr.forEach((num)=> {
+
+
+    if(resObj[num] > 0){
+      resObj[num] = resObj[num] + 1;
+    }
+    else{
+      resObj[num]= 1;
+    }
+})
+return resObj;
+
+
+}
+console.log(findOccur(testNum));
+
+
+
+
+
+
+
+
+
+
+
+
+// print  - 1 to 10 - in every 2 seconds
+
+
+
+
+function test() {
+  
+for(let i = 1; i<= 10; i++) {
+
+
+
+
+    const id = setTimeout(()=>{
+              console.log("i", i);
+    }, 2 * 1000)
+
+
+}
+  
+  
+}
+test();
+
+
+const t = [["test", "test"],[],[]]
+var arr = [{ A: '', B: null, C: '0', D: '' }]
+
+
+var arr = [{ A: '', B: null, C: '0', D: '', ...obj }, ...t]
+const arr=[
+  
+  ...arr,
+  
+]
+
+
+// mount
+
+
+//
+
+
+// update
+
+
+// return - cleanup
+// unmount
+
+
+call
+
+
+fun = bind(person)
+
+
+call(person, a1, a2)
+apply(person, [a1, a2})
+
+
+
+
+
+
+
+
+const arr = [[],[],[]]
+
+
+//const t = Array.fill(5);
+const ar2= [4,5]
+const test = [...arr, ...ar2];
+      
+      
+      
+
+
+// private - render user
+      // public
+
+
+// print  - 1 to 10 - in every 2 seconds
+
+
+
+
+function test() {
+  
+for(let i = 1; i<= 10; i++) {
+
+
+
+
+    const id = setTimeout(()=>{
+              console.log("i", i);
+    }, 2 * 1000)
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+Mphasis
+
+
+
+
+Diff Redux and context API
+
+
+
+
+Write a React component that calls a function every 5 seconds and ends when some condition is met
+Write a react component for the search bar that on the type of some input shows the filtered data on the screen
+
+
+Write any custom hook for example
+
+So I wrote a useFetchData hook providing 3 state values - data, loading, error, and taking API URL as the input
+
+
+
+
+
+
+
+
+
+
+Ameriprise
+
+
+
+
+create a promise that retries an API call for a certain duration or till the max tries are reached and resolves once it receives a successful response.
+
+
+
+
+Create a custom hook for api call data loading and error states should be there and use it inside the component 
+
+
+
+
+Persistent Systems
+
+
+https://codesandbox.io/p/sandbox/tender-wood-3vlhgl?file=%2Fsrc%2Findex.mjs%3A1%2C1-33%2C1
+
+
+Partial function currying
+
+
+
+
+// calculate the max profit
+
+
+const a = [10, 20, 30, 40, 50];
+
+
+function maxProfit(arr, ...restProp) {
+  const min = Math.min(...arr);
+  const max = Math.max(...arr);
+  const profit = max - min;
+  return profit;
+}
+
+
+console.log(maxProfit(a));
+
+
+// const t = { ...obj };
+
+
+const test = [2, 3, 3, 4, 5, 6, 7, 7];
+
+
+function removeDuplicates(arr) {
+  let temp = {};
+  for (let index = 0; index < arr.length; index++) {
+    const element = arr[index];
+    if (!temp[element]) {
+      temp[element] = element;
+    }
+  }
+  return Object.values(temp);
+}
+
+
+console.log(removeDuplicates(test));
+
+
+
+
+/*
+useRef
+*/
+
+
+
+
+
+
+
+
+
+
+Synechron round 2
+
+
+React fibre
+Diff between polyfills and prototype methods
+Give proper examples between the use cases of those two
+Why should we use redux
+What is react unidirectional flow
+How react virtual dom works internally
+Why do we create mock into jest unit testing
+What  are the aria attributes that you have used for the projects
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Synechron
+
+
+
+
+
+
+In built closures in js
+Why do we use redux 
+What are the middleware in the redux and can we use any other than the thunk middleware
+Yes we can use our custom middleware to create custom async methods actions by which i can perform multiple actions for redux actions
+Gave a leetcode problem to solve  - was not able grasp or solve
+
+
+Then gave me a problem - creating a dynamic table, which can have dynamic headers and dynamic rows
+And headers can have dynamic buttons or inputs and then can be editable 
+What is content editable attribute into html
+
+
+What is css grid and css flex
+What are the 1 and -1 into css grid system
+
+
+
+
+
+
+
+
+https://leetcode.com/problems/cache-with-time-limit/description/
+
+
+Manoj
+7:52 PM
+https://leetcode.com/problems/cache-with-time-limit
+You
+8:21 PM
+https://codesandbox.io/p/sandbox/festive-glade-s5cq94?layout=%257B%2522sidebarPanel%2522%253A%2522EXPLORER%2522%252C%2522rootPanelGroup%2522%253A%257B%2522direction%2522%253A%2522horizontal%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522id%2522%253A%2522ROOT_LAYOUT%2522%252C%2522panels%2522%253A%255B%257B%2522type%2522%253A%2522PANEL_GROUP%2522%252C%2522contentType%2522%253A%2522UNKNOWN%2522%252C%2522direction%2522%253A%2522vertical%252
+keep
+Pin message
+You
+8:22 PM
+https://codesandbox.io/p/sandbox/festive-glade-s5cq94?file=%2Fsrc%2FTable.jsx%3A7%2C23
+keep
+Pin message
+send
+Send message. Messages are recorded.
+Checking who can access file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+interview practical tests DSA time complexity questions interview questions jobs job 
+
+
+
+
+data crest systems interview Netix AI Freecharge Wipro create use State syntax
+————————————————————————————————————
+data crest systems
+rerender react
+setCounter((prevValue)=> prevValue);
+NVDA let updatedValue=undefined;
+function comp() { const [ counter, setCounter ] = useState(0); }
+function useState(initialValue) {
+updateValue = initialValue;
+const setValue = (updateValue)=> (val) => { if(updateValue !== val){ updateValue = val; rerender(); }
+const setValue = (val) => {
+return function (updateValue ){ if(updateValue !== val){ updateValue = val; rerender(); } }
+}
+return [updateValue, setValue]
+}
+if <input> is updating what we should use to announce the use that the input or something is changing
+aria-live
+on btn click <button aria-expanded= modal is opening so what aria attributes will be used
+popup, modal, aria-expanded,
+let company = { sales: [ { name: "John", salary: 1000 }, { name: "Alice", salary: 1600 } ], development: { sites: [ { name: "Peter", salary: 2000 }, { name: "Alex", salary: 1800 } ], internals: [ { name: "Jack", salary: 1300 } ] } };
+function findSum(obj) { let sumOfSalary = 0; Object.keys(obj).forEach((k) => { const child = obj[k]; if (Array.isArray(child) && child?.length > 0) { child.forEach((person) => { sumOfSalary = sumOfSalary + person.salary; }); } if (typeof child === "object") { sumOfSalary = sumOfSalary + findSum(child); } }); return sumOfSalary; }
+O(// objecct.keys.length * child.length) console.log(findSum(company));
+[ { "name": "item1", "count": 123, "char1": "val1", "char2": "val2", "char3": { "subchar": "val" } }, { "name": "item2", "count": 43, "char1": "val1", } ]
+Counter[] interface Counter { name: string; count: number; char1: string; char2?: string; char3? : { subchar: string; [T keyof string] : string; } }
+& - union | - intersection type Address = string | number;
+interface Address {
+}
+useState()
+let company = { sales: [ { name: "John", salary: 1000 }, { name: "Alice", salary: 1600 } ], development: { sites: [ { name: "Peter", salary: 2000 }, { name: "Alex", salary: 1800 } ], internals: [ { name: "Jack", salary: 1300 } ] } };
+function findSum(obj) { let sumOfSalary = 0; Object.keys(obj).forEach((k) => { const child = obj[k]; if (Array.isArray(child) && child?.length > 0) { child.forEach((person) => { sumOfSalary = sumOfSalary + person.salary; }); } if (typeof child === "object") { sumOfSalary = sumOfSalary + findSum(child); } }); return sumOfSalary; }
+O(// objecct.keys.length * child.length) console.log(findSum(company));
+[ { "name": "item1", "count": 123, "char1": "val1", "char2": "val2", "char3": { "subchar": "val" } }, { "name": "item2", "count": 43, "char1": "val1", } ]
+Counter[] interface Counter { name: string; count: number; char1: string; char2?: string; char3? : { subchar: stirng; [T keyof string] : string; } }
+& - union | - intersection type Address = string | number;
+interface Address {
+}
+useState()
+——————————————————————————————-
+Simprosys
+Simprosys
+Sanket Jadav 5:07 PM div p{display:none;} div, p{display:none;} div > p{display:none;} div ~ p{display:none;} div + p{display:none;} You 5:12 PM vh Hover over a message to pin it keep vw You 5:13 PM var() calc() let var const Sanket Jadav 5:17 PM Find the lowest price and return that object.
+const data = [ {name: 'test1', price: 200}, {name: 'test2', price: 600}, {name: 'test3', price: 100}, {name: 'test4', price: 700}, {name: 'test6', price: 500},
+]; Sanket Jadav 5:32 PM Find the vowels and count them from the below word "Simprosys" Sanket Jadav 5:39 PM SImprOsys You 5:45 PM ()=>{} function ()=>{} You 5:54 PM SVG You 5:56 PM NaN (function(){})(); var let const You 6:01 PM useCallback useMemo You 6:08 PM axios - api call create axoisClient. .catch center tag iframe type & | Address = string | num { [key: string]:string; } outlet You 6:15 PM gti clone origin fear/branchname box model = borer+ padding + margin You 6:20 PM useImperative
+
+
+Willington sapient
+Week 1
+    •   Revise EventLoop, event queue, sync, async, event emitters with some sample app
+    •   Clustering in NodeJS
+    •   ExpressJS (Create Server, add Routing & Middlewares)
+    •   Expose REST APIs
+    •   Add JWT Authentication
+    •   Design Patterns
+    ◦   Singleton, Factory & Builder, Creational pattern
+    ◦   At least 1 pattern each from Structural and Behavioral
+    ◦   Composition vs Inheritance
+    •   Caching (In-memory and distributed)
+    ◦   Caching strategies
+Week 2
+    •   AWS
+    ◦   Lambda
+    ◦   API Gateway
+    ◦   AWS S3
+    ◦   AWS Batch
+    ◦   SNS, SQS
+    •   OpenSearch - add, query data and basic understanding
+    •   SQL
+    ◦   Keys, constraints, indexes and joins with hands-on
+Week 3 (only 3 days)
+    •   NoSQL
+    •   ORM (TypeORM) (connect with your node app)
+    •   Microservices
+    ◦   Design Patterns (CQRS, 2PC, Saga)
+    ◦   OAS, API Versioning
+ 
+    closure
+    css positioning  - absolute relative document, relative, default - static
+    html semantic elements - header, footer, article, section, main, nav, figure
+    web crawler, seo, a11y, voice over
+    react custom hook
+    promises - async operations
+    shallow copy deep copy
+    this
+    function - this - window, context
+    structured clone - deep copy
+
+
+gokaran jindal
+gokaran jindal
+
+
+[19:11] Gokaran Jindal
+[08/02 3:07 pm] Manoj Gupta
+You have to implement a function called promiseMerge that can take n no. of promises as input.
+It should return a promise that fulfils with
+summation of all resulting values if the type of all inputs is number.
+concatted value if the type of all inputs is string.
+computed value using AND operator if the type of all input is boolean.
+a new concatted array if the type of all inputs is an array.
+a new object with all the keys from inputs if the typeof all inputs is an object.
+It should reject with a TypeError if either of the inputs is different from other input types.
+[08/02 3:07 pm] Manoj Gupta
+Valid input types are: Number, String, Boolean, Array, and Object.
+[08/02 3:08 pm] Manoj Gupta
+const value = await promiseMerge(Promise.resolve(1), Promise.resolve(2));// => 3 cons value = await promiseMerge(Promise.resolve("devtools"), Promise.resolve(".tech"));// => devtools.tech cons value = await promiseMerge(Promise.resolve([1, 2, 3]), Promise.resolve([4, 5, 6]), Promise.resolve([7, 8, 9]));// => [1,2,3,4,5,6,7,8,9] cons value = await promiseMerge(Promise.resolve({ a: 1 }), Promise.resolve({ b: 2 }), Promise.resolve({ c: 3 }));// => { a: 1, b: 2, c: 3}; cons value = await promiseMerge(Promise.resolve(true), Promise.resolve(false));// => false cons value = await promiseMerge(Promise.resolve("devtools"), Promise.resolve(1));// => rejects with TypeError cons value = await promiseMerge(Promise.resolve("devtools"), Promise.resolve([1, 2]));// => rejects with TypeError cons value = await promiseMerge();// => rejects with TypeError
+[08/02 3:39 pm] Manoj Gupta
+promiseMerge(Promise.resolve(new Set()), Promise.resolve(new Set()))
+[08/02 3:41 pm] Manoj Gupta
+sum(1,2,3,4)(5)(6,7)()
+sum(1)(2)(3)()
+sum(1)()
+sum(1)(2,3)()
+[19:11] Gokaran Jindal
+// Promise Retry: // Write a function retryPromise that takes a function returning a promise, // maximum number of retries, and retry interval (in milliseconds) as arguments. // The function should execute the input function repeatedly until it resolves // successfully or the maximum number of retries is reached. If the function doesn't // resolve successfully within the maximum number of retries, the returned promise // should reject with the last error encountered.
+[19:12] Gokaran Jindal
+https://l4ymyf.csb.app/
+[19:14] Gokaran Jindal
+polyfill of filter, map,
+[19:16] Gokaran Jindal
+// const memoize = (fn) => {
+//   const cache = {};
+//   return (...args) => {
+// 	let key = args.join("_");
+// 	if (!cache.hasOwnProperty(key)) {
+//   	console.log("Inside computation");
+//   	cache[key] = fn(...args);
+//   	return cache[key];
+// 	} else {
+//   	console.log("Inside cache");
+//   	return cache[key];
+// 	}
+//   };
+// };
+// const memoizedSum = memoize((a, b) => a + b);
+// console.log(memoizedSum(2, 4));
+// console.log(memoizedSum(2, 4));
+[19:17] Gokaran Jindal
++91-7027200543
+[19:19] Gokaran Jindal
+Concurrent Promise Execution: Write a function concurrentPromises that takes an array of functions returning promises and a concurrency limit as arguments. The function should execute the promises concurrently, limiting the number of concurrent executions to the specified limit. The function should return a promise that resolves with an array of results in the same order as the input array.
+Promise Timeout: Implement a function promiseTimeout that takes a promise and a timeout duration (in milliseconds) as arguments. The function should return a promise that resolves with the result of the input promise if it resolves within the specified timeout duration. If the input promise doesn't resolve within the timeout, the returned promise should reject with a timeout error.
+Promise Retry: Write a function retryPromise that takes a function returning a promise, maximum number of retries, and retry interval (in milliseconds) as arguments. The function should execute the input function repeatedly until it resolves successfully or the maximum number of retries is reached. If the function doesn't resolve successfully within the maximum number of retries, the returned promise should reject with the last error encountered.
+Promise Waterfall: Implement a function promiseWaterfall that takes an array of functions returning promises as arguments. The functions represent tasks that depend on the result of the previous task. The function should execute the tasks sequentially, passing the result of each task to the next task, similar to Array.prototype.reduce(). The function should return a promise that resolves with the final result of the last task.
+how to check you are on mobile using javascript native functionalities
+simform
+Simform screening round 1
+
+
+replace string using regex → /pattern/ig
+alert(alert("First alert"));
+numb.toPrecision(2)
+should component update and styles
+functino.toString()
+function greet() { console.log("Hello!"); }
+console.log(greet.toString()); // Output: "function greet() { // console.log("Hello!"); // }"
+console.log(typeof greet.toString()); // Output: "string"
+prototype syntax
+class component syntax
+event.stopPropogation to prevent events from child from calling parent event
+string array indexes [”1”,”2”,”3”,”4”]
+arr[1]
+arr[2]
+component map syntax for data mapping from an array
+should component update
+component snapshot lifecycle method
+print console log of the optional argument of a function
+function details(id:string, name: string, phn_num?: string){
+console.log(”num”, phn_num)
+}
+SIMFORM
+————————
+SIMFORM
+
+
+//
+atoms molecules organisms templates
+pages services types constants context hooks styles assets
+interface Address<T> { address: T; } // extend
+type Address = string | number; // & |
+response: unknown any
+const t : Address = response;
+let a = { x: 1, y: 2, }; let b = {...a}; a.x = 5; console.log(a); console.log(b);	 { x: 5, y: 2, };
+{ x: 1, y: 2, };
+function () { this; } var yi = function () {} const test = () => { console.log(this); }
+// bind call apply this.fname + this.lname const getName = getFullName.bind(person); getFullname.call(person, "hello", "world") getFullname.apply(person, ["hello", "world"])
+// pass by value
+const arr = [1,2,3,4,5] ;
+arr.double() // [2,4,6,8,10]
+Array.prototype.double = function () { const self = this; const doubled = self.map(el => el * 2); return doubled; }
+{
+}
+console.log(1)
+function test(){
+Promise.resolve(console.log(2)) setTimeout(() => console.log(3))
+}
+test()
+console.log(4);
+1 4 2 3
+new Promise((resolve, reject)=>{ resolve("success")
+reject() }).then().catch();
+function test (){ var b = 10 console.log(b) var a = 11 console.log(a) } test() console.log(b)
+10 11 undefined
+function counter() { let count = 0;
+function add() { count = count + 1; return count; }
+return add; }
+const count = counter(); console.log(count()); console.log(count());
+ConnectWise
+ConnectWise
+
+
+Questions:
+What is the Builder Design Pattern?
+What is the Singleton Pattern, how can it be broken, and what are the solutions?
+What is Serialization, and what is its purpose?
+What are the differences between ArrayList and LinkedList?
+What is the contract between the hashcode and equals methods?
+Answer some basic Java collection questions.
+Coding:
+Create a binary tree and add a method to display the leftmost element at each level.
+Print the second highest value from an array or ArrayList of random, non-repetitive integers.
+Java HashMap working Explain Binary Search Tree. Explain the Pub-Sub Pattern and working of Kafka
+Basic questions in the first round. OOP concepts Design patterns you have used. Collections, Multithreading. Microservices architecture advantages. Stack, Queue, Linked List, etc.
+Interview
+The interview process was of 2 technical rounds and was good where all topics related to Javascript and UI development were covered.
+The analysis was based on both technical viva and written process.
+Interview Questions
+Closure
+React advanced concepts like context, Portals,
+JS Event Loop
+IIFE, Prototypal Inheritance
+————————————————————————————————————————————-
+Here are the Interview questions asked in round 1 for the salary bracket (25 LPA),
+Arrow function and what is the difference apart from syntax?
+
+
+
+
+Call, apply bind (write down the code for one of them)
+
+
+
+
+Generator Function and write a range Generator functions
+
+
+
+
+Real time example of Generator Functions?
+
+
+
+
+ES6 features
+
+
+
+
+Write down the code for spread operator, rest operator and Object destructuring?
+
+
+
+
+Difference between forEach and map?
+
+
+
+
+Difference between Object.assign(), Object.create()? Which one mutates the data ?
+
+
+
+
+What is a Promise ?
+
+
+
+
+Write a function component in react which returns a lazy loaded Button Component and add the Suspense with fallback UI?
+
+
+
+
+What is Error Boundary, How can we write a separate Error Boundary Component?
+
+
+
+
+What is Redux, Why Redux, Core principles of redux?
+
+
+
+
+Write down a basic sum function using Typescript and how do you accept params in either string or number?
+
+
+
+
+What are Generics functions (inside Typescript), can you write down types?
+
+
+
+
+Abstract function means?
+
+
+
+
+Software Principles (DRY, KISS) how do you implemented in your codebase
+
+
+
+
+Git hook (pre commit, husky)
+
+
+
+
+SOLID Principles
+
+
+
+
+Write down test cases? What does beforeEach and beforeAll do?
+
+
+
+
+Difference between mock vs spy in testing?
+
+
+
+
+Explain Testing Pyramids?
+
+
+
+
+Differences between Integration Testing vs End to End testing?
+
+
+
+
+Which tool have you used for the above of them?
+
+
+
+
+What do we mean by code coverage? How do you measure code coverage?
+
+
+
+
+What is meant by OWASP top 10?
+
+
+
+
+What is meant by CSP, XSS (where do we set these CSP headers? In Client or Server)
+
+
+
+
+What is meant by CORS? (Where do we set them)
+
+
+
+
+DDD?
+
+
+
+
+Explain me the various ways of Performance Optimization that you can do at any level (ex: CSS, JS, HTML)
+
+
+
+
+What is CRP?
+
+
+
+
+What are memory leaks in react? Why do they happen?
+
+
+
+
+Promise.all vs Promise.any vs Promise.race?
+
+
+
+
+How do you configure typescript in your project?
+
+
+
+
+How many ways can you create an object?
+
+
+
+
+What do we have in.tsconfig.json? Can you explain them?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,25 @@
+---
+title: Google Identity Services Demo
+description: Interactive Google Identity Services sign-in demo with client ID setup, mock One Tap initialization, account cards, and decoded JWT payload inspection.
+sidebar_position: 2
+slug: /google/google-identity-services-demo
+---
+
+import GoogleIdentityServicesDemo from '@site/src/components/google-micro-site-demo/google-identity-services-demo';
+
+# Google Identity Services Demo
+
+This page turns the original GIS micro-site into a live docs demo. The important part is not just the setup checklist; it is the client ID initialization flow, account state, and JWT inspection UI.
+
+<GoogleIdentityServicesDemo />
+
+## What This Version Demonstrates
+
+- saving a client ID before initialization
+- the difference between button render state and account state
+- decoded JWT identity payloads
+- why GIS is ideal for authentication-only flows
+
+## Why It Differs From The OAuth Manager
+
+This flow is about identity, not Gmail or Drive access. You get a signed ID token with user profile information, not a broad access token for Google APIs.

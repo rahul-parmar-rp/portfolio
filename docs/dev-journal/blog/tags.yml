@@ -1,0 +1,39 @@
+facebook:
+  label: Facebook
+  permalink: /facebook
+  description: Facebook tag description
+
+hello:
+  label: Hello
+  permalink: /hello
+  description: Hello tag description
+
+docusaurus:
+  label: Docusaurus
+  permalink: /docusaurus
+  description: Docusaurus tag description
+
+hola:
+  label: Hola
+  permalink: /hola
+  description: Hola tag description
+
+react:
+  label: React
+  permalink: /react
+  description: React patterns and implementation notes
+
+navigation:
+  label: Navigation
+  permalink: /navigation
+  description: Browser navigation and URL state notes
+
+nextjs:
+  label: Next.js
+  permalink: /nextjs
+  description: Notes related to Next.js behavior and patterns
+
+frontend:
+  label: Frontend
+  permalink: /frontend
+  description: Frontend engineering topics

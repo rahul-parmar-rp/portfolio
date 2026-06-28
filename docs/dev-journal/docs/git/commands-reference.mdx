@@ -1,0 +1,151 @@
+---
+title: Git Commands Reference
+description: Common Git commands for daily development workflows, branches, worktrees, rebasing, and configuration.
+sidebar_position: 1
+slug: /git/commands-reference
+---
+
+## Commit Commands
+
+Standard commit messages with ticket references:
+
+```bash
+git commit -m "feat: [TICKET-]"
+git commit -m "fix: [TICKET-]"
+```
+
+## Branch Management
+
+### Creating Feature and Fix Branches
+
+```bash
+git checkout -b feat/TICKET-
+git checkout -b fix/TICKET-
+
+# Example with full ticket number
+git checkout -b feat/TICKET-12345-description
+```
+
+### Pushing New Branches
+
+```bash
+git push -u origin feat/TICKET-
+```
+
+### Checking Out Remote Branches
+
+```bash
+git checkout -b update/dependency-name origin/update/dependency-name
+git branch -r | grep "update/dependency-name"
+git checkout -b feat/TICKET-12345-description origin/feat/TICKET-12345-description
+```
+
+## Git Worktree
+
+### Creating Worktrees
+
+```bash
+git worktree add ../feature-branch feat/TICKET-
+git worktree add ../hotfix fix/TICKET-
+git worktree add ../temp-worktree abc123
+git worktree add ../feature origin/feat/TICKET-12345
+```
+
+### Listing Worktrees
+
+```bash
+git worktree list
+git worktree list --porcelain
+```
+
+### Removing Worktrees
+
+```bash
+git worktree remove ../feature-branch
+git worktree remove --force ../feature-branch
+git worktree prune
+```
+
+### Moving Worktrees
+
+```bash
+git worktree move ../old-path ../new-path
+```
+
+### Locking And Unlocking Worktrees
+
+```bash
+git worktree lock ../feature-branch
+git worktree unlock ../feature-branch
+```
+
+## Common Workflow Commands
+
+### Amend And Force Push
+
+```bash
+ga . && git commit --amend --no-edit && git push --force-with-lease
+```
+
+### Reset Commands
+
+```bash
+git reset --hard HEAD~1
+git reset --soft HEAD~1
+git reset HEAD~1
+```
+
+### Rebase Workflow
+
+```bash
+git fetch origin main && git rebase origin/main
+git pull && git fetch origin main && git rebase origin/main
+```
+
+## Git Configuration
+
+### Check Current Configuration
+
+```bash
+git config --list --local
+git config user.name
+git config user.email
+git config --get pull.rebase
+```
+
+### Set Pull Rebase
+
+```bash
+git config pull.rebase true
+```
+
+### Global Configuration
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+```
+
+## Patch Management
+
+### Creating A Patch File
+
+```bash
+git diff > changes.patch
+```
+
+### Applying A Patch
+
+```bash
+git apply changes.patch
+git apply --3way changes.patch
+git apply --verbose changes.patch
+git apply --check changes.patch
+```
+
+## Tips
+
+- Prefer `--force-with-lease` over `--force`.
+- Use `git reset --soft` when you want to redo a commit but keep your changes.
+- Use `git reset --hard` only when you truly want to discard work.
+- Configure `pull.rebase true` to avoid unnecessary merge commits.

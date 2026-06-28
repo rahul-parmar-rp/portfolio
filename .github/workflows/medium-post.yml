@@ -1,0 +1,39 @@
+name: Publish docs to Medium
+
+on:
+  workflow_dispatch:
+
+# Original push trigger disabled for now
+# on:
+#   push:
+#     paths:
+#       - "docs/**/*.md"
+
+jobs:
+  publish:
+    if: false
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect changed markdown files
+        id: changed
+        uses: tj-actions/changed-files@v45
+        with:
+          files: docs/**/*.md
+
+      - name: Publish changed posts
+        if: steps.changed.outputs.any_changed == 'true'
+        env:
+          INPUT_ACCESS_TOKEN: ${{ secrets.MEDIUM_ACCESS_TOKEN }}
+          INPUT_BASE_URL: ${{ vars.MEDIUM_BASE_URL }}
+          INPUT_POST_URL: ${{ vars.MEDIUM_POST_URL }}
+          INPUT_POST_STATUS: ${{ vars.MEDIUM_POST_STATUS }}
+          INPUT_POST_LICENSE: ${{ vars.MEDIUM_POST_LICENSE }}
+        run: |
+          for file in ${{ steps.changed.outputs.all_changed_files }}; do
+            echo "Publishing $file"
+            INPUT_MARKDOWN_FILE="$file" node projects/medium-blog-github-actions/index.js
+          done

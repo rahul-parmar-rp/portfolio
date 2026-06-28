@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Everything - Apps Collection</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 2.5em;
+    }
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 40px;
+      font-size: 1.1em;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin: 20px 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      border-radius: 8px;
+      border-left: 5px solid #667eea;
+      transition: all 0.3s ease;
+    }
+    li:hover {
+      transform: translateX(10px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    a {
+      text-decoration: none;
+      color: #667eea;
+      font-weight: bold;
+      font-size: 20px;
+      display: block;
+      margin-bottom: 8px;
+    }
+    a:hover {
+      color: #764ba2;
+    }
+    .footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #eee;
+      text-align: center;
+      color: #888;
+      font-size: 14px;
+    }
+    .add-info {
+      background: #e7f3ff;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 30px;
+      border-left: 4px solid #2196f3;
+    }
+    .add-info h3 {
+      color: #1976d2;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    .add-info p {
+      color: #555;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .add-info code {
+      background: #fff;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+      color: #d63384;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 Everything</h1>
+    <p class="subtitle">A collection of experimental micro-sites and tools</p>
+    <ul id="appsList"></ul>
+    
+    <div class="add-info">
+      <h3>📝 How to Add New Apps</h3>
+      <p>
+        1. Create your HTML file in <code>docs/micro-sites/</code><br>
+        2. Add an entry to the <code>apps</code> array in <code>docs/index.html</code><br>
+        3. Commit and push - your app will be live at <code>https://gestures-techs.github.io/everything/</code>
+      </p>
+    </div>
+
+    <div class="footer">
+      <p>Built with ❤️ | <a href="https://github.com/Gestures-Techs/everything" target="_blank" style="font-size: 14px;">View on GitHub</a></p>
+    </div>
+  </div>
+
+  <script>
+    // 🧩 Define your HTML files here (in micro-sites folder)
+    const apps = [
+      {
+        file: 'micro-sites/android-xml-xpath-validator.html',
+        name: 'Android XML XPath Validator',
+        description: 'Validate and test XPath expressions for Android XML layouts'
+      },
+      {
+        file: 'micro-sites/google-multi-account-manager.html',
+        name: 'Google Multi-Account OAuth Manager',
+        description: 'Client-side multi-account Google OAuth manager with Gmail integration'
+      },
+      {
+        file: 'micro-sites/google-identity-services-demo.html',
+        name: 'Google Identity Services Demo',
+        description: 'Multi-account sign-in using Google\'s modern authentication (One Tap + JWT)'
+      },
+      {
+        file: 'micro-sites/simple-google-auth.html',
+        name: 'Simple Google Auth',
+        description: 'Minimal Google authentication demo (no CSS, core functionality only)'
+      },
+      {
+        file: 'micro-sites/gmail-send.html',
+        name: 'Gmail Send - Multi-Account',
+        description: 'Send emails from multiple Google accounts using Gmail API (OAuth Implicit Flow)'
+      },
+      {
+        file: 'micro-sites/offline-image-organizer.html',
+        name: 'Offline Image Organizer',
+        description: 'Browse local folders, analyze image properties, and preview date-based organization'
+      }
+    ];
+
+    // 🚀 Render them dynamically
+    const list = document.getElementById('appsList');
+    apps.forEach(app => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <a href="${app.file}" target="_blank">${app.name}</a>
+        <div style="color: #666; font-size: 14px; margin-top: 5px;">${app.description}</div>
+      `;
+      list.appendChild(li);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "twitter-poster-hugging-face",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Standalone mini tweet generator and poster using Hugging Face + Twitter API",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "generate": "tsx src/cli/generate.ts",
+    "post": "tsx src/cli/post.ts",
+    "generate-and-post": "tsx src/cli/post.ts",
+    "server": "tsx src/server.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "twitter-api-v2": "^1.23.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

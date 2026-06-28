@@ -1,0 +1,65 @@
+---
+title: Offline Image Organizer
+description: Interactive local-only browser tool for scanning folders, reading image metadata, and previewing date-based organization without uploads.
+sidebar_position: 2
+slug: /tools/offline-image-organizer
+---
+
+import OfflineImageOrganizer from "@site/src/components/offline-image-organizer";
+
+# Offline Image Organizer
+
+This micro-site is a strong fit for MDX because the useful part is the workflow itself: selecting a local folder, reading file metadata, and previewing organization live inside the docs.
+
+<OfflineImageOrganizer />
+
+## Why This Works Better In MDX
+
+- the tool and the explanation live in one place
+- the File System Access API constraints can be explained next to the live UI
+- the page can evolve as the underlying tool evolves
+
+## What The Tool Does
+
+- requests a local folder using the File System Access API
+- walks nested directories recursively
+- reads file metadata for every file it sees
+- filters supported image formats
+- previews grouping by month or by day
+
+## Browser API At The Core
+
+```javascript
+const rootHandle = await window.showDirectoryPicker();
+
+for await (const entry of rootHandle.values()) {
+  if (entry.kind === "file") {
+    const file = await entry.getFile();
+    console.log(file.name, file.size, file.lastModified);
+  }
+}
+```
+
+## Good Use Cases
+
+- previewing a photo reorganization before moving anything
+- browsing local exports without uploading files
+- understanding how image libraries cluster by date
+- working offline after exporting photos from cloud services
+
+## Important Constraints
+
+- this depends on browser support for `showDirectoryPicker`
+- Firefox does not support the same local-folder workflow
+- the current Dev Journal version stays read-only on purpose
+
+## Supported Image Extensions
+
+```text
+jpg jpeg png gif bmp webp heic raw tiff tif
+```
+
+## Related Docs
+
+- `/google/google-photos-api-notes`
+- `/tools/android-xml-xpath-validator`

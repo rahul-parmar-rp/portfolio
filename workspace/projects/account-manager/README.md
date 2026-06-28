@@ -1,0 +1,4 @@
+- account manager app
+- save all the sessions of the all the apps
+- including web apps and offline apps
+- save all the sign in using google and social media sign ins

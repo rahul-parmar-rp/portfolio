@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google OAuth Multi-Account Manager</title>
+</head>
+<body>
+    <h1>Google OAuth Manager</h1>
+    <p><a href="google-multi-account-manager-guide.md" target="_blank">📖 Read Full Documentation</a></p>
+    
+    <h3>Setup</h3>
+    <p>Add to Google Console Authorized JavaScript origins: https://gestures-techs.github.io</p>
+    
+    <div>
+        <label>Client ID:</label><br>
+        <input type="text" id="clientId" size="60"><br>
+        <label>Redirect URI:</label><br>
+        <input type="text" id="redirectUri" size="60"><br>
+        <button onclick="app.saveConfig()">Save</button>
+    </div>
+    
+    <hr>
+    
+    <h2>Accounts (<span id="count">0</span>)</h2>
+    <button onclick="app.addAccount()">+ Add Account</button>
+    
+    <div id="accountsGrid"></div>
+
+    <script>
+        // Main Application
+        const app = {
+            config: {
+                clientId: '',
+                redirectUri: window.location.origin + window.location.pathname,
+                scope: 'https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'
+            },
+            accounts: [],
+
+            // Generate cryptographically random state for CSRF protection
+            generateRandomState() {
+                const randomValues = new Uint32Array(2);
+                window.crypto.getRandomValues(randomValues);
+                const utf8Encoder = new TextEncoder();
+                const utf8Array = utf8Encoder.encode(
+                    String.fromCharCode.apply(null, randomValues)
+                );
+                return btoa(String.fromCharCode.apply(null, utf8Array))
+                    .replace(/\+/g, '-')
+                    .replace(/\//g, '_')
+                    .replace(/=+$/, '');
+            },
+
+            init() {
+                console.log('=== INIT START ===');
+                console.log('Current URL:', window.location.href);
+                console.log('URL Hash:', window.location.hash);
+                console.log('URL Search:', window.location.search);
+                
+                // Load configuration from localStorage
+                const savedConfig = localStorage.getItem('googleOAuthConfig');
+                console.log('Saved config from localStorage:', savedConfig);
+                if (savedConfig) {
+                    this.config = { ...this.config, ...JSON.parse(savedConfig) };
+                    console.log('Config loaded:', this.config);
+                    document.getElementById('clientId').value = this.config.clientId;
+                    document.getElementById('redirectUri').value = this.config.redirectUri;
+                }
+
+                // Load accounts from localStorage
+                const savedAccounts = localStorage.getItem('googleAccounts');
+                console.log('Saved accounts from localStorage:', savedAccounts);
+                if (savedAccounts) {
+                    this.accounts = JSON.parse(savedAccounts);
+                    console.log('Accounts loaded:', this.accounts.length, 'accounts');
+                }
+
+                // Check if returning from OAuth redirect
+                console.log('Checking for OAuth callback...');
+                this.handleOAuthCallback();
+
+                // Update UI
+                console.log('Rendering accounts...');
+                this.renderAccounts();
+
+                // Auto-populate redirect URI
+                if (!document.getElementById('redirectUri').value) {
+                    console.log('Auto-populating redirect URI:', this.config.redirectUri);
+                    document.getElementById('redirectUri').value = this.config.redirectUri;
+                }
+                console.log('=== INIT COMPLETE ===');
+            },
+
+            saveConfig() {
+                console.log('=== SAVE CONFIG START ===');
+                const clientId = document.getElementById('clientId').value.trim();
+                const redirectUri = document.getElementById('redirectUri').value.trim();
+                console.log('Client ID input:', clientId);
+                console.log('Redirect URI input:', redirectUri);
+
+                if (!clientId) {
+                    console.error('No Client ID provided');
+                    alert('Please enter a Client ID');
+                    return;
+                }
+
+                if (!redirectUri) {
+                    console.error('No Redirect URI provided');
+                    alert('Please enter a Redirect URI');
+                    return;
+                }
+
+                this.config.clientId = clientId;
+                this.config.redirectUri = redirectUri;
+                console.log('Config updated:', this.config);
+
+                const configToSave = {
+                    clientId: this.config.clientId,
+                    redirectUri: this.config.redirectUri
+                };
+                console.log('Saving to localStorage:', configToSave);
+                localStorage.setItem('googleOAuthConfig', JSON.stringify(configToSave));
+                console.log('Config saved successfully');
+                console.log('=== SAVE CONFIG COMPLETE ===');
+
+                alert('✅ Configuration saved!');
+            },
+
+            // Add new account (OAuth Implicit Flow - no backend needed)
+            async addAccount() {
+                console.log('=== ADD ACCOUNT START ===');
+                console.log('Current config:', this.config);
+                
+                if (!this.config.clientId) {
+                    console.error('No Client ID configured');
+                    alert('Please configure your Client ID first!');
+                    return;
+                }
+
+                // Generate and store state for CSRF protection
+                const state = this.generateRandomState();
+                console.log('Generated state:', state);
+                localStorage.setItem('oauth_state', state);
+                console.log('State saved to localStorage');
+
+                // Build OAuth URL using implicit flow
+                const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+                authUrl.searchParams.append('client_id', this.config.clientId);
+                authUrl.searchParams.append('redirect_uri', this.config.redirectUri);
+                authUrl.searchParams.append('response_type', 'token');  // Implicit flow
+                authUrl.searchParams.append('scope', this.config.scope);
+                authUrl.searchParams.append('state', state);  // CSRF protection
+                authUrl.searchParams.append('include_granted_scopes', 'true');  // Incremental auth
+                authUrl.searchParams.append('prompt', 'select_account');
+
+                console.log('OAuth URL constructed:', authUrl.toString());
+                console.log('Redirecting to Google OAuth...');
+                console.log('=== ADD ACCOUNT - REDIRECTING ===');
+                
+                // Redirect to Google OAuth
+                window.location.href = authUrl.toString();
+            },
+
+            // Handle OAuth callback (Implicit Flow - token in URL hash)
+            async handleOAuthCallback() {
+                // First check query parameters for authorization code (fallback)
+                const urlParams = new URLSearchParams(window.location.search);
+                const authCode = urlParams.get('code');
+                
+                if (authCode) {
+                    console.error('Received authorization code instead of access token');
+                    alert('❌ Configuration Error: Your OAuth client is not configured for Implicit Flow.\n\n' +
+                          'Please update Google Cloud Console:\n' +
+                          '1. Go to APIs & Services → Credentials\n' +
+                          '2. Edit your OAuth client\n' +
+                          '3. Add to "Authorized JavaScript origins":\n' +
+                          '   https://gestures-techs.github.io\n' +
+                          '4. Remove any redirect URIs\n' +
+                          '5. Save and try again');
+                    
+                    // Clean URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    return;
+                }
+
+                // Check URL hash for access token
+                const hash = window.location.hash.substring(1);
+                if (!hash) return;
+
+                console.log('OAuth callback detected, hash:', hash);
+
+                const params = new URLSearchParams(hash);
+                const accessToken = params.get('access_token');
+                const expiresIn = params.get('expires_in');
+                const state = params.get('state');
+                const scope = params.get('scope');
+
+                console.log('Access token:', accessToken ? 'Present' : 'Missing');
+                console.log('State:', state);
+                console.log('Scope:', scope);
+
+                if (!accessToken) {
+                    console.error('No access token in OAuth callback');
+                    return;
+                }
+
+                // Verify state to prevent CSRF attacks
+                const storedState = localStorage.getItem('oauth_state');
+                if (state !== storedState) {
+                    console.error('State mismatch. Possible CSRF attack');
+                    alert('Security error: State mismatch. Please try again.');
+                    return;
+                }
+
+                try {
+                    // Check which scopes were granted
+                    const grantedScopes = scope ? scope.split(' ') : [];
+                    console.log('Granted scopes:', grantedScopes);
+
+                    // Get user info
+                    const userInfo = await this.getUserInfo(accessToken);
+                    console.log('User info received:', userInfo);
+
+                    // Store account with granted scopes
+                    const account = {
+                        id: userInfo.email,
+                        email: userInfo.email,
+                        name: userInfo.name,
+                        picture: userInfo.picture,
+                        accessToken: accessToken,
+                        expiresAt: Date.now() + (parseInt(expiresIn) * 1000),
+                        grantedScopes: grantedScopes,
+                        addedAt: Date.now()
+                    };
+
+                    console.log('Account object created:', account);
+
+                    // Check if account already exists
+                    const existingIndex = this.accounts.findIndex(a => a.id === account.id);
+                    if (existingIndex >= 0) {
+                        console.log('Updating existing account at index:', existingIndex);
+                        this.accounts[existingIndex] = account;
+                    } else {
+                        console.log('Adding new account');
+                        this.accounts.push(account);
+                    }
+
+                    this.saveAccounts();
+                    console.log('Accounts saved to localStorage. Total accounts:', this.accounts.length);
+                    
+                    this.renderAccounts();
+                    console.log('Accounts rendered');
+
+                    // Show success message
+                    alert(`✅ Successfully authenticated as ${userInfo.name} (${userInfo.email})`);
+
+                    // Clean up
+                    localStorage.removeItem('oauth_state');
+
+                    // Remove hash from URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                } catch (error) {
+                    console.error('Error getting user info:', error);
+                    alert('Failed to authenticate. Please try again.');
+                    localStorage.removeItem('oauth_state');
+                }
+            },
+
+            // Get user info from Google
+            async getUserInfo(accessToken) {
+                const response = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+                return await response.json();
+            },
+
+            // Save accounts to localStorage
+            saveAccounts() {
+                console.log('=== SAVING ACCOUNTS ===');
+                console.log('Accounts to save:', this.accounts.length);
+                console.log('Accounts data:', JSON.stringify(this.accounts, null, 2));
+                localStorage.setItem('googleAccounts', JSON.stringify(this.accounts));
+                console.log('Accounts saved to localStorage');
+            },
+
+            // Remove account
+            removeAccount(accountId) {
+                console.log('=== REMOVE ACCOUNT ===');
+                console.log('Account ID to remove:', accountId);
+                if (confirm('Are you sure you want to remove this account?')) {
+                    const beforeCount = this.accounts.length;
+                    this.accounts = this.accounts.filter(a => a.id !== accountId);
+                    console.log('Accounts before:', beforeCount, 'After:', this.accounts.length);
+                    this.saveAccounts();
+                    this.renderAccounts();
+                    console.log('Account removed successfully');
+                } else {
+                    console.log('Account removal cancelled');
+                }
+            },
+
+            // Check if token is expired
+            isTokenExpired(account) {
+                return Date.now() >= account.expiresAt;
+            },
+
+            async listGmailLabels(account) {
+                console.log('=== LIST GMAIL LABELS ===');
+                console.log('Account:', account.email);
+                console.log('Token expires at:', new Date(account.expiresAt));
+                console.log('Token expired:', this.isTokenExpired(account));
+                
+                if (this.isTokenExpired(account)) {
+                    console.error('Token expired for account:', account.email);
+                    alert('Token expired. Re-authenticate.');
+                    return;
+                }
+                const resultDiv = document.getElementById(`results-${account.id}`);
+                resultDiv.innerHTML = 'Loading...';
+                console.log('Fetching labels from Gmail API...');
+                try {
+                    const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/labels', {
+                        headers: { 'Authorization': `Bearer ${account.accessToken}` }
+                    });
+                    console.log('Response status:', response.status);
+                    const data = await response.json();
+                    console.log('Labels data:', data);
+                    if (data.labels) {
+                        console.log('Found', data.labels.length, 'labels');
+                        resultDiv.innerHTML = `<h4>Labels (${data.labels.length})</h4><ul>` +
+                            data.labels.slice(0, 10).map(l => `<li>${l.name}</li>`).join('') + '</ul>';
+                    }
+                } catch (error) {
+                    console.error('Error fetching labels:', error);
+                    resultDiv.innerHTML = `Error: ${error.message}`;
+                }
+            },
+
+            async listGmailDrafts(account) {
+                if (this.isTokenExpired(account)) {
+                    alert('Token expired. Re-authenticate.');
+                    return;
+                }
+                const resultDiv = document.getElementById(`results-${account.id}`);
+                resultDiv.innerHTML = 'Loading...';
+                try {
+                    const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/drafts', {
+                        headers: { 'Authorization': `Bearer ${account.accessToken}` }
+                    });
+                    const data = await response.json();
+                    if (data.drafts && data.drafts.length > 0) {
+                        resultDiv.innerHTML = `<h4>Drafts (${data.drafts.length})</h4><ul>` +
+                            data.drafts.slice(0, 5).map(d => `<li>ID: ${d.id}</li>`).join('') + '</ul>';
+                    } else {
+                        resultDiv.innerHTML = 'No drafts';
+                    }
+                } catch (error) {
+                    resultDiv.innerHTML = `Error: ${error.message}`;
+                }
+            },
+
+            async getGmailProfile(account) {
+                if (this.isTokenExpired(account)) {
+                    alert('Token expired. Re-authenticate.');
+                    return;
+                }
+                const resultDiv = document.getElementById(`results-${account.id}`);
+                resultDiv.innerHTML = 'Loading...';
+                try {
+                    const response = await fetch('https://www.googleapis.com/gmail/v1/users/me/profile', {
+                        headers: { 'Authorization': `Bearer ${account.accessToken}` }
+                    });
+                    const data = await response.json();
+                    resultDiv.innerHTML = `<h4>Profile</h4><ul>
+                        <li>Email: ${data.emailAddress}</li>
+                        <li>Messages: ${data.messagesTotal}</li>
+                        <li>Threads: ${data.threadsTotal}</li>
+                    </ul>`;
+                } catch (error) {
+                    resultDiv.innerHTML = `Error: ${error.message}`;
+                }
+            },
+
+            renderAccounts() {
+                document.getElementById('count').textContent = this.accounts.length;
+                const grid = document.getElementById('accountsGrid');
+
+                if (this.accounts.length === 0) {
+                    grid.innerHTML = '<p>No accounts yet. Click "Add Account" above.</p>';
+                    return;
+                }
+
+                grid.innerHTML = this.accounts.map(account => {
+                    const isExpired = this.isTokenExpired(account);
+                    return `
+                        <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+                            ${account.picture ? `<img src="${account.picture}" width="50" height="50" style="border-radius: 50%;">` : ''}
+                            <p><strong>${account.name || 'Google User'}</strong></p>
+                            <p>${account.email}</p>
+                            <p style="color: ${isExpired ? 'red' : 'green'};">${isExpired ? '⚠️ Expired' : '✓ Active'}</p>
+                            <button onclick="app.listGmailLabels(app.accounts.find(a => a.id === '${account.id}'))">Labels</button>
+                            <button onclick="app.listGmailDrafts(app.accounts.find(a => a.id === '${account.id}'))">Drafts</button>
+                            <button onclick="app.getGmailProfile(app.accounts.find(a => a.id === '${account.id}'))">Profile</button>
+                            <button onclick="app.removeAccount('${account.id}')">Remove</button>
+                            <div id="results-${account.id}"></div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        };
+
+        // Initialize app when page loads
+        document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>
