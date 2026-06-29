@@ -1,3 +1,0 @@
-[submodule "workspace/git-submodules-example-repo"]
-	path = workspace/git-submodules-example-repo
-	url = https://github.com/rahul-parmar-rp/git-submodules-example-repo.git
