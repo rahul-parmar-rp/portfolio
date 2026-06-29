@@ -4,16 +4,23 @@ name: Dev Journal Pages Deploy
   push:
     branches:
       - main
+      - fresh-start
     paths:
       - docs/dev-journal/**
       - .github/workflows/dev-journal-pages.yml
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,6 +39,9 @@ jobs:
           cache: pnpm
           cache-dependency-path: docs/dev-journal/pnpm-lock.yaml
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
       - name: Install dependencies
         working-directory: docs/dev-journal
         run: pnpm install --frozen-lockfile
@@ -40,10 +50,18 @@ jobs:
         working-directory: docs/dev-journal
         run: pnpm build
 
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/dev-journal/build
-          publish_branch: gh-pages
-          force_orphan: true
+          path: docs/dev-journal/build
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
