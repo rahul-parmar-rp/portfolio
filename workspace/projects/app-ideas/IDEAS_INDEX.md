@@ -27,6 +27,7 @@
 - automated-content-generator-platform.md
 - twitter-posting-using-central-spreadheet-google.md
 - react-questions-problem-poster-workflow-tweeter-engagementt-start.md
+- travel-instagram-ai-caption-approval-pipeline.md
 
 ## Games and Entertainment
 
