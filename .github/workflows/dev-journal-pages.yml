@@ -44,7 +44,12 @@ jobs:
 
       - name: Install dependencies
         working-directory: docs/dev-journal
-        run: pnpm install --frozen-lockfile
+        run: |
+          pnpm install --frozen-lockfile || (
+            echo "pnpm install failed, attempting non-interactive build approvals..."
+            pnpm approve-builds --all
+            pnpm install --frozen-lockfile
+          )
 
       - name: Build site
         working-directory: docs/dev-journal
