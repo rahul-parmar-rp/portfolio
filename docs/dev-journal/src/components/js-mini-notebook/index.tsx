@@ -50,7 +50,10 @@ function formatValue(value: unknown): string {
   }
 }
 
-function runNotebook(cells: NotebookCell[], lastCellIndex: number): CellOutput[] {
+function runNotebook(
+  cells: NotebookCell[],
+  lastCellIndex: number,
+): CellOutput[] {
   const outputs: CellOutput[] = cells.map(() => ({ ...IDLE_OUTPUT }));
   let scope = "";
 
@@ -177,7 +180,9 @@ export default function JsMiniNotebook() {
               }`}
             >
               <div className={styles.outputTitle}>Output</div>
-              <pre>{(outputs[index]?.lines || IDLE_OUTPUT.lines).join("\n")}</pre>
+              <pre>
+                {(outputs[index]?.lines || IDLE_OUTPUT.lines).join("\n")}
+              </pre>
             </div>
           </section>
         ))}
