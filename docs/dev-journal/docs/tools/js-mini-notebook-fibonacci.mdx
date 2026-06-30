@@ -1,0 +1,36 @@
+---
+title: JS Mini Notebook (Fibonacci)
+description: A tiny notebook-style JavaScript runner embedded directly in an MDX docs page.
+sidebar_position: 3
+slug: /tools/js-mini-notebook-fibonacci
+---
+
+import JsMiniNotebook from "@site/src/components/js-mini-notebook";
+
+# JS Mini Notebook Embedded In MDX
+
+This page shows a notebook-like setup inside Docusaurus MDX.
+
+- you edit JavaScript snippets in cells
+- execute cell-by-cell or run everything
+- reuse code from previous cells
+
+<JsMiniNotebook />
+
+## Why This Pattern Is Useful
+
+- great for small interactive coding demos
+- keeps explanation and runnable examples in one page
+- avoids running a full separate notebook server
+
+## Included Example
+
+The default cells include a Fibonacci function and a second cell that prints the first 10 values.
+
+## When To Use A Separate App Instead
+
+Use a standalone app (served under the static folder or externally) when you need:
+
+- complex routing
+- heavy runtime execution
+- persistent notebook files and collaboration
