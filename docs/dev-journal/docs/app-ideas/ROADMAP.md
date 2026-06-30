@@ -152,3 +152,60 @@ This roadmap ranks all current idea docs by:
 - computer-action-agents.md
 - otp-cleaner-using-offline-ai.md
 - local-network-card-games-suite.md
+
+## 4) Simple Web MVP Shortlist
+
+Use this section when you want to test demand with the fastest possible build using plain HTML, CSS, JavaScript, or a very small React single-page app.
+
+### Best candidates for a simple web MVP
+
+1. commit-message-writer-assistant.md
+2. project-keyword-opportunity-finder.md
+3. corporate-holiday-leave-optimizer.md
+4. isha-foundation-yoga-scheduler.md
+5. google-appsheets-ideas-apps.md
+6. open-source-solution-research-hub.md
+7. free-alternative-product-builder.md
+8. bug-consultancy-for-devs-and-businesses.md
+
+Why these fit:
+
+- form-heavy workflows
+- text in, text out interactions
+- simple filtering, scoring, or recommendation logic
+- low device and hardware dependency
+- can launch with local data or a tiny backend
+
+### Good as web-first MVPs, but probably need APIs or background jobs
+
+- timesheet-auto-filler-assistant.md
+- twitter-posting-using-central-spreadheet-google.md
+- auto-twitter-posts-save-soil-tech.md
+- auto-instagram-posts.md
+- travel-instagram-ai-caption-approval-pipeline.md
+- react-questions-problem-poster-workflow-tweeter-engagementt-start.md
+- automated-content-generator-platform.md
+- social-media-growth-automation-suite.md
+- google-photos-wrapper.md
+- google-photos-account-tracker.md
+
+### Poor fit for a simple single-page web MVP
+
+- hotspot-one-click-toggle-app.md
+- notification-tracker.md
+- smartphone-interaction-automation-suite.md
+- computer-action-agents.md
+- online-ticket-booking-agent.md
+- otp-cleaner-using-offline-ai.md
+- local-network-card-games-suite.md
+- virtual-teen-patti-local-network-game.md
+- custom-mobile-launchers-creator.md
+- auto-play-store-app-updater.md
+
+These usually depend on one or more of the following:
+
+- mobile OS permissions
+- desktop automation or browser control
+- local-device access
+- multiplayer networking
+- deeper native integrations
