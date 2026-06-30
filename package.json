@@ -11,6 +11,7 @@
     "docs:build": "pnpm --dir docs/dev-journal build",
     "docs:serve": "pnpm --dir docs/dev-journal serve",
     "docs:typecheck": "pnpm --dir docs/dev-journal typecheck",
+    "docs:sync:app-ideas": "rsync -a workspace/projects/app-ideas/ docs/dev-journal/docs/app-ideas/",
     "ports:kill": "sh -c 'ports=$(lsof -tiTCP:2998,4005,3000,3001,3002,3003,3004,3005,6006,6007,6008,8080,8081,4200,5600,5432 -sTCP:LISTEN); if [ -n \"$ports\" ]; then echo \"$ports\" | xargs kill -9; fi'",
     "submodule:status": "git submodule status",
     "submodule:init": "git submodule update --init --recursive",
