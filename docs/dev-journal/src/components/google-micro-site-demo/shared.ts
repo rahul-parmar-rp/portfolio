@@ -110,6 +110,25 @@ export function buildOauthUrl(
   return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
 }
 
+/**
+ * Decode the payload of a JWT without verifying the signature.
+ * Used client-side only to inspect the identity claims returned by GIS.
+ * Returns null if the token is malformed.
+ */
+export function decodeJwtPayload(token: string): Record<string, string & number> | null {
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) return null;
+    // Base64url → base64 → JSON
+    const base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
+    const json = typeof atob === "function" ? atob(padded) : Buffer.from(padded, "base64").toString("utf-8");
+    return JSON.parse(json) as Record<string, string & number>;
+  } catch {
+    return null;
+  }
+}
+
 export function buildRfc2822(toEmail: string, subject: string, message: string) {
   return [
     `To: ${toEmail || "recipient@example.com"}`,
