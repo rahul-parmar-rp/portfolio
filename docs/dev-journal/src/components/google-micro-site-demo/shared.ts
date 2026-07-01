@@ -20,9 +20,24 @@ export type DemoAccount = {
 };
 
 export const sampleProfiles: Profile[] = [
-  { id: "maya", name: "Maya Patel", email: "maya.patel.demo@gmail.com", locale: "en" },
-  { id: "arjun", name: "Arjun Singh", email: "arjun.singh.demo@gmail.com", locale: "en-IN" },
-  { id: "lucia", name: "Lucia Costa", email: "lucia.costa.demo@gmail.com", locale: "pt-BR" },
+  {
+    id: "maya",
+    name: "Maya Patel",
+    email: "maya.patel.demo@gmail.com",
+    locale: "en",
+  },
+  {
+    id: "arjun",
+    name: "Arjun Singh",
+    email: "arjun.singh.demo@gmail.com",
+    locale: "en-IN",
+  },
+  {
+    id: "lucia",
+    name: "Lucia Costa",
+    email: "lucia.costa.demo@gmail.com",
+    locale: "pt-BR",
+  },
 ];
 
 export function encodeBase64Url(value: string) {
@@ -33,7 +48,8 @@ export function encodeBase64Url(value: string) {
   });
 
   if (typeof globalThis.btoa === "function") {
-    return globalThis.btoa(binary)
+    return globalThis
+      .btoa(binary)
       .replace(/\+/g, "-")
       .replace(/\//g, "_")
       .replace(/=+$/, "");
@@ -115,21 +131,33 @@ export function buildOauthUrl(
  * Used client-side only to inspect the identity claims returned by GIS.
  * Returns null if the token is malformed.
  */
-export function decodeJwtPayload(token: string): Record<string, string & number> | null {
+export function decodeJwtPayload(
+  token: string,
+): Record<string, string & number> | null {
   try {
     const parts = token.split(".");
     if (parts.length !== 3) return null;
     // Base64url → base64 → JSON
     const base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
-    const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
-    const json = typeof atob === "function" ? atob(padded) : Buffer.from(padded, "base64").toString("utf-8");
+    const padded = base64.padEnd(
+      base64.length + ((4 - (base64.length % 4)) % 4),
+      "=",
+    );
+    const json =
+      typeof atob === "function"
+        ? atob(padded)
+        : Buffer.from(padded, "base64").toString("utf-8");
     return JSON.parse(json) as Record<string, string & number>;
   } catch {
     return null;
   }
 }
 
-export function buildRfc2822(toEmail: string, subject: string, message: string) {
+export function buildRfc2822(
+  toEmail: string,
+  subject: string,
+  message: string,
+) {
   return [
     `To: ${toEmail || "recipient@example.com"}`,
     `Subject: ${subject || "Demo Subject"}`,
@@ -148,7 +176,10 @@ export function formatBytes(bytes: number) {
   }
 
   const units = ["B", "KB", "MB", "GB", "TB"];
-  const exponent = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+  const exponent = Math.min(
+    Math.floor(Math.log(bytes) / Math.log(1024)),
+    units.length - 1,
+  );
   const sized = bytes / 1024 ** exponent;
   return `${sized.toFixed(exponent === 0 ? 0 : 1)} ${units[exponent]}`;
 }

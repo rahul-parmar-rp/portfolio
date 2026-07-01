@@ -21,3 +21,12 @@ This is the stripped-down identity-only version of the Google demos. It now live
 - no broader OAuth manager features
 
 Use this pattern when the product only needs authentication and a local account chooser.
+
+## How the Real Flow Works Now
+
+- **GIS script loads** — useGisScript dynamically injects https://accounts.google.com/gsi/client once on mount
+- **Init GIS** — calls google.accounts.id.initialize({ client_id, callback }) and google.accounts.id.renderButton(...) into a real `<div>` — Google renders its own branded button
+- **User clicks the Google button** — Google pops the real account chooser, user selects an account, Google calls your callback with a real signed JWT credential
+- **JWT decoded** — decodeJwtPayload base64url-decodes the payload section to extract sub, email, name, locale, exp from the real Google-issued token
+- **One Tap** — "One Tap prompt" button calls google.accounts.id.prompt() which can trigger the floating One Tap overlay
+- **To use it** — you need a Google Cloud Console project with an OAuth client ID, and this page's origin (e.g. http://localhost:3000) added as an Authorised JavaScript origin.

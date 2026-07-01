@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import { DemoAccount, decodeJwtPayload, usePersistentState } from "./shared";
 import styles from "./styles.module.css";
@@ -110,9 +116,10 @@ export default function SimpleGoogleAuthDemo({
       };
       setAccounts((prev) => {
         const idx = prev.findIndex((a) => a.id === newAccount.id);
-        const next = idx >= 0
-          ? prev.map((a, i) => (i === idx ? newAccount : a))
-          : [...prev, newAccount];
+        const next =
+          idx >= 0
+            ? prev.map((a, i) => (i === idx ? newAccount : a))
+            : [...prev, newAccount];
         return next;
       });
       setSelected(newAccount.id);
@@ -155,25 +162,27 @@ export default function SimpleGoogleAuthDemo({
       setStatusMsg("Initialize GIS first.");
       return;
     }
-    window.google?.accounts?.id.prompt((notification: google.accounts.id.PromptMomentNotification) => {
-      if (notification.isNotDisplayed()) {
-        setStatusMsg(
-          `One Tap not displayed: ${notification.getNotDisplayedReason()}`,
-        );
-      } else if (notification.isSkippedMoment()) {
-        setStatusMsg(`One Tap skipped: ${notification.getSkippedReason()}`);
-      } else if (notification.isDismissedMoment()) {
-        setStatusMsg(`One Tap dismissed: ${notification.getDismissedReason()}`);
-      }
-    });
+    window.google?.accounts?.id.prompt(
+      (notification: google.accounts.id.PromptMomentNotification) => {
+        if (notification.isNotDisplayed()) {
+          setStatusMsg(
+            `One Tap not displayed: ${notification.getNotDisplayedReason()}`,
+          );
+        } else if (notification.isSkippedMoment()) {
+          setStatusMsg(`One Tap skipped: ${notification.getSkippedReason()}`);
+        } else if (notification.isDismissedMoment()) {
+          setStatusMsg(
+            `One Tap dismissed: ${notification.getDismissedReason()}`,
+          );
+        }
+      },
+    );
   }
 
   const payload = useMemo(() => {
     if (!account) return "Sign in to inspect the decoded JWT payload.";
     const claims = decodeJwtPayload(account.token);
-    return claims
-      ? JSON.stringify(claims, null, 2)
-      : "Could not decode token.";
+    return claims ? JSON.stringify(claims, null, 2) : "Could not decode token.";
   }, [account]);
 
   return (
@@ -238,8 +247,8 @@ export default function SimpleGoogleAuthDemo({
           </div>
           <div className={styles.section}>
             <div className={styles.callout}>
-              Identity-only flow — no Gmail, Drive, or Photos scopes. You need
-              a real OAuth Client ID with this page's origin added as an
+              Identity-only flow — no Gmail, Drive, or Photos scopes. You need a
+              real OAuth Client ID with this page's origin added as an
               authorised JavaScript origin in Google Cloud Console.
             </div>
           </div>
@@ -253,9 +262,7 @@ export default function SimpleGoogleAuthDemo({
                     account={entry}
                     key={entry.id}
                     onRemove={() => {
-                      setAccounts(
-                        accounts.filter((a) => a.id !== entry.id),
-                      );
+                      setAccounts(accounts.filter((a) => a.id !== entry.id));
                       if (selected === entry.id) setSelected("");
                     }}
                   />
@@ -293,7 +300,10 @@ export default function SimpleGoogleAuthDemo({
             <div className={styles.section}>
               <div className={styles.resultTitle}>Raw credential (JWT)</div>
               <div className={styles.panel}>
-                <pre className={styles.code} style={{ wordBreak: "break-all", whiteSpace: "pre-wrap" }}>
+                <pre
+                  className={styles.code}
+                  style={{ wordBreak: "break-all", whiteSpace: "pre-wrap" }}
+                >
                   {account.token}
                 </pre>
               </div>
