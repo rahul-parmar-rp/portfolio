@@ -1,0 +1,3 @@
+- create simple example app for the a11y servie on android how to use it to open an app using
+- either on click of the andriod app that you created
+- or else on launch of the app the app should just open on a internal button click
