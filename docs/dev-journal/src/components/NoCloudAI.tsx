@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import BrowserOnly from "@docusaurus/BrowserOnly";
 
 function NoCloudAI(): JSX.Element {
@@ -10,13 +10,51 @@ function NoCloudAI(): JSX.Element {
   const [error, setError] = useState<string | null>(null);
   const generatorRef = useRef<any>(null);
 
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    let cancelled = false;
+
+    async function init() {
+      try {
+        const { pipeline } = await import("@xenova/transformers");
+        if (cancelled) return;
+        generatorRef.current = await pipeline(
+          "text-generation",
+          "Xenova/distilgpt2",
+        );
+        if (!cancelled) {
+          setModelLoaded(true);
+        }
+      } catch (e: any) {
+        if (!cancelled) {
+          console.error("Model load failed", e);
+          setError("Failed to load model: " + (e?.message || String(e)));
+          setModelLoaded(false);
+        }
+      }
+    }
+
+    void init();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   async function loadModel() {
     setError(null);
     if (modelLoaded) return generatorRef.current;
     setLoadingModel(true);
     try {
+      if (typeof window === "undefined") {
+        setLoadingModel(false);
+        return null;
+      }
+
       const { pipeline } = await import("@xenova/transformers");
-      // small browser-friendly model
       generatorRef.current = await pipeline(
         "text-generation",
         "Xenova/distilgpt2",
@@ -25,7 +63,6 @@ function NoCloudAI(): JSX.Element {
       return generatorRef.current;
     } catch (e: any) {
       console.error("Model load failed", e);
-      // Friendly error messages for common failure scenarios
       if (e?.message?.includes("network")) {
         setError(
           "Model download failed: network error. Check your connection and try again.",
@@ -41,7 +78,7 @@ function NoCloudAI(): JSX.Element {
         setError("Failed to load model: " + (e?.message || String(e)));
       }
       setModelLoaded(false);
-      throw e;
+      return null;
     } finally {
       setLoadingModel(false);
     }
@@ -58,6 +95,11 @@ function NoCloudAI(): JSX.Element {
     setOutput("");
     try {
       const pipe = await loadModel();
+      if (!pipe) {
+        setError("Model initialization failed. Please try again.");
+        return;
+      }
+
       const result = await pipe(input, {
         max_new_tokens: 80,
         temperature: 0.7,
