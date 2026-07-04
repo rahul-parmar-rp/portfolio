@@ -5,20 +5,54 @@ export default function NoCloudAI(): JSX.Element {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingModel, setLoadingModel] = useState(false);
+  const [modelLoaded, setModelLoaded] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const generatorRef = useRef<any>(null);
 
   async function loadModel() {
-    if (!generatorRef.current) {
+    setError(null);
+    if (modelLoaded) return generatorRef.current;
+    setLoadingModel(true);
+    try {
       // small browser-friendly model
       generatorRef.current = await pipeline(
         "text-generation",
         "Xenova/distilgpt2",
       );
+      setModelLoaded(true);
+      return generatorRef.current;
+    } catch (e: any) {
+      console.error("Model load failed", e);
+      // Friendly error messages for common failure scenarios
+      if (e?.message?.includes("network")) {
+        setError(
+          "Model download failed: network error. Check your connection and try again.",
+        );
+      } else if (
+        e?.message?.includes("WebGL") ||
+        e?.message?.includes("WebGPU")
+      ) {
+        setError(
+          "Browser does not support required GPU features. Try a different browser or enable the required flags.",
+        );
+      } else {
+        setError("Failed to load model: " + (e?.message || String(e)));
+      }
+      setModelLoaded(false);
+      throw e;
+    } finally {
+      setLoadingModel(false);
     }
-    return generatorRef.current;
   }
 
   async function runModel() {
+    setError(null);
+    if (!modelLoaded) {
+      setError("Model is not loaded. Click 'Load model' first.");
+      return;
+    }
+
     setLoading(true);
     setOutput("");
     try {
@@ -35,7 +69,7 @@ export default function NoCloudAI(): JSX.Element {
       setOutput(text);
     } catch (e: any) {
       console.error(e);
-      setOutput("Error: " + (e.message || String(e)));
+      setError("Generation error: " + (e?.message || String(e)));
     } finally {
       setLoading(false);
     }
@@ -45,10 +79,75 @@ export default function NoCloudAI(): JSX.Element {
     <div style={{ padding: 20, fontFamily: "sans-serif" }}>
       <h2>Local LLM (Browser Only)</h2>
 
+      <div style={{ marginBottom: 8 }}>
+        <strong>Model status:</strong>{" "}
+        {loadingModel ? (
+          <span>Loading…</span>
+        ) : modelLoaded ? (
+          <span style={{ color: "green" }}>Loaded</span>
+        ) : (
+          <span style={{ color: "orange" }}>Not loaded</span>
+        )}
+      </div>
+
+      {error && (
+        <div style={{ marginBottom: 12, color: "#a00" }}>
+          <div style={{ marginBottom: 6 }}>Error: {error}</div>
+          <div style={{ display: "flex", gap: 8 }}>
+            <button
+              onClick={() => {
+                setError(null);
+              }}
+            >
+              Clear
+            </button>
+            <button
+              onClick={() => {
+                // Retry loading the model
+                loadModel().catch(() => {});
+              }}
+            >
+              Retry load
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div style={{ marginBottom: 12, display: "flex", gap: 8 }}>
+        <button
+          onClick={() => loadModel()}
+          disabled={loadingModel || modelLoaded}
+        >
+          {loadingModel
+            ? "Loading model…"
+            : modelLoaded
+              ? "Loaded"
+              : "Load model"}
+        </button>
+        <button
+          onClick={() => {
+            // unload model (free memory) — best-effort
+            try {
+              generatorRef.current = null;
+            } finally {
+              setModelLoaded(false);
+              setOutput("");
+            }
+          }}
+          disabled={!modelLoaded && !loadingModel}
+        >
+          Unload model
+        </button>
+      </div>
+
       <textarea
         rows={5}
         cols={60}
-        placeholder="Type something..."
+        placeholder={
+          modelLoaded
+            ? "Type something..."
+            : "Load the model first to enable generation"
+        }
         value={input}
         onChange={(e) => setInput(e.target.value)}
         style={{
@@ -57,6 +156,7 @@ export default function NoCloudAI(): JSX.Element {
           padding: 8,
           boxSizing: "border-box",
         }}
+        disabled={!modelLoaded}
       />
 
       <br />
@@ -64,13 +164,14 @@ export default function NoCloudAI(): JSX.Element {
       <div
         style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center" }}
       >
-        <button onClick={runModel} disabled={loading}>
+        <button onClick={runModel} disabled={loading || !modelLoaded}>
           {loading ? "Running..." : "Generate"}
         </button>
         <button
           onClick={() => {
             setInput("");
             setOutput("");
+            setError(null);
           }}
         >
           Clear
