@@ -1,7 +1,7 @@
-import React, { useState, useRef } from "react";
-import { pipeline } from "@xenova/transformers";
+import { useState, useRef } from "react";
+import BrowserOnly from "@docusaurus/BrowserOnly";
 
-export default function NoCloudAI(): JSX.Element {
+function NoCloudAI(): JSX.Element {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,6 +15,7 @@ export default function NoCloudAI(): JSX.Element {
     if (modelLoaded) return generatorRef.current;
     setLoadingModel(true);
     try {
+      const { pipeline } = await import("@xenova/transformers");
       // small browser-friendly model
       generatorRef.current = await pipeline(
         "text-generation",
@@ -190,5 +191,13 @@ export default function NoCloudAI(): JSX.Element {
         {output}
       </pre>
     </div>
+  );
+}
+
+export default function NoCloudAIWrapper() {
+  return (
+    <BrowserOnly fallback={<div>Loading...</div>}>
+      {() => <NoCloudAI />}
+    </BrowserOnly>
   );
 }
