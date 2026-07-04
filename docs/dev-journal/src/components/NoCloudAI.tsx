@@ -19,7 +19,7 @@ function NoCloudAI(): JSX.Element {
 
     async function init() {
       try {
-        const { pipeline } = await import("@xenova/transformers");
+        const { pipeline } = await import("@huggingface/transformers");
         if (cancelled) return;
         generatorRef.current = await pipeline(
           "text-generation",
@@ -54,7 +54,7 @@ function NoCloudAI(): JSX.Element {
         return null;
       }
 
-      const { pipeline } = await import("@xenova/transformers");
+      const { pipeline } = await import("@huggingface/transformers");
       generatorRef.current = await pipeline(
         "text-generation",
         "Xenova/distilgpt2",
