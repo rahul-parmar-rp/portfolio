@@ -26,9 +26,11 @@ function NoCloudAIInner() {
       const transformers = await import("@huggingface/transformers");
       const { pipeline } = transformers;
 
-      const pipe = await pipeline("text-generation", "Xenova/distilgpt2", {
+      const pipe = pipeline("text-generation", "Xenova/distilgpt2", {
         dtype: "fp32",
+        device: "wasm",
       });
+
       pipeRef.current = pipe;
       return pipe;
     } catch (err) {
