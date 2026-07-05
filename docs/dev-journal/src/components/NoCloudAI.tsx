@@ -26,9 +26,11 @@ function NoCloudAIInner() {
       const transformers = await import("@huggingface/transformers");
       const { pipeline } = transformers;
 
-      const pipe = await pipeline("text-generation", "Xenova/distilgpt2", {
-        dtype: "fp32",
-      });
+      const pipe = await pipeline(
+        "text-generation",
+        "onnx-community/Qwen2.5-Coder-0.5B-Instruct",
+        { dtype: "q8" },
+      );
 
       pipeRef.current = pipe;
       return pipe;
