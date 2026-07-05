@@ -1,102 +1,56 @@
-import { useEffect, useState, useRef } from "react";
-import BrowserOnly from "@docusaurus/BrowserOnly";
+import { useState, useRef, useEffect } from "react";
 
-function NoCloudAI(): JSX.Element {
+export default function NoCloudAI() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [loadingModel, setLoadingModel] = useState(false);
-  const [modelLoaded, setModelLoaded] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const generatorRef = useRef<any>(null);
+  const [modelLoading, setModelLoading] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
+  const pipeRef = useRef<any>(null);
+
+  // ✅ ensure browser-only execution
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    let cancelled = false;
-
-    async function init() {
-      try {
-        const { pipeline } = await import("@huggingface/transformers");
-        if (cancelled) return;
-        generatorRef.current = await pipeline(
-          "text-generation",
-          "Xenova/distilgpt2",
-        );
-        if (!cancelled) {
-          setModelLoaded(true);
-        }
-      } catch (e: any) {
-        if (!cancelled) {
-          console.error("Model load failed", e);
-          setError("Failed to load model: " + (e?.message || String(e)));
-          setModelLoaded(false);
-        }
-      }
-    }
-
-    void init();
-
-    return () => {
-      cancelled = true;
-    };
+    setIsClient(true);
   }, []);
 
-  async function loadModel() {
-    setError(null);
-    if (modelLoaded) return generatorRef.current;
-    setLoadingModel(true);
-    try {
-      if (typeof window === "undefined") {
-        setLoadingModel(false);
-        return null;
-      }
+  // ✅ dynamically load model (SSR SAFE)
+  async function loadModel(): Promise<any | null> {
+    if (!isClient) return null;
 
-      const { pipeline } = await import("@huggingface/transformers");
-      generatorRef.current = await pipeline(
-        "text-generation",
-        "Xenova/distilgpt2",
-      );
-      setModelLoaded(true);
-      return generatorRef.current;
-    } catch (e: any) {
-      console.error("Model load failed", e);
-      if (e?.message?.includes("network")) {
-        setError(
-          "Model download failed: network error. Check your connection and try again.",
-        );
-      } else if (
-        e?.message?.includes("WebGL") ||
-        e?.message?.includes("WebGPU")
-      ) {
-        setError(
-          "Browser does not support required GPU features. Try a different browser or enable the required flags.",
-        );
-      } else {
-        setError("Failed to load model: " + (e?.message || String(e)));
-      }
-      setModelLoaded(false);
-      return null;
+    if (pipeRef.current) return pipeRef.current;
+
+    setModelLoading(true);
+
+    try {
+      // 🔥 dynamic import (prevents SSR bundling issues)
+      const transformers = await import("@huggingface/transformers");
+      const { pipeline } = transformers;
+
+      const pipe = await pipeline("text-generation", "Xenova/distilgpt2");
+
+      pipeRef.current = pipe;
+      return pipe;
+    } catch (err) {
+      console.error("Model load failed:", err);
+      setOutput("❌ Failed to load model");
     } finally {
-      setLoadingModel(false);
+      setModelLoading(false);
     }
   }
 
-  async function runModel() {
-    setError(null);
-    if (!modelLoaded) {
-      setError("Model is not loaded. Click 'Load model' first.");
-      return;
-    }
+  // 🚀 run inference
+  async function run() {
+    if (!isClient) return;
 
     setLoading(true);
     setOutput("");
+
     try {
       const pipe = await loadModel();
+
       if (!pipe) {
-        setError("Model initialization failed. Please try again.");
+        setOutput("❌ Failed to load model");
         return;
       }
 
@@ -106,140 +60,75 @@ function NoCloudAI(): JSX.Element {
         top_p: 0.9,
       });
 
-      const text = Array.isArray(result)
-        ? (result[0]?.generated_text ?? JSON.stringify(result[0]))
-        : ((result as any).generated_text ?? JSON.stringify(result));
-      setOutput(text);
-    } catch (e: any) {
-      console.error(e);
-      setError("Generation error: " + (e?.message || String(e)));
+      const outputText = Array.isArray(result)
+        ? typeof result[0] === "object" &&
+          result[0] !== null &&
+          "generated_text" in result[0]
+          ? String(
+              (result[0] as { generated_text?: unknown }).generated_text ?? "",
+            )
+          : JSON.stringify(result[0] ?? "")
+        : typeof result === "object" &&
+            result !== null &&
+            "generated_text" in result
+          ? String(
+              (result as { generated_text?: unknown }).generated_text ?? "",
+            )
+          : JSON.stringify(result ?? "");
+
+      setOutput(outputText || "No output");
+    } catch (err) {
+      console.error(err);
+      setOutput("❌ Generation error");
     } finally {
       setLoading(false);
     }
   }
 
+  // 🧠 SSR-safe render block
+  if (!isClient) {
+    return <div>Loading AI module...</div>;
+  }
+
   return (
-    <div style={{ padding: 20, fontFamily: "sans-serif" }}>
-      <h2>Local LLM (Browser Only)</h2>
-
-      <div style={{ marginBottom: 8 }}>
-        <strong>Model status:</strong>{" "}
-        {loadingModel ? (
-          <span>Loading…</span>
-        ) : modelLoaded ? (
-          <span style={{ color: "green" }}>Loaded</span>
-        ) : (
-          <span style={{ color: "orange" }}>Not loaded</span>
-        )}
-      </div>
-
-      {error && (
-        <div style={{ marginBottom: 12, color: "#a00" }}>
-          <div style={{ marginBottom: 6 }}>Error: {error}</div>
-          <div style={{ display: "flex", gap: 8 }}>
-            <button
-              onClick={() => {
-                setError(null);
-              }}
-            >
-              Clear
-            </button>
-            <button
-              onClick={() => {
-                // Retry loading the model
-                loadModel().catch(() => {});
-              }}
-            >
-              Retry load
-            </button>
-          </div>
-        </div>
-      )}
-
-      <div style={{ marginBottom: 12, display: "flex", gap: 8 }}>
-        <button
-          onClick={() => loadModel()}
-          disabled={loadingModel || modelLoaded}
-        >
-          {loadingModel
-            ? "Loading model…"
-            : modelLoaded
-              ? "Loaded"
-              : "Load model"}
-        </button>
-        <button
-          onClick={() => {
-            // unload model (free memory) — best-effort
-            try {
-              generatorRef.current = null;
-            } finally {
-              setModelLoaded(false);
-              setOutput("");
-            }
-          }}
-          disabled={!modelLoaded && !loadingModel}
-        >
-          Unload model
-        </button>
-      </div>
+    <div style={{ padding: 20 }}>
+      <h2>🧠 Local LLM (100% Browser, No Cloud)</h2>
 
       <textarea
-        rows={5}
-        cols={60}
-        placeholder={
-          modelLoaded
-            ? "Type something..."
-            : "Load the model first to enable generation"
-        }
+        rows={6}
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        style={{
-          width: "100%",
-          fontSize: 14,
-          padding: 8,
-          boxSizing: "border-box",
-        }}
-        disabled={!modelLoaded}
+        style={{ width: "100%", padding: 10 }}
+        placeholder="Type something..."
       />
 
-      <br />
-
-      <div
-        style={{ marginTop: 8, display: "flex", gap: 8, alignItems: "center" }}
-      >
-        <button onClick={runModel} disabled={loading || !modelLoaded}>
-          {loading ? "Running..." : "Generate"}
+      <div style={{ marginTop: 10, display: "flex", gap: 10 }}>
+        <button onClick={run} disabled={loading}>
+          {loading ? "Generating..." : "Generate"}
         </button>
+
         <button
           onClick={() => {
             setInput("");
             setOutput("");
-            setError(null);
           }}
         >
           Clear
         </button>
       </div>
 
-      <h3 style={{ marginTop: 12 }}>Output:</h3>
+      {modelLoading && <p>⏳ Loading model (first time only)...</p>}
+
+      <h3>Output:</h3>
       <pre
         style={{
-          background: "#f7f7f7",
+          background: "#f5f5f5",
           padding: 12,
-          borderRadius: 6,
           whiteSpace: "pre-wrap",
         }}
       >
         {output}
       </pre>
     </div>
-  );
-}
-
-export default function NoCloudAIWrapper() {
-  return (
-    <BrowserOnly fallback={<div>Loading...</div>}>
-      {() => <NoCloudAI />}
-    </BrowserOnly>
   );
 }
