@@ -189,7 +189,6 @@ const config: Config = {
 
   // docusaurus.config.js
   plugins: [
-    noCloudAiWebpackFixes,
     // ...any other plugins you already have
   ],
 };
