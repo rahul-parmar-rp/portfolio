@@ -11,13 +11,20 @@ function LocalLLM() {
   async function loadModel() {
     if (pipeRef.current) return pipeRef.current;
 
-    const { pipeline } = await import("@huggingface/transformers");
+    const transformers = await import("@huggingface/transformers");
+    const { pipeline, env } = transformers;
 
-    pipeRef.current = await pipeline(
-      "text-generation",
-      "Xenova/distilgpt2", // ✅ smallest stable POC model
-    );
+    // Force safe backend
+    if (env.backends?.onnx?.wasm) {
+      env.backends.onnx.wasm.proxy = false;
+      env.backends.onnx.wasm.numThreads = 1;
+    }
 
+    const pipe = await pipeline("text-generation", "Xenova/distilgpt2", {
+      device: "wasm",
+    });
+
+    pipeRef.current = pipe;
     return pipeRef.current;
   }
 
