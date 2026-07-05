@@ -27,7 +27,7 @@ export default function NoCloudAI() {
       const transformers = await import("@huggingface/transformers");
       const { pipeline } = transformers;
 
-      const pipe = await pipeline("text-generation", "Xenova/distilgpt2");
+      const pipe = await pipeline("text-generation", "distilgpt2");
 
       pipeRef.current = pipe;
       return pipe;
