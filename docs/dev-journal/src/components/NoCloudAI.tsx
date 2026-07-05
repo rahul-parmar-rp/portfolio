@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
 import BrowserOnly from "@docusaurus/BrowserOnly";
+import { useState, useRef, useEffect } from "react";
 
 function LocalLLM() {
   const [input, setInput] = useState("");
@@ -8,35 +8,51 @@ function LocalLLM() {
 
   const pipeRef = useRef<any>(null);
 
-  async function loadModel() {
-    if (pipeRef.current) return pipeRef.current;
+  // ✅ RUN ONCE IN BROWSER ONLY
+  useEffect(() => {
+    let mounted = true;
 
-    const transformers = await import("@huggingface/transformers");
-    const { pipeline, env } = transformers;
+    (async () => {
+      const { env, pipeline } = await import("@huggingface/transformers");
 
-    // Force safe backend
-    if (env.backends?.onnx?.wasm) {
-      env.backends.onnx.wasm.proxy = false;
-      env.backends.onnx.wasm.numThreads = 1;
-    }
+      // safe backend config
+      if (env.backends?.onnx?.wasm) {
+        env.backends.onnx.wasm.proxy = false;
+        env.backends.onnx.wasm.numThreads = 1;
+        env.backends.onnx.wasm.wasmPaths =
+          "https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/";
+      }
 
-    const pipe = await pipeline("text-generation", "Xenova/distilgpt2", {
-      device: "wasm",
-    });
+      // preload model once
+      const pipe = await pipeline("text-generation", "Xenova/distilgpt2", {
+        device: "wasm",
+      });
 
-    pipeRef.current = pipe;
-    return pipeRef.current;
-  }
+      if (mounted) {
+        pipeRef.current = pipe;
+      }
+    })();
 
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  // 🚀 run inference
   async function run() {
     setLoading(true);
     setOutput("");
 
     try {
-      const pipe = await loadModel();
+      const pipe = pipeRef.current;
+
+      if (!pipe) {
+        setOutput("Model still loading...");
+        return;
+      }
 
       const result = await pipe(input || "Hello", {
-        max_new_tokens: 30, // 🔥 keep small for speed
+        max_new_tokens: 30,
       });
 
       setOutput(result?.[0]?.generated_text || "No output");
@@ -57,7 +73,6 @@ function LocalLLM() {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         style={{ width: "100%" }}
-        placeholder="Type something..."
       />
 
       <button onClick={run} disabled={loading}>
@@ -68,7 +83,6 @@ function LocalLLM() {
     </div>
   );
 }
-
 export default function Page() {
   return (
     <BrowserOnly fallback={<div>Loading...</div>}>
