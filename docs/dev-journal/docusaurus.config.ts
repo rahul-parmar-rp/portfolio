@@ -1,7 +1,47 @@
 import { themes as prismThemes } from "prism-react-renderer";
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
+import type { Plugin } from "@docusaurus/types";
+import type { Configuration } from "webpack";
 
+function noCloudAiWebpackFixes(): Plugin {
+  return {
+    name: "no-cloud-ai-webpack-fixes",
+    configureWebpack(config, isServer): Partial<Configuration> {
+      if (isServer) {
+        // Never let the server compiler try to trace/parse
+        // onnxruntime's native binaries or transformers.js at all.
+        return {
+          externals: {
+            ...((config.externals as Record<string, string>) || {}),
+            "@huggingface/transformers": "commonjs @huggingface/transformers",
+            "onnxruntime-node": "commonjs onnxruntime-node",
+            sharp: "commonjs sharp",
+          },
+        };
+      }
+
+      // Client build: keep the earlier fixes for the browser-only
+      // WASM/webgpu variants that don't exist in this package version.
+      return {
+        resolve: {
+          alias: {
+            ...(config.resolve?.alias || {}),
+            "onnxruntime-web/webgpu": false,
+          },
+        },
+        module: {
+          rules: [
+            {
+              test: /ort-wasm.*\.(wasm|mjs)$/,
+              type: "asset/resource",
+            },
+          ],
+        },
+      };
+    },
+  };
+}
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
@@ -146,6 +186,12 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
+
+  // docusaurus.config.js
+  plugins: [
+    noCloudAiWebpackFixes,
+    // ...any other plugins you already have
+  ],
 };
 
 export default config;

@@ -35,6 +35,9 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.2.7(react@19.2.7)
+      webpack:
+        specifier: ^5.108.3
+        version: 5.108.3(@swc/core@1.15.43)(postcss@8.5.16)
     devDependencies:
       '@docusaurus/module-type-aliases':
         specifier: 3.10.1

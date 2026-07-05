@@ -1,48 +1,47 @@
+import BrowserOnly from "@docusaurus/BrowserOnly";
 import { useState, useRef, useEffect } from "react";
 
-export default function NoCloudAI() {
+// Rename your original component to an inner component
+function NoCloudAIInner() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
   const [modelLoading, setModelLoading] = useState(false);
-  const [isClient, setIsClient] = useState(false);
 
   const pipeRef = useRef<any>(null);
 
-  // ✅ ensure browser-only execution
+  // Still fine to keep — belt & suspenders, and useful if you
+  // add any browser-only APIs (localStorage, window, etc.) later
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    setIsClient(true);
+    setMounted(true);
   }, []);
 
-  // ✅ dynamically load model (SSR SAFE)
   async function loadModel(): Promise<any | null> {
-    if (!isClient) return null;
-
     if (pipeRef.current) return pipeRef.current;
 
     setModelLoading(true);
 
     try {
-      // 🔥 dynamic import (prevents SSR bundling issues)
       const transformers = await import("@huggingface/transformers");
       const { pipeline } = transformers;
 
-      const pipe = await pipeline("text-generation", "distilgpt2");
+      const pipe = await pipeline("text-generation", "Xenova/distilgpt2", {
+        dtype: "fp32",
+      });
 
       pipeRef.current = pipe;
       return pipe;
     } catch (err) {
       console.error("Model load failed:", err);
       setOutput("❌ Failed to load model");
+      return null;
     } finally {
       setModelLoading(false);
     }
   }
 
-  // 🚀 run inference
   async function run() {
-    if (!isClient) return;
-
     setLoading(true);
     setOutput("");
 
@@ -85,8 +84,7 @@ export default function NoCloudAI() {
     }
   }
 
-  // 🧠 SSR-safe render block
-  if (!isClient) {
+  if (!mounted) {
     return <div>Loading AI module...</div>;
   }
 
@@ -130,5 +128,14 @@ export default function NoCloudAI() {
         {output}
       </pre>
     </div>
+  );
+}
+
+// Public export: BrowserOnly does the SSR gate
+export default function NoCloudAI() {
+  return (
+    <BrowserOnly fallback={<div>Loading AI module...</div>}>
+      {() => <NoCloudAIInner />}
+    </BrowserOnly>
   );
 }

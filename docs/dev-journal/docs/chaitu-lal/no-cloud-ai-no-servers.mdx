@@ -18,9 +18,9 @@ This document outlines a project that utilizes in-browser AI models for various 
 
 ## Interactive demo
 
-import AIPage from "../../src/pages/ai-pages";
+import NoCloudAI from '@site/src/components/NoCloudAI';
 
-<AIPage />
+<NoCloudAI />
 
 ## Conclusion
 
@@ -42,63 +42,7 @@ npm install @huggingface/transformers
 
 2. Create a React component
 
-```jsx
-import { useState } from "react";
-import { pipeline } from "@huggingface/transformers";
-
-export default function App() {
-  const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  let generator = null;
-
-  async function loadModel() {
-    if (!generator) {
-      generator = await pipeline("text-generation", "Xenova/distilgpt2");
-    }
-    return generator;
-  }
-
-  async function runModel() {
-    setLoading(true);
-    setOutput("");
-
-    const pipe = await loadModel();
-    const result = await pipe(input, {
-      max_new_tokens: 80,
-      temperature: 0.7,
-      top_p: 0.9,
-    });
-
-    setOutput(result[0].generated_text);
-    setLoading(false);
-  }
-
-  return (
-    <div style={{ padding: 20, fontFamily: "sans-serif" }}>
-      <h2>Local LLM (Browser Only)</h2>
-
-      <textarea
-        rows={5}
-        cols={60}
-        placeholder="Type something..."
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      />
-
-      <br />
-
-      <button onClick={runModel} disabled={loading}>
-        {loading ? "Running..." : "Generate"}
-      </button>
-
-      <h3>Output:</h3>
-      <pre>{output}</pre>
-    </div>
-  );
-}
-```
+```test```
 
 3. Run the React app
 
