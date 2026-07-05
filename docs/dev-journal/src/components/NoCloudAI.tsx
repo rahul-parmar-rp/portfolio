@@ -1,45 +1,24 @@
+import { useState, useRef } from "react";
 import BrowserOnly from "@docusaurus/BrowserOnly";
-import { useState, useRef, useEffect } from "react";
 
-// Rename your original component to an inner component
-function NoCloudAIInner() {
+function LocalLLM() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [modelLoading, setModelLoading] = useState(false);
 
   const pipeRef = useRef<any>(null);
 
-  // Still fine to keep — belt & suspenders, and useful if you
-  // add any browser-only APIs (localStorage, window, etc.) later
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  async function loadModel(): Promise<any | null> {
+  async function loadModel() {
     if (pipeRef.current) return pipeRef.current;
 
-    setModelLoading(true);
+    const { pipeline } = await import("@huggingface/transformers");
 
-    try {
-      const transformers = await import("@huggingface/transformers");
-      const { pipeline } = transformers;
+    pipeRef.current = await pipeline(
+      "text-generation",
+      "Xenova/distilgpt2", // ✅ smallest stable POC model
+    );
 
-      const pipe = pipeline("text-generation", "Xenova/distilgpt2", {
-        dtype: "fp32",
-        device: "wasm",
-      });
-
-      pipeRef.current = pipe;
-      return pipe;
-    } catch (err) {
-      console.error("Model load failed:", err);
-      setOutput("❌ Failed to load model");
-      return null;
-    } finally {
-      setModelLoading(false);
-    }
+    return pipeRef.current;
   }
 
   async function run() {
@@ -49,94 +28,44 @@ function NoCloudAIInner() {
     try {
       const pipe = await loadModel();
 
-      if (!pipe) {
-        setOutput("❌ Failed to load model");
-        return;
-      }
-
-      const result = await pipe(input, {
-        max_new_tokens: 80,
-        temperature: 0.7,
-        top_p: 0.9,
+      const result = await pipe(input || "Hello", {
+        max_new_tokens: 30, // 🔥 keep small for speed
       });
 
-      const outputText = Array.isArray(result)
-        ? typeof result[0] === "object" &&
-          result[0] !== null &&
-          "generated_text" in result[0]
-          ? String(
-              (result[0] as { generated_text?: unknown }).generated_text ?? "",
-            )
-          : JSON.stringify(result[0] ?? "")
-        : typeof result === "object" &&
-            result !== null &&
-            "generated_text" in result
-          ? String(
-              (result as { generated_text?: unknown }).generated_text ?? "",
-            )
-          : JSON.stringify(result ?? "");
-
-      setOutput(outputText || "No output");
-    } catch (err) {
-      console.error(err);
-      setOutput("❌ Generation error");
-    } finally {
-      setLoading(false);
+      setOutput(result?.[0]?.generated_text || "No output");
+    } catch (e) {
+      console.error(e);
+      setOutput("Error running model");
     }
-  }
 
-  if (!mounted) {
-    return <div>Loading AI module...</div>;
+    setLoading(false);
   }
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>🧠 Local LLM (100% Browser, No Cloud)</h2>
+      <h2>🧠 Local LLM POC</h2>
 
       <textarea
-        rows={6}
+        rows={4}
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        style={{ width: "100%", padding: 10 }}
+        style={{ width: "100%" }}
         placeholder="Type something..."
       />
 
-      <div style={{ marginTop: 10, display: "flex", gap: 10 }}>
-        <button onClick={run} disabled={loading}>
-          {loading ? "Generating..." : "Generate"}
-        </button>
+      <button onClick={run} disabled={loading}>
+        {loading ? "Running..." : "Generate"}
+      </button>
 
-        <button
-          onClick={() => {
-            setInput("");
-            setOutput("");
-          }}
-        >
-          Clear
-        </button>
-      </div>
-
-      {modelLoading && <p>⏳ Loading model (first time only)...</p>}
-
-      <h3>Output:</h3>
-      <pre
-        style={{
-          background: "#f5f5f5",
-          padding: 12,
-          whiteSpace: "pre-wrap",
-        }}
-      >
-        {output}
-      </pre>
+      <pre style={{ marginTop: 20 }}>{output}</pre>
     </div>
   );
 }
 
-// Public export: BrowserOnly does the SSR gate
-export default function NoCloudAI() {
+export default function Page() {
   return (
-    <BrowserOnly fallback={<div>Loading AI module...</div>}>
-      {() => <NoCloudAIInner />}
+    <BrowserOnly fallback={<div>Loading...</div>}>
+      {() => <LocalLLM />}
     </BrowserOnly>
   );
 }
