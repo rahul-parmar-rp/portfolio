@@ -1,0 +1,193 @@
+Your flow is actually very close to a Google Photos family contribution app, but there are a few Google limitations we need to adjust. I will rewrite your draft as a product flow and point out where it works and where it breaks.
+
+App Concept: Family Shared Google Photos Album Manager
+Screen 1 — Main Account Setup
+UI
+Welcome
+
+[ Sign in with Google ]
+
+Create your family photo space
+
+User clicks:
+
+Sign in with Google
+
+Flow:
+
+User
+ |
+Google OAuth
+ |
+Main Google Account connected
+
+✅ Possible.
+
+Screen 2 — Create Family Album
+
+After login:
+
+Create Family Album
+
+Album Name:
+[ All Photos ]
+
+[ Create Album ]
+
+Your app creates:
+
+Family:
+Smith Family
+
+Album:
+All Photos
+
+Now you create an album in the user's Google Photos account.
+
+Example:
+
+Main Account Google Photos
+
+Albums:
+
+✓ All Photos
+
+✅ Possible.
+
+Screen 3 — Add More Accounts
+
+Screen:
+
+All Photos
+
+[Album Thumbnail]
+
+
+Connected Accounts:
+
+👤 John@gmail.com
+   Owner
+
+
+      [+ Add Account]
+
+User clicks:
+
++ Add Account
+Screen 4 — Connect Another Google Account
+
+Flow:
+
+Google Login
+
+Sign in as:
+wife@gmail.com
+
+User approves.
+
+Now your app knows:
+
+Family Album:
+
+Owner:
+john@gmail.com
+
+
+Contributors:
+
+wife@gmail.com
+
+✅ Possible.
+
+Screen 5 — Account Management Screen
+
+Now show:
+
+Album:
+
+All Photos
+
+
+Members:
+
+👤 john@gmail.com
+Owner
+
+
+👤 wife@gmail.com
+
+[Invite]
+
+
+[+ Add Account]
+
+The invite button:
+
+Invite wife@gmail.com
+Screen 6 — Send Invitation
+
+Your app sends:
+
+You are invited to contribute photos
+to "All Photos"
+
+Open app:
+
+[Accept Invitation]
+
+Email service:
+
+Firebase Email
+SendGrid
+AWS SES
+Screen 7 — Contributor Accepts
+
+Contributor opens app:
+
+You are invited to:
+
+All Photos
+
+
+[Accept]
+
+After accepting:
+
+Select photos to contribute
+
+[Choose from Google Photos]
+
+This is where the Google Photos Picker API comes in.
+
+Flow:
+
+Your App
+
+      |
+      |
+
+Google Photos Picker
+
+      |
+      |
+
+User selects photos
+
+      |
+      |
+
+Photos added
+
+✅ This part matches the Picker API model.
+
+Screen 8 — Contributor Sees Album
+
+The contributor opens Google Photos:
+
+Google Photos
+
+Albums:
+
+✓ All Photos
+
+Now both people see the album.
