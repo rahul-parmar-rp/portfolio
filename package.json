@@ -45,7 +45,7 @@
     "geist": "1.2.2",
     "next": "^16.0.10",
     "next-mdx-remote": "^4.4.1",
-    "postcss": "^8.4.35",
+    "postcss": "^8.5.18",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "sugar-high": "^0.6.0",
