@@ -1,0 +1,93 @@
+.shell {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 16px;
+  background: var(--ifm-background-surface-color);
+  padding: 1rem;
+  margin: 1.5rem 0;
+}
+
+.header h2 {
+  margin: 0.5rem 0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: rgba(0, 122, 204, 0.12);
+  color: #005a95;
+}
+
+.editor {
+  width: 100%;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.85rem;
+  padding: 0.75rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  background: var(--ifm-background-color);
+  color: inherit;
+  resize: vertical;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0.75rem 0;
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-800);
+}
+
+.canvas {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  background: var(--ifm-background-color);
+}
+
+.node {
+  cursor: pointer;
+}
+
+.nodeLabel {
+  font-size: 12px;
+  fill: var(--ifm-font-color-base);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.legend i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 0.3rem;
+  vertical-align: middle;
+}
+
+.dotHot {
+  background: #f59e0b;
+}
+
+.dotDead {
+  background: #ef4444;
+}
+
+.dotSel {
+  background: #1d4ed8;
+}
+
+.muted {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.9rem;
+}

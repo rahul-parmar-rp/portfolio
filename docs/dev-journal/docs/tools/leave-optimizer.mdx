@@ -1,0 +1,29 @@
+---
+title: Holiday & Leave Optimizer
+description: Offline tool that bridges weekends and holidays into the longest breaks with the fewest leave days.
+sidebar_position: 4
+slug: /tools/leave-optimizer
+---
+
+import LeaveOptimizer from "@site/src/components/leave-optimizer";
+
+# Corporate Holiday & Leave Optimizer
+
+Plan the fewest leave days that create the longest consecutive breaks by
+bridging weekends and public holidays.
+
+- add your public holidays
+- set how many leave days you are willing to spend
+- get ranked break suggestions, best value first
+
+Everything runs in your browser. Holidays are saved to `localStorage`, so the
+tool works fully offline.
+
+<LeaveOptimizer />
+
+## How The Optimizer Works
+
+- weekends and holidays are treated as free days
+- it scans a window around each holiday
+- it fills working-day gaps with leave, up to your limit
+- windows are ranked by total days off per leave day spent

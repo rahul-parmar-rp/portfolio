@@ -5,6 +5,9 @@
   "description": "Shows the full current page URL in a movable, copyable overlay.",
   "permissions": [],
   "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_title": "Full URL Bar Overlay"
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],

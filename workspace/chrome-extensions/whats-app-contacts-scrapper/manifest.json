@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "WhatsApp Contacts Scraper",
+  "version": "1.0.0",
+  "description": "A simple extension to scrap contacts from WhatsApp Web.",
+  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  }
+}

@@ -1,0 +1,36 @@
+---
+title: Function Call Graph Visualizer
+description: Offline tool that parses TS/JS functions and renders an interactive call graph.
+sidebar_position: 5
+slug: /tools/code-graph
+---
+
+import CodeGraph from "@site/src/components/code-graph";
+
+# Local Function Tree & Code Graph Visualizer
+
+Paste TypeScript/JavaScript and see an interactive call graph of your
+functions, Obsidian-style but for source symbols.
+
+- detects `function`, arrow, and function-expression declarations
+- draws which function calls which
+- highlights hotspots (most called) and dead-code candidates
+- click a node to focus its connections
+
+No parser libraries, no network. It uses a lightweight in-browser tokenizer,
+so it works fully offline.
+
+<CodeGraph />
+
+## What It Detects
+
+- **Hotspots**: functions with the most inbound calls
+- **Dead-code candidates**: declared functions no one calls (excluding `main`)
+- **Edges**: direct call relationships between declared functions
+
+## Limitations
+
+This is a heuristic tokenizer, not a full parser. It ignores strings and
+comments but will not resolve dynamic dispatch, methods on classes, or calls
+across files. For deeper analysis, swap in `ts-morph` or the TypeScript
+compiler API.

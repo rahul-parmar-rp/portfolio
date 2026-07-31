@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Contacts Scraper</title>
+    <style>
+      body {
+        width: 300px;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #25D366;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      button:hover {
+        background-color: #1ea350;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>WA Scraper</h2>
+    <p>Click the button below to extract contacts from the active WhatsApp Web page.</p>
+    <button id="scrapeBtn">Scrape Contacts</button>
+    <div id="status" style="margin-top: 15px; font-size: 0.9em;"></div>
+    <script src="popup.js"></script>
+  </body>
+</html>
