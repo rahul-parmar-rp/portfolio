@@ -12,7 +12,7 @@ type GitHubRepo = {
 
 const username = "rahul-parmar-rp";
 
-export default function GitHubReposPage(): JSX.Element {
+export default function GitHubReposPage(): React.ReactElement {
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

@@ -1,0 +1,32 @@
+---
+title: Yoga Practice Scheduler
+description: Offline practice companion with bell-based audio guidance for daily yoga and meditation routines.
+---
+
+import YogaScheduler from "@site/src/components/yoga-scheduler";
+
+# Yoga Practice Scheduler
+
+A minimal practice companion for daily yoga and meditation routines. Inspired by guided experiences like Miracle of Mind, this tool uses bell-based audio cues so you can practice without constantly checking the screen.
+
+## Features
+
+- **Session presets** — Short (5 min), Standard (12 min), Deep (21 min)
+- **Bell cue engine** — Start, transition, and end bells via Web Audio API
+- **Streak tracking** — Daily completion history stored locally
+- **Fully offline** — No network requests, works without internet
+
+<YogaScheduler />
+
+## How to Use
+
+1. Choose your preferred routine in Settings
+2. Tap **Start Session** on the home screen
+3. Follow the bell cues — no need to watch the screen
+4. Session auto-completes and updates your streak
+
+## Technical Notes
+
+- Audio is synthesized using the Web Audio API (no bundled sound files)
+- All data persists in `localStorage` under `yoga-scheduler:v1`
+- SSR-safe: state loads client-side only
