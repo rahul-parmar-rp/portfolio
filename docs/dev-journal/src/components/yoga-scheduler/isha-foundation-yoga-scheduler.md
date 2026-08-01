@@ -2,7 +2,7 @@
 
 ## Idea Summary
 
-Build a simple practice companion app for daily yoga and meditation routines, with bell-based audio guidance inspired by guided experiences like Miracle of Mind.
+Build a simple practice companion app for daily yoga and meditation routines, with bell-based audio guidance inspired by guided expeẘriences like Miracle of Mind.
 
 Primary focus:
 
@@ -28,6 +28,27 @@ The app guides users through a session with audio cues (bell sounds, interval ma
   - end bell
 - Daily streak and completion history
 - Offline-first behavior for core flows
+
+## Implemented Features (Web Version)
+
+### v1 - Core Player
+
+- [x] Home view with streak display and today's session
+- [x] Session player with timer and stage progression
+- [x] Bell cue engine via Web Audio API (synthesized tones, no bundled assets)
+- [x] Three built-in presets: Short (5 min), Standard (12 min), Deep (21 min)
+- [x] History view showing recent completed sessions
+- [x] Settings: volume control, default routine selection
+- [x] Fully offline with localStorage persistence
+
+### v2 - Custom Routines & Editable Stages
+
+- [x] Create custom routines with user-defined stages
+- [x] Editable stage names and timings (seconds input)
+- [x] Drag-and-drop stage reordering
+- [x] Clone built-in presets to create custom versions
+- [x] Delete custom presets
+- [x] All custom presets persisted in localStorage
 
 ## Specific Feature Note
 

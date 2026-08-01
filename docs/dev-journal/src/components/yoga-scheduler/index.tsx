@@ -23,7 +23,7 @@ import styles from "./styles.module.css";
 // Storage helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
-const STORAGE_KEY = "yoga-scheduler:v1";
+const STORAGE_KEY = "yoga-scheduler:v2";
 
 type HistoryEntry = {
   date: string; // YYYY-MM-DD
@@ -31,10 +31,14 @@ type HistoryEntry = {
   completed: boolean;
 };
 
+// Custom presets created/edited by user
+type CustomPreset = Preset & { custom: true };
+
 type StoredData = {
   history: HistoryEntry[];
   preferredPreset: string;
   volume: number;
+  customPresets: CustomPreset[];
 };
 
 function todayKey(): string {
@@ -44,17 +48,28 @@ function todayKey(): string {
 
 function loadData(): StoredData {
   if (typeof window === "undefined") {
-    return { history: [], preferredPreset: "short", volume: 0.7 };
+    return {
+      history: [],
+      preferredPreset: "short",
+      volume: 0.7,
+      customPresets: [],
+    };
   }
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
-      return JSON.parse(raw) as StoredData;
+      const parsed = JSON.parse(raw) as StoredData;
+      return { ...parsed, customPresets: parsed.customPresets || [] };
     }
   } catch {
     // ignore
   }
-  return { history: [], preferredPreset: "short", volume: 0.7 };
+  return {
+    history: [],
+    preferredPreset: "short",
+    volume: 0.7,
+    customPresets: [],
+  };
 }
 
 function saveData(data: StoredData): void {
@@ -94,13 +109,21 @@ function calcStreak(history: HistoryEntry[]): number {
 // Views
 // ─────────────────────────────────────────────────────────────────────────────
 
-type View = "home" | "player" | "history" | "settings";
+type View = "home" | "player" | "history" | "settings" | "edit-preset";
 
 export default function YogaScheduler() {
   const [view, setView] = useState<View>("home");
   const [data, setData] = useState<StoredData>(loadData);
+  const [editingPreset, setEditingPreset] = useState<Preset | null>(null);
+
+  // Merge built-in and custom presets
+  const allPresets = useMemo(() => {
+    const builtIn = PRESETS.map((p) => ({ ...p, custom: false as const }));
+    return [...builtIn, ...data.customPresets];
+  }, [data.customPresets]);
+
   const [selectedPreset, setSelectedPreset] = useState<Preset>(
-    () => PRESETS.find((p) => p.id === data.preferredPreset) || PRESETS[0],
+    () => allPresets.find((p) => p.id === data.preferredPreset) || PRESETS[0],
   );
 
   // Persist on change
@@ -144,9 +167,35 @@ export default function YogaScheduler() {
     setData((prev) => ({ ...prev, volume: v }));
   }, []);
 
-  const setPreferredPreset = useCallback((id: string) => {
-    setData((prev) => ({ ...prev, preferredPreset: id }));
-    setSelectedPreset(PRESETS.find((p) => p.id === id) || PRESETS[0]);
+  const setPreferredPreset = useCallback(
+    (id: string) => {
+      setData((prev) => ({ ...prev, preferredPreset: id }));
+      const found = allPresets.find((p) => p.id === id) || PRESETS[0];
+      setSelectedPreset(found);
+    },
+    [allPresets],
+  );
+
+  const saveCustomPreset = useCallback((preset: Preset) => {
+    setData((prev) => {
+      const idx = prev.customPresets.findIndex((p) => p.id === preset.id);
+      const updated: CustomPreset = { ...preset, custom: true };
+      if (idx >= 0) {
+        const copy = [...prev.customPresets];
+        copy[idx] = updated;
+        return { ...prev, customPresets: copy };
+      }
+      return { ...prev, customPresets: [...prev.customPresets, updated] };
+    });
+  }, []);
+
+  const deleteCustomPreset = useCallback((id: string) => {
+    setData((prev) => ({
+      ...prev,
+      customPresets: prev.customPresets.filter((p) => p.id !== id),
+      preferredPreset:
+        prev.preferredPreset === id ? "short" : prev.preferredPreset,
+    }));
   }, []);
 
   return (
@@ -189,7 +238,29 @@ export default function YogaScheduler() {
           setVolume={setVolume}
           preferredPreset={data.preferredPreset}
           setPreferredPreset={setPreferredPreset}
+          allPresets={allPresets}
+          onEditPreset={(p) => {
+            setEditingPreset(p);
+            setView("edit-preset");
+          }}
+          onNewPreset={() => {
+            setEditingPreset(null);
+            setView("edit-preset");
+          }}
+          onDeletePreset={deleteCustomPreset}
           onBack={() => setView("home")}
+        />
+      )}
+
+      {view === "edit-preset" && (
+        <EditPresetView
+          preset={editingPreset}
+          onSave={(p) => {
+            saveCustomPreset(p);
+            setSelectedPreset(p);
+            setView("settings");
+          }}
+          onCancel={() => setView("settings")}
         />
       )}
     </div>
@@ -410,12 +481,20 @@ function SettingsView({
   setVolume,
   preferredPreset,
   setPreferredPreset,
+  allPresets,
+  onEditPreset,
+  onNewPreset,
+  onDeletePreset,
   onBack,
 }: {
   volume: number;
   setVolume: (v: number) => void;
   preferredPreset: string;
   setPreferredPreset: (id: string) => void;
+  allPresets: (Preset & { custom?: boolean })[];
+  onEditPreset: (p: Preset) => void;
+  onNewPreset: () => void;
+  onDeletePreset: (id: string) => void;
   onBack: () => void;
 }) {
   return (
@@ -429,12 +508,48 @@ function SettingsView({
           value={preferredPreset}
           onChange={(e) => setPreferredPreset(e.target.value)}
         >
-          {PRESETS.map((p) => (
+          {allPresets.map((p) => (
             <option key={p.id} value={p.id}>
               {p.name}
             </option>
           ))}
         </select>
+      </div>
+
+      <div className={styles.field}>
+        <label>Manage Routines</label>
+        <ul className={styles.presetList}>
+          {allPresets.map((p) => (
+            <li key={p.id} className={styles.presetItem}>
+              <span>{p.name}</span>
+              <span className={styles.presetActions}>
+                <button
+                  type="button"
+                  className={styles.linkButton}
+                  onClick={() => onEditPreset(p)}
+                >
+                  {p.custom ? "Edit" : "Clone"}
+                </button>
+                {p.custom && (
+                  <button
+                    type="button"
+                    className={styles.linkButton}
+                    onClick={() => onDeletePreset(p.id)}
+                  >
+                    Delete
+                  </button>
+                )}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <button
+          type="button"
+          className={styles.secondaryButton}
+          onClick={onNewPreset}
+        >
+          + New Routine
+        </button>
       </div>
 
       <div className={styles.field}>
@@ -462,6 +577,176 @@ function SettingsView({
       <button type="button" onClick={onBack}>
         Back
       </button>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Edit Preset (with drag-and-drop stages and editable timings)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function EditPresetView({
+  preset,
+  onSave,
+  onCancel,
+}: {
+  preset: Preset | null;
+  onSave: (p: Preset) => void;
+  onCancel: () => void;
+}) {
+  const isNew = preset === null;
+  const [name, setName] = useState(preset?.name || "My Routine");
+  const [description, setDescription] = useState(preset?.description || "");
+  const [stages, setStages] = useState<Stage[]>(
+    preset?.stages || [
+      { id: crypto.randomUUID(), name: "Settle in", seconds: 60, cue: "start" },
+    ],
+  );
+  const [dragIdx, setDragIdx] = useState<number | null>(null);
+
+  const handleDragStart = (idx: number) => {
+    setDragIdx(idx);
+  };
+
+  const handleDragOver = (e: React.DragEvent, idx: number) => {
+    e.preventDefault();
+    if (dragIdx === null || dragIdx === idx) return;
+    const copy = [...stages];
+    const [moved] = copy.splice(dragIdx, 1);
+    copy.splice(idx, 0, moved);
+    setStages(copy);
+    setDragIdx(idx);
+  };
+
+  const handleDragEnd = () => {
+    setDragIdx(null);
+  };
+
+  const updateStage = (
+    idx: number,
+    field: keyof Stage,
+    value: string | number,
+  ) => {
+    setStages((prev) =>
+      prev.map((s, i) => (i === idx ? { ...s, [field]: value } : s)),
+    );
+  };
+
+  const addStage = () => {
+    setStages((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        name: "New stage",
+        seconds: 60,
+        cue: "transition" as const,
+      },
+    ]);
+  };
+
+  const removeStage = (idx: number) => {
+    setStages((prev) => prev.filter((_, i) => i !== idx));
+  };
+
+  const handleSave = () => {
+    // Ensure first stage has start cue, last has end cue
+    const fixed = stages.map((s, i) => ({
+      ...s,
+      cue: i === 0 ? ("start" as const) : ("transition" as const),
+    }));
+    const id = isNew ? `custom-${Date.now()}` : preset!.id;
+    onSave({ id, name, description, stages: fixed });
+  };
+
+  const total = stages.reduce((sum, s) => sum + s.seconds, 0);
+
+  return (
+    <div className={styles.view}>
+      <h3>{isNew ? "New Routine" : "Edit Routine"}</h3>
+
+      <div className={styles.field}>
+        <label htmlFor="ep-name">Name</label>
+        <input
+          id="ep-name"
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+
+      <div className={styles.field}>
+        <label htmlFor="ep-desc">Description</label>
+        <input
+          id="ep-desc"
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
+
+      <div className={styles.field}>
+        <label>Stages (drag to reorder)</label>
+        <p className={styles.muted}>Total: {formatDuration(total)}</p>
+        <ul className={styles.stageList}>
+          {stages.map((s, idx) => (
+            <li
+              key={s.id}
+              draggable
+              onDragStart={() => handleDragStart(idx)}
+              onDragOver={(e) => handleDragOver(e, idx)}
+              onDragEnd={handleDragEnd}
+              className={`${styles.stageItem} ${dragIdx === idx ? styles.dragging : ""}`}
+            >
+              <span className={styles.dragHandle}>⠿</span>
+              <input
+                type="text"
+                value={s.name}
+                onChange={(e) => updateStage(idx, "name", e.target.value)}
+                className={styles.stageNameInput}
+              />
+              <input
+                type="number"
+                min={5}
+                value={s.seconds}
+                onChange={(e) =>
+                  updateStage(idx, "seconds", Number(e.target.value))
+                }
+                className={styles.stageSecondsInput}
+              />
+              <span className={styles.stageSec}>sec</span>
+              {stages.length > 1 && (
+                <button
+                  type="button"
+                  className={styles.linkButton}
+                  onClick={() => removeStage(idx)}
+                >
+                  ✕
+                </button>
+              )}
+            </li>
+          ))}
+        </ul>
+        <button
+          type="button"
+          className={styles.secondaryButton}
+          onClick={addStage}
+        >
+          + Add Stage
+        </button>
+      </div>
+
+      <div className={styles.editActions}>
+        <button
+          type="button"
+          className={styles.primaryButton}
+          onClick={handleSave}
+        >
+          Save
+        </button>
+        <button type="button" onClick={onCancel}>
+          Cancel
+        </button>
+      </div>
     </div>
   );
 }
