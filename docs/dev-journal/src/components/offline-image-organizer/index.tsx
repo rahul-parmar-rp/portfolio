@@ -74,19 +74,40 @@ async function buildDirectoryTree(
   const files: FileInfo[] = [];
   const children: TreeNode[] = [];
 
-  for await (const entry of directoryHandle.values()) {
-    const fullPath = currentPath ? `${currentPath}/${entry.name}` : entry.name;
+  const iterator = ((
+    directoryHandle as unknown as {
+      values?: () => AsyncIterableIterator<FileSystemHandle>;
+    }
+  ).values?.() ??
+    (
+      directoryHandle as FileSystemDirectoryHandle & {
+        entries?: () => AsyncIterableIterator<[string, FileSystemHandle]>;
+      }
+    ).entries?.()) as
+    | AsyncIterableIterator<FileSystemHandle | [string, FileSystemHandle]>
+    | undefined;
 
-    if (entry.kind === "directory") {
-      const nested = await buildDirectoryTree(entry, fullPath);
+  if (!iterator) {
+    throw new Error("Directory iteration API not supported in this browser.");
+  }
+
+  for await (const entry of iterator) {
+    const handle = Array.isArray(entry) ? entry[1] : entry;
+    const name = Array.isArray(entry)
+      ? entry[0]
+      : (entry as FileSystemHandle).name;
+    const fullPath = currentPath ? `${currentPath}/${name}` : name;
+
+    if (handle.kind === "directory") {
+      const nested = await buildDirectoryTree(handle, fullPath);
       children.push(nested.tree);
       files.push(...nested.files);
     } else {
-      const file = await entry.getFile();
+      const file = await handle.getFile();
       children.push({
         id: fullPath,
         kind: "file",
-        name: entry.name,
+        name,
         path: currentPath,
       });
       files.push({

@@ -38,6 +38,8 @@
     "node_modules",
     "workspace/mobile/**",
     "workspace/external/**",
-    "workspace/tooling/**"
+    "workspace/tooling/**",
+    "workspace/vscode-extensions/**",
+    "docs/**"
   ]
 }

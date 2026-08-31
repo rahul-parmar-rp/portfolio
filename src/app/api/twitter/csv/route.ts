@@ -1,41 +1,40 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { postTweetsFromCSV } from '../../../../lib/twitter';
+import { NextRequest, NextResponse } from "next/server";
+import { postTweetsFromCSV } from "lib/twitter";
 
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
-    const file = formData.get('file') as File;
-    const credentialsStr = formData.get('credentials') as string;
-    
+    const file = formData.get("file") as File;
+    const credentialsStr = formData.get("credentials") as string;
+
     if (!file) {
       return NextResponse.json(
-        { error: 'No CSV file provided' },
-        { status: 400 }
+        { error: "No CSV file provided" },
+        { status: 400 },
       );
     }
 
     const csvContent = await file.text();
     const credentials = credentialsStr ? JSON.parse(credentialsStr) : undefined;
     const results = await postTweetsFromCSV(csvContent, credentials);
-    
-    const successful = results.filter(r => r.success).length;
-    const failed = results.filter(r => !r.success).length;
-    
+
+    const successful = results.filter((r) => r.success).length;
+    const failed = results.filter((r) => !r.success).length;
+
     return NextResponse.json({
       success: true,
       summary: {
         total: results.length,
         successful,
-        failed
+        failed,
       },
-      results
+      results,
     });
-    
   } catch (error) {
-    console.error('CSV posting error:', error);
+    console.error("CSV posting error:", error);
     return NextResponse.json(
-      { error: 'Failed to process CSV file' },
-      { status: 500 }
+      { error: "Failed to process CSV file" },
+      { status: 500 },
     );
   }
 }

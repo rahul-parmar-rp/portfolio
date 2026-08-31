@@ -6,6 +6,12 @@ import React, {
   useState,
 } from "react";
 
+declare global {
+  interface Window {
+    google?: typeof google;
+  }
+}
+
 import { DemoAccount, decodeJwtPayload, usePersistentState } from "./shared";
 import styles from "./styles.module.css";
 
