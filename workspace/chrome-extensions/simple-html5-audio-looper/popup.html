@@ -27,22 +27,11 @@
       </div>
 
       <div class="controls" id="controls" hidden>
-        <button class="btn btn-icon" id="playPauseBtn" title="Play / Pause">
-          ▶
-        </button>
-        <button class="btn btn-icon" id="loopBtn" title="Toggle Loop">
-          🔁
-        </button>
+        <button class="btn btn-icon" id="playPauseBtn" title="Play / Pause">▶</button>
+        <button class="btn btn-icon active" id="loopBtn" title="Toggle Loop">🔁</button>
         <div class="volume-wrap">
           <span>🔊</span>
-          <input
-            type="range"
-            id="volumeSlider"
-            min="0"
-            max="1"
-            step="0.01"
-            value="1"
-          />
+          <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1" />
         </div>
         <div class="speed-wrap">
           <label for="speedSelect">Speed</label>
@@ -53,6 +42,53 @@
             <option value="1.5">1.5×</option>
             <option value="2">2×</option>
           </select>
+        </div>
+      </div>
+
+      <!-- Custom Loop Section -->
+      <div class="loop-section" id="loopSection" hidden>
+        <div class="loop-section-title">Custom Loop Section</div>
+
+        <div class="loop-mode-row">
+          <label class="radio-label">
+            <input type="radio" name="loopMode" id="modeFullSong" value="full" checked />
+            Full Song
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="loopMode" id="modeCustom" value="custom" />
+            Selected Section
+          </label>
+        </div>
+
+        <div class="range-track-wrap">
+          <div class="range-track" id="rangeTrack">
+            <div class="range-highlight" id="rangeHighlight"></div>
+            <div class="range-thumb" id="thumbStart" title="Drag start"></div>
+            <div class="range-thumb thumb-end" id="thumbEnd" title="Drag end"></div>
+          </div>
+          <div class="range-labels">
+            <span id="trackStart">0:00</span>
+            <span id="trackEnd">0:00</span>
+          </div>
+        </div>
+
+        <div class="time-inputs">
+          <div class="time-field">
+            <label for="startInput">Start</label>
+            <input type="text" id="startInput" placeholder="0:00" />
+          </div>
+          <div class="time-field">
+            <label for="endInput">End</label>
+            <input type="text" id="endInput" placeholder="0:00" />
+          </div>
+        </div>
+
+        <div class="loop-duration-label">Loop Duration: <span id="loopDurationDisplay">—</span></div>
+
+        <div class="ab-buttons">
+          <button class="btn btn-sm" id="setStartBtn">Set A (Start)</button>
+          <button class="btn btn-sm" id="setEndBtn">Set B (End)</button>
+          <button class="btn btn-sm btn-clear" id="clearLoopBtn">Clear</button>
         </div>
       </div>
 

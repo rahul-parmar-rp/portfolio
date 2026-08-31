@@ -1,0 +1,41 @@
+---
+title: IPO Application Planner
+summary: Prototype playground for managing IPO applications, quotas, accounts, and funding.
+description: Hands-on tool that demonstrates how to link people, accounts, IPO configurations, and quotas while tracking capital requirements.
+slug: /tools/ipo-application-planner
+sidebar_position: 5
+---
+
+import IPOPlannerPrototype from "@site/src/components/ipo-planner";
+
+# IPO Application Planner Prototype
+
+A lightweight playground to test the entity graph described in the [IPO Application Planner product plan](/docs/app-ideas/ipo-allocation-analyzer). It ships inside the Dev Journal so you can iterate on the flows before building the full Next.js app.
+
+## Why build this playground?
+
+- Validate the **Person → Account → Application → IPO → Quota** chain in one screen
+- Estimate funding load and remaining cash using mocked accounts
+- Identify which quotas require capital first
+- Demo-ready component that stays offline and persists nothing
+
+<IPOPlannerPrototype />
+
+## What the tool includes
+
+- Person/account/IPO/Quota selectors with guardrails around min/max lots
+- Status tracking for each application (Draft → Allotted)
+- Primary dashboard metrics (Required, Available, Remaining)
+- Table view summarizing capital per application
+
+## Implementation Notes
+
+- Built with React + TypeScript (Docusaurus client component)
+- State is ephemeral (no persistence yet)
+- Reuse this module inside the Next.js app when wiring real data
+
+## Next extensions
+
+1. Persist mock data in `localStorage` to simulate draft state
+2. Render funding heatmap by account to spot deficits
+3. Add eligibility toggles and duplicate warnings

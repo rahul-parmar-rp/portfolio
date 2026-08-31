@@ -1,0 +1,140 @@
+.shell {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 16px;
+  background: var(--ifm-background-surface-color);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.subtitle {
+  color: var(--ifm-color-emphasis-700);
+  margin-top: 0.25rem;
+}
+
+.metrics {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.metricLabel {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.good {
+  color: #0f9d58;
+}
+
+.bad {
+  color: #d93025;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.column {
+  border: 1px dashed var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.columnHint {
+  color: var(--ifm-color-emphasis-600);
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.formGrid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.formGrid select,
+.formGrid input,
+.formGrid textarea {
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-color);
+  color: inherit;
+}
+
+.noteField {
+  grid-column: span 2;
+}
+
+.primaryButton {
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  border: none;
+  background: var(--ifm-color-primary);
+  color: #fff;
+  cursor: pointer;
+}
+
+.hintCard {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(15, 157, 88, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.tableHeader,
+.tableRow {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(60px, 1fr));
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.tableHeader {
+  font-weight: 600;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.tableRow {
+  padding: 0.5rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.03);
+}

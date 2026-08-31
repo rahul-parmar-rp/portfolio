@@ -33,6 +33,7 @@
 - social-media-api-posting-engine-github-actions-node-scripts.md
 - twitter-shayari-quotes-rss-engagement-engine.md
 - instagram-engagement-first-page-builder.md
+- instagram-hide-story-profile-selector.md
 - ai-content-pipeline-text-to-video-starter.md
 - linkedin-dev-journal-tech-engagement-pipeline.md
 

@@ -1,25 +1,44 @@
 const audio = new Audio();
 audio.loop = true;
 
+// Custom A-B loop state
+let customLoopStart = null;
+let customLoopEnd = null;
+let abInterval = null;
+
+function startABLoop() {
+  if (abInterval) return;
+  // Poll at 100 ms to catch the end boundary accurately
+  abInterval = setInterval(() => {
+    if (customLoopStart === null || customLoopEnd === null) return;
+    if (!audio.paused && audio.currentTime >= customLoopEnd) {
+      audio.currentTime = customLoopStart;
+      audio.play().catch(() => {});
+    }
+  }, 100);
+}
+
+function stopABLoop() {
+  clearInterval(abInterval);
+  abInterval = null;
+}
+
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg.target !== "offscreen") return;
 
   switch (msg.type) {
     case "LOAD":
       audio.src = msg.dataUrl;
-      audio.loop = msg.loop ?? true;
+      audio.loop = customLoopStart === null ? (msg.loop ?? true) : false;
       audio.volume = msg.volume ?? 1;
       audio.playbackRate = msg.speed ?? 1;
       audio.play().catch(() => {});
-      // Wait for metadata so we can return duration
       audio.addEventListener(
         "loadedmetadata",
-        () => {
-          sendResponse({ duration: audio.duration });
-        },
+        () => { sendResponse({ duration: audio.duration }); },
         { once: true },
       );
-      return true; // async
+      return true;
 
     case "PLAY":
       audio.play().catch(() => {});
@@ -32,7 +51,28 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
       break;
 
     case "SET_LOOP":
-      audio.loop = msg.loop;
+      // Only apply native loop when not in custom A-B mode
+      if (customLoopStart === null) audio.loop = msg.loop;
+      sendResponse({ ok: true });
+      break;
+
+    case "SET_CUSTOM_LOOP":
+      if (msg.loopStart === null || msg.loopEnd === null) {
+        // Revert to full-song loop
+        customLoopStart = null;
+        customLoopEnd = null;
+        audio.loop = true;
+        stopABLoop();
+      } else {
+        customLoopStart = msg.loopStart;
+        customLoopEnd = msg.loopEnd;
+        audio.loop = false; // native loop off; we manage boundaries manually
+        startABLoop();
+        // Seek into range if currently outside it
+        if (audio.currentTime < customLoopStart || audio.currentTime > customLoopEnd) {
+          audio.currentTime = customLoopStart;
+        }
+      }
       sendResponse({ ok: true });
       break;
 
