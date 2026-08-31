@@ -1,10 +1,11 @@
 import BrowserOnly from "@docusaurus/BrowserOnly";
 import { useEffect } from "react";
-import { pipeline } from "@huggingface/transformers";
 
 function LocalLLM() {
+  /*
   useEffect(() => {
     async function run() {
+      const { pipeline } = await import("@huggingface/transformers");
       const classifier = await pipeline("sentiment-analysis");
 
       const result = await classifier("I love AI");
@@ -14,7 +15,7 @@ function LocalLLM() {
 
     run();
   }, []);
-
+  */
   return <div>Check console output</div>;
 }
 
