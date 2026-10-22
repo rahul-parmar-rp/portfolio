@@ -177,16 +177,16 @@ git status          # should be clean of stray artifacts
 
 ## Cleanup summary table
 
-| Item                               | Action                        | Priority |
-| ---------------------------------- | ----------------------------- | -------- |
-| `.env` tracked                     | `git rm --cached`             | High     |
-| `tsconfig.tsbuildinfo` tracked     | untrack + ignore              | High     |
-| `.agent/.agents/.codex/.gemini`    | untrack (Option A/B)          | High     |
-| `.github/skills` symlinks          | untrack                       | High     |
-| `.aider*` history                  | delete locally                | Low      |
-| duplicate decision docs            | merge into one                | Medium   |
-| `docs/*.md/html` scratch           | move to dev-journal or drafts | Medium   |
-| `plans/`                           | move to app-ideas             | Medium   |
-| `rename-repos-create-json.js`      | delete (keep `.mjs`)          | Medium   |
-| `repos.json`, `test-tweets.csv`    | relocate                      | Low      |
-| `lib/` placement                   | move to `src/lib` or document | Low      |
+| Item                            | Action                        | Priority |
+| ------------------------------- | ----------------------------- | -------- |
+| `.env` tracked                  | `git rm --cached`             | High     |
+| `tsconfig.tsbuildinfo` tracked  | untrack + ignore              | High     |
+| `.agent/.agents/.codex/.gemini` | untrack (Option A/B)          | High     |
+| `.github/skills` symlinks       | untrack                       | High     |
+| `.aider*` history               | delete locally                | Low      |
+| duplicate decision docs         | merge into one                | Medium   |
+| `docs/*.md/html` scratch        | move to dev-journal or drafts | Medium   |
+| `plans/`                        | move to app-ideas             | Medium   |
+| `rename-repos-create-json.js`   | delete (keep `.mjs`)          | Medium   |
+| `repos.json`, `test-tweets.csv` | relocate                      | Low      |
+| `lib/` placement                | move to `src/lib` or document | Low      |
