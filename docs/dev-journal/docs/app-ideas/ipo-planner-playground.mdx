@@ -1,0 +1,30 @@
+---
+title: IPO Planner Playground
+sidebar_label: IPO Planner (Interactive)
+sidebar_position: 1
+description: Interactive IPO application optimizer — add people, accounts and IPOs, then find the best way to apply within your budget.
+---
+
+import IPOPlanner from '@site/src/components/ipo-planner';
+
+# IPO Application Planner — Interactive
+
+Play with sample people, accounts and IPOs below. Everything runs in your
+browser and is saved to `localStorage` (nothing is sent anywhere).
+
+**How to use**
+
+1. Open the **Optimizer** tab.
+2. Set a budget (use each account's funds, or a single total).
+3. Pick the **accounts** and the **IPOs / quotas** to consider.
+4. Click **Calculate optimal plans** and choose one with **Use this plan**.
+5. Review results under **Applications**. Edit the data in **People & Accounts**
+   and **IPOs**.
+
+<IPOPlanner />
+
+:::tip
+Use **Reset sample** to reload the demo data, or **Clear** to start empty.
+:::
+
+See the full product plan in [IPO Allocation Analyzer](./ipo-allocation-analyzer.md).
