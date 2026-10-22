@@ -10,6 +10,18 @@ Build a developer portfolio that includes:
 - Auto-generated projects page from GitHub repos
 - pnpm monorepo structure for future scaling
 
+## Initial idea
+
+This project is made up of two parts:
+
+1. **Next.js app (main monorepo)** — my personal site for a portfolio, CV/resume, and polished blog posts. It acts as a knowledge base distilled from years of working in the industry, with everything about me in one place.
+2. **Docusaurus site (inside the `docs/` folder)** — deployed automatically via GitHub Pages. This is where I document the things I actually want to build, small POCs, and ideas that might grow into something meaningful.
+
+Originally I had mixed ideas, POCs, and blog posts across both, which got confusing. To keep things clear, I've decided on the following split:
+
+- **Next.js site** → a clean personal portfolio and CV, plus my own curated blog posts and professional details. Inspired by [this portfolio/blog site](https://manuj-sankrit-8055.vercel.app/).
+- **Docusaurus site** → my contribution back to the developer community: documentation, shareable blog posts, and the ideas and POCs I want to build or explore openly.
+
 ---
 
 ## Step 1: Create the Repository

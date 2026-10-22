@@ -2,6 +2,8 @@
 
 ## 1. Objective
 
+Create a scanner for it when you scan a symbol of the stock it gives you few details like the ipo price what was it and when it went public and do you want to add it to your portfolio or just add it to you virtual portfolio.
+
 Build a **personal IPO application management web app** that helps manage multiple people, bank accounts, brokers, IPOs, quotas, applications, funding requirements, and eventually allotment/results.
 Intial phase less focus on styling and more focus on functionalities.
 
