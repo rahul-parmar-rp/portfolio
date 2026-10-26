@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import type { AppData, Person, Account } from "../types";
 import { uid, fmtINR } from "../lib/calc";
-import { Card, Button, Field, Input, Textarea, Empty, Badge } from "./ui";
+import { Card, Button, Field, Input, Empty, Badge } from "./ui";
 
 export function AccountsTab({
   data,

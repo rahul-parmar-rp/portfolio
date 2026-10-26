@@ -10,7 +10,7 @@ import {
   type OptimizerIPOConfig,
   type OptimizerSolution,
 } from "../lib/calc";
-import { Card, Button, Field, Input, Select, Empty, Badge, Stat } from "./ui";
+import { Card, Button, Input, Empty, Badge, Stat } from "./ui";
 
 export function OptimizerTab({
   data,

@@ -2,7 +2,6 @@
 
 import React, { useRef } from "react";
 import type { AppData } from "../types";
-import { emptyData } from "../types";
 import { toCSV, download } from "../lib/export";
 import { Card, Button, Empty } from "./ui";
 

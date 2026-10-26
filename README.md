@@ -13,6 +13,26 @@ This is a porfolio site template complete with a blog. Includes:
 - Vercel Speed Insights / Web Analytics
 - Geist font
 
+## Architecture
+
+This repo is a hub containing **two independent web apps** plus tooling and
+experiments:
+
+| Surface             | Location                                 | Purpose                                                                                                |
+| ------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **Next.js app**     | `src/` (root `package.json`)             | Personal portfolio, CV, curated blog posts, and interactive tools (`/twitter-poster`, `/ipo-planner`). |
+| **Docusaurus site** | `docs/dev-journal/` (own `package.json`) | Public dev journal: knowledge base, app ideas, and interactive demos. Deployed to GitHub Pages.        |
+
+Supporting folders:
+
+- `tools/` / `workspace/projects/twitter-poster/` — scripts (AI tweet posting, repo utilities).
+- `workspace/` — experiments and the one real git submodule (`git-submodules-example-repo`).
+- `lib/` — shared modules used by the Next.js API routes (`ollama.ts`, `twitter.ts`).
+
+Related planning/decision docs: [`PLAN.md`](PLAN.md),
+[`PROJECT_PORTFOLIO_DECISION.md`](PROJECT_PORTFOLIO_DECISION.md),
+[`CLEANUP.md`](CLEANUP.md).
+
 ## Common PNPM Commands
 
 Run these from the repo root.
@@ -221,7 +241,7 @@ tweet,url,hashtags
 4. Generate Bearer Token
 5. Add it to your `.env.local` file as `TWITTER_BEARER_TOKEN`
 
-### Architecture
+### Twitter Poster Architecture
 
 - **Frontend**: Next.js 14 (App Router) + React
 - **AI**: Ollama with llama3 model (local)

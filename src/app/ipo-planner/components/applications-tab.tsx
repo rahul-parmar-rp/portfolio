@@ -10,7 +10,7 @@ import {
   sharesForLots,
   validateApplication,
 } from "../lib/calc";
-import { Card, Button, Field, Input, Select, Empty, Badge } from "./ui";
+import { Card, Button, Field, Input, Select, Empty } from "./ui";
 
 export function ApplicationsTab({
   data,

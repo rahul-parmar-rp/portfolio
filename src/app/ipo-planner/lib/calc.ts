@@ -1,4 +1,4 @@
-import type { AppData, Account, IPO, Quota, Application } from "../types";
+import type { AppData, Account, IPO, Application } from "../types";
 
 export function fmtINR(n: number): string {
   if (!isFinite(n)) return "₹0";
